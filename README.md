@@ -6,7 +6,7 @@
 ### Tix2U (Tix To You!)  
 [<img src="https://img.shields.io/badge/프로젝트 기간-2023.11.17~2023.12.22-0090f6?style=flat&logoColor=white" />]()
 <br />
-[🧑🏻‍💻 사이트 바로가기]() 
+[💻 사이트 바로가기]() 
 </div> 
 
 ## 소개
