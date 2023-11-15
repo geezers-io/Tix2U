@@ -1,7 +1,8 @@
 <div align="center">
 
 <!-- logo -->
-<img src="" width="400"/>
+<img src="![name_logo](https://github.com/Ellsy23/Tix2U-Front/assets/105610041/5368c7d6-5ba0-49ca-b0b5-c0e5a6f400c3)
+" width="400"/>
 
 ### Tix2U (Tix To You!)  
 [<img src="https://img.shields.io/badge/프로젝트 기간-2023.11.17~2023.12.22-0090f6?style=flat&logoColor=white" />]()
