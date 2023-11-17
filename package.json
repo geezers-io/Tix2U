@@ -1,15 +1,27 @@
 {
-  "name": "vite-test",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "Tix2U",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ellsy23/Tix2U-Front.git"
+  },
   "scripts": {
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
     "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "build": "vite build",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "generate-enums": "node scripts/copyJavaEnums"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "axios": "^1.6.2",
+    "framer-motion": "^10.16.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -29,5 +41,9 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "typescript": "^5.2.2",
     "vite": "^4.4.5"
+  },
+  "engines": {
+    "node": ">=18.18.0",
+    "npm": ">=9.8.1"
   }
 }
