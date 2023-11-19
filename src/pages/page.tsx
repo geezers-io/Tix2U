@@ -20,7 +20,7 @@ const IndexPage: FC = () => {
   };
 
   return (
-    <Box bg="purple.50" minHeight="100vh" p={4} overflowY="auto">
+    <Box bg="purple.50" minHeight="100vh" p={4} overflowY="auto" alignContent="center">
       <Flex
         width="100%"
         bg="white"
@@ -30,6 +30,7 @@ const IndexPage: FC = () => {
         boxShadow="md"
         p={4}
         justifyContent="center"
+        text-align="center"
       >
         <Heading as="h1" size="xl">
           <img src={name_logo} width="200px" />

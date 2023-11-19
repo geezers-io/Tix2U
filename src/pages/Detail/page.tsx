@@ -1,4 +1,3 @@
-import { FC, useEffect, useState } from 'react';
 import { ChakraProvider, Box, Heading, Link, Image, Flex, Button } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import logo from '../../images/logo.png';
