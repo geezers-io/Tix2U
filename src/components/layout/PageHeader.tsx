@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 
 const PageHeader: FC<PropsWithChildren> = () => {
   return (
@@ -14,9 +14,7 @@ const PageHeader: FC<PropsWithChildren> = () => {
       backgroundColor="white"
       zIndex={999}
       alignContent="center"
-    >
-      header
-    </Box>
+    ></Box>
   );
 };
 

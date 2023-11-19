@@ -10,16 +10,6 @@ const IndexPage: FC = () => {
   const [showDummyData, setShowDummyData] = useState(true);
   const [bannerImages, setBannerImages] = useState<string[]>([]);
 
-  const handleToggleDummyData = () => {
-    setShowDummyData(!showDummyData);
-  };
-
-  const loadMore = () => {
-    setTimeout(() => {
-      setItems(prevItems => [...prevItems, ...Array(8)]);
-    }, 1000);
-  };
-
   const fetchBannerImages = async () => {
     try {
       const images = [
