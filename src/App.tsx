@@ -1,16 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ChakraProvider } from '@chakra-ui/react';
+import './App.css';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import IndexPage from './pages/page';
+import DetailPage from './pages/Detail/page';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const router = createBrowserRouter([
+  {
+    path: '/',
+    children: [
+      {
+        index: true,
+        element: <IndexPage />,
+      },
+      {
+        path: 'detail',
+        element: <DetailPage />,
+      },
+    ],
+  },
+]);
+const App = () => {
   return (
-    <>
-      Tix2U
-    </>
-  )
-}
+    <ChakraProvider>
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  );
+};
 
-export default App
+export default App;
