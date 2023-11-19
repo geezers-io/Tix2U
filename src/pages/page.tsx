@@ -20,7 +20,7 @@ const IndexPage: FC = () => {
   };
 
   return (
-    <Box bg="purple.50" minHeight="100vh" p={4} overflowY="auto" alignContent="center">
+    <Box bg="purple.50" minHeight="100vh" p={4} overflowY="auto" alignContent="center" p="10px 200px">
       <Flex
         width="100%"
         bg="white"
