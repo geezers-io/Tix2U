@@ -27,6 +27,7 @@
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.19.0",
+    "vite-plugin-mkcert": "^1.17.1",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
