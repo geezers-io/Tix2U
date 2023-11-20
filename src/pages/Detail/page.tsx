@@ -4,7 +4,7 @@ import ImageViewer from '../../components/ImageViewer';
 
 const DetailPage: FC = () => {
   const [images, setImages] = useState<string[]>([]);
-
+  ////temp
   const fetchBannerImages = async () => {
     try {
       const images = [
