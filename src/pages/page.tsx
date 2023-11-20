@@ -1,13 +1,8 @@
 import { useState, FC, useEffect } from 'react';
-import { Box, Skeleton, Button, Grid, Heading, Link, Switch, Flex, Image } from '@chakra-ui/react';
-import logo from '../images/logo.png';
-import { Link as RouterLink } from 'react-router-dom';
-import styled from '@emotion/styled';
+import { Box } from '@chakra-ui/react';
 import ImageSlider from '../components/shared/ImageCarousel';
 
 const IndexPage: FC = () => {
-  const [items, setItems] = useState([...Array(8)]);
-  const [showDummyData, setShowDummyData] = useState(true);
   const [bannerImages, setBannerImages] = useState<string[]>([]);
 
   const fetchBannerImages = async () => {
@@ -30,69 +25,21 @@ const IndexPage: FC = () => {
   }, []);
 
   return (
-    <Box bg="purple.50" minHeight="100vh" p={4} overflowY="auto" p="10px 200px" textAlign="center">
-      <Box p="30px" w="800px">
+    <Box
+      bg="purple.50"
+      minHeight="100vh"
+      p={4}
+      overflowY="auto"
+      textAlign="center"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box maxWidth="auto">
         <ImageSlider images={bannerImages} />
       </Box>
-      <Flex
-        width="100%"
-        bg="white"
-        position="sticky"
-        top="0"
-        zIndex="sticky"
-        boxShadow="md"
-        p={4}
-        justifyContent="center"
-        text-align="center"
-      >
-        <Flex justify-content="space-between">
-          <Nav>
-            <SLink to="/">전체</SLink>
-            <SLink to="/about">공연</SLink>
-            <SLink to="/">체험</SLink>
-            <SLink to="/about">클래스</SLink>
-          </Nav>
-        </Flex>
-      </Flex>
-      {/*<Switch colorScheme="teal" isChecked={showDummyData} onChange={handleToggleDummyData} mt={4}></Switch> */}
-      <Grid templateColumns={{ sm: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }} gap={8} mt={8}>
-        {items.map((_, index) => (
-          <Box key={index} bg="white" borderRadius="md" boxShadow="md" overflow="hidden">
-            {showDummyData && (
-              <img src={logo} alt="Logo" style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-            )}
-            <Box p={4}>
-              <Heading as="h3" size="md" mb={2}>
-                {showDummyData ? <Skeleton height="20px" mb="10px" /> : ''}
-              </Heading>
-              <Link as={RouterLink} to="/Detail">
-                <Button colorScheme="purple" mt={2}>
-                  Click Me!
-                </Button>
-              </Link>
-            </Box>
-          </Box>
-        ))}
-      </Grid>
     </Box>
   );
 };
-
-const Nav = styled.nav`
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const SLink = styled(Link)`
-  display: block;
-  padding: 18px var(--link-padding-x);
-  text-decoration: none !important;
-  padding: 0 50px;
-  text;
-  :hover {
-    color: #600082;
-  }
-`;
 
 export default IndexPage;
