@@ -1,8 +1,8 @@
-import { ChakraProvider } from '@chakra-ui/react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ChakraProvider } from '@chakra-ui/react';
+import Layout from './components/layouts/PageLayout';
+import DetailPage from './pages/detail/[id]/page';
 import IndexPage from './pages/page';
-import DetailPage from './pages/Detail/page';
-import Layout from './components/layout/PageLayout';
 import theme from './styles/theme';
 
 const router = createBrowserRouter([

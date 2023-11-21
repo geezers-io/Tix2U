@@ -1,10 +1,10 @@
-import { Box, Heading, Flex, Button, Badge, Text, Avatar, Stack } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
-import ImageViewer from '../../components/ImageViewer';
+import { Box, Heading, Flex, Button, Badge, Text, Avatar, Stack } from '@chakra-ui/react';
+import ImageViewer from '@/components/ImageViewer';
 
 const DetailPage: FC = () => {
   const [images, setImages] = useState<string[]>([]);
-  ////temp
+
   const fetchBannerImages = async () => {
     try {
       const images = [
@@ -20,10 +20,10 @@ const DetailPage: FC = () => {
     }
   };
 
-  console.log(images);
   useEffect(() => {
     fetchBannerImages();
   }, []);
+
   return (
     <Box minHeight="inherit" p="10px 200px" bg="purple.50">
       <Box p={4}>

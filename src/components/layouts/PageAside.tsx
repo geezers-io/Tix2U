@@ -15,7 +15,7 @@ const PageAside: FC = () => {
       zIndex={999}
     >
       <Flex align="center" justify="space-between" h="100%">
-        <Image src="/src/images/logo.png" alt="Logo" w="50px" h="50px" />
+        <Image src="/logo.png" alt="Logo" w="50px" h="50px" />
         <Box borderLeft="1px solid #ccc" height="60%" mx="4" />
         <Flex direction="column" justify="center" align="flex-end">
           <Text fontSize="sm">개인정보처리방침</Text>
