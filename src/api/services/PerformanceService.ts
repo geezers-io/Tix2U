@@ -1,5 +1,5 @@
-import { PerformanceClient } from './PerformanceService.types';
-import { axiosInstance } from '../client';
+import { axiosInstance } from '@/api/client';
+import { PerformanceClient } from '@/api/services/PerformanceService.types';
 
 const ROUTE = 'pblprfr';
 

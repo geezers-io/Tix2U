@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 import { useToast, UseToastOptions } from '@chakra-ui/react';
-import { getErrorMessage } from '../api/helper';
+import { getErrorMessage } from '@/api/helper';
 
 export function useCustomToast() {
   const toast = useToast({

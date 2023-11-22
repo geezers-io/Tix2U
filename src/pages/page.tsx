@@ -1,6 +1,6 @@
 import { useState, FC, useEffect } from 'react';
 import { Box, Grid, GridItem } from '@chakra-ui/react';
-import ImageSlider from '../components/ImageCarousel';
+import ImageSlider from '@/components/ImageCarousel';
 
 const IndexPage: FC = () => {
   const [bannerImages, setBannerImages] = useState<string[]>([]);
