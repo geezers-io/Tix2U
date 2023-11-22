@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Loading from './Loading';
 
@@ -15,7 +14,7 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ children, load, hasMore
   const observedRef = useRef<HTMLDivElement | null>(null);
 
   const handleIntersect: IntersectionObserverCallback = useCallback(
-    (entries) => {
+    entries => {
       if (entries[0].isIntersecting && hasMore) {
         load();
       }
@@ -63,12 +62,5 @@ const Observed = styled.div`
   align-items: center;
   font-size: 20px;
 `;
-
-InfiniteScroll.propTypes = {
-  load: PropTypes.func.isRequired,
-  hasMore: PropTypes.bool.isRequired,
-  children: PropTypes.node,
-  endMessage: PropTypes.oneOfType([PropTypes.node, PropTypes.any]),
-};
 
 export default InfiniteScroll;

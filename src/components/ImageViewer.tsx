@@ -8,10 +8,10 @@ interface Props {
 const HORIZONTAL_POINT = 'md';
 
 const ImageViewer: FC<Props> = ({ images }) => {
-  const [thumbImage, setThumbImage] = useState<string[]>();
+  const [thumbImage, setThumbImage] = useState<string>();
 
-  const handleImageClick = focusImage => {
-    setThumbImage(focusImage);
+  const handleImageClick = (image: string) => {
+    setThumbImage(image);
   };
 
   return (

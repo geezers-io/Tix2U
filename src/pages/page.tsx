@@ -1,9 +1,10 @@
 import { useState, FC, useEffect } from 'react';
-import { Box } from '@chakra-ui/react';
-import ImageSlider from '../components/shared/ImageCarousel';
+import { Box, Grid, GridItem } from '@chakra-ui/react';
+import ImageSlider from '../components/ImageCarousel';
 
 const IndexPage: FC = () => {
   const [bannerImages, setBannerImages] = useState<string[]>([]);
+  const [otherContent] = useState<string[]>(['Content 1', 'Content 2', 'Content 3', 'Content 4', 'Content 5']);
 
   const fetchBannerImages = async () => {
     try {
@@ -25,18 +26,19 @@ const IndexPage: FC = () => {
   }, []);
 
   return (
-    <Box
-      bg="purple.50"
-      minHeight="100vh"
-      p={4}
-      overflowY="auto"
-      textAlign="center"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Box maxWidth="auto">
+    <Box bg="purple.50" minHeight="100vh" overflowY="auto">
+      <Box top={10} bg="white" zIndex={2}>
         <ImageSlider images={bannerImages} />
+      </Box>
+
+      <Box marginTop="120px">
+        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+          {otherContent.map((content, index) => (
+            <GridItem key={index} bg="gray.200" p={4} borderRadius="md">
+              {content}
+            </GridItem>
+          ))}
+        </Grid>
       </Box>
     </Box>
   );

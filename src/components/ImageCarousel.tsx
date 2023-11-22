@@ -1,7 +1,8 @@
 import { useState, useCallback, FC, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
 import { Box, Button, Flex, Image } from '@chakra-ui/react';
-import { useTheme, css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
+
 interface Props {
   images: string[];
 }
@@ -9,7 +10,7 @@ interface Props {
 const ImageCarousel: FC<Props> = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
-  const autoSlideIntervalRef = useRef<number>();
+  const autoSlideIntervalRef = useRef<NodeJS.Timeout>();
   const theme = useTheme();
 
   const nextImage = useCallback(() => {
@@ -27,7 +28,7 @@ const ImageCarousel: FC<Props> = ({ images }) => {
   const startAutoSlide = useCallback(() => {
     autoSlideIntervalRef.current = setInterval(() => {
       nextImage();
-    }, 500000);
+    }, 5000);
   }, [nextImage]);
 
   const resetAutoSlide = () => {
@@ -91,12 +92,7 @@ const ImageCarousel: FC<Props> = ({ images }) => {
     >
       <Flex flex="1" transition="transform 0.3s ease-in-out" transform={`translateX(-${currentImageIndex * 100}%)`}>
         {images.map((image, index) => (
-          <Image
-            key={index}
-            src={image}
-            alt={`Slider Image ${index}`}
-            style={{ maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
-          />
+          <Image key={index} src={image} alt={`Slider Image ${index}`} width="100%" height="auto" />
         ))}
       </Flex>
 

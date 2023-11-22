@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useState } from 'react';
-import { Box, Image, Flex, Spacer, Link, HStack, Text, Center, Input } from '@chakra-ui/react';
 import { Search, PersonCircle, BoxArrowInRight, Cart } from 'react-bootstrap-icons';
+import { Box, Image, Flex, Spacer, Link, HStack, Text, Center, Input } from '@chakra-ui/react';
 
 const PageHeader: FC<PropsWithChildren> = () => {
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
@@ -22,8 +22,8 @@ const PageHeader: FC<PropsWithChildren> = () => {
       zIndex={999}
       alignContent="center"
     >
-      <Flex justify="space-between" align="center" h="100%" alignItems="center" pl={60}>
-        <Image src="/src/images/name_logo.png" alt="Logo" h="60px" />
+      <Flex justify="space-between" align="center" h="100%" alignItems="center" pl={20}>
+        <Image src="/name_logo.png" alt="Logo" h="60px" />
 
         <HStack spacing={10} ml={8} align="center">
           <Link href="/all">
@@ -55,7 +55,7 @@ const PageHeader: FC<PropsWithChildren> = () => {
 
         <Spacer />
 
-        <HStack spacing={10} mr={8} align="center" pr={60}>
+        <HStack spacing={10} mr={8} align="center" pr={20}>
           <Text fontWeight="bold" letterSpacing="0.1em" onClick={toggleSearchBar} cursor="pointer">
             <Center>
               <Search /> SEARCH
