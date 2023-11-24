@@ -1,11 +1,27 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, Heading, Flex, Button, Badge, Text, Avatar, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Badge,
+  Image,
+  Text,
+  Heading,
+  Divider,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  Textarea,
+  Button,
+} from '@chakra-ui/react';
 import ImageViewer from '@/components/ImageViewer';
+import TicketingButton from '@/components/TicketingButton';
 
 const DetailPage: FC = () => {
   const [images, setImages] = useState<string[]>([]);
 
-  const fetchBannerImages = async () => {
+  const fetchSideImages = async () => {
     try {
       const images = [
         'https://www.monthlypeople.com/news/photo/202306/560635_559345_3540.jpg',
@@ -21,73 +37,95 @@ const DetailPage: FC = () => {
   };
 
   useEffect(() => {
-    fetchBannerImages();
+    fetchSideImages();
   }, []);
-
   return (
-    <Box minHeight="inherit" p="10px 200px" bg="purple.50">
-      <Box p={4}>
-        <Flex flexDirection="column" gap="5px">
-          <Heading as="h3" size="lg">
-            제목
-          </Heading>
-          <Flex alignItems="center" gap="10px" justifyContent="right">
-            <Badge fontSize="xl" variant="outline" colorScheme="brand">
-              마감 기한
-            </Badge>
-            <Text fontSize="xl" as="b">
-              2023.12.30
-            </Text>
-          </Flex>
-          <Flex gap="10px" justifyContent="right">
-            <ImageViewer images={images} />
+    <Box p="10px 200px" bg="purple.50">
+      <Box bgColor="white" p={5} minHeight="1000px">
+        <Flex p="50px">
+          <Flex flex={1} w="300px" h="100%" m="auto 0">
+            <Image className="MainPoster" src="/public/poster/concert.jpg" />
           </Flex>
 
-          <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
-            <Badge fontSize="xl" colorScheme="purple.10">
-              클래스
-            </Badge>
-            <Text fontSize="xl" as="b">
-              하루 도자기 체험권
-            </Text>
-          </Flex>
-
-          <Text fontSize="xl" h="400px">
-            헤헤헤
-          </Text>
-        </Flex>
-
-        {/*seller*/}
-        <Box mt="auto">
-          <Flex>
-            <Avatar size="xl" name="임희정" src="https://bit.ly/broken-link" />
-            <Box ml="3" w="100%">
-              <Badge fontSize="xl" colorScheme="green">
-                판매자
+          <Flex flexDirection="column" m="50px" w="100%" flex={2}>
+            <Flex gap={3}>
+              <Badge size="lg" fontSize="lg" p="5px">
+                콘서트
               </Badge>
-              <Text fontSize="xl" fontWeight="bold">
-                임희정님
-                <Text fontSize="xl" color="gray">
-                  판매 재고 100 후기 200
-                </Text>
-              </Text>
-            </Box>
-            <Flex align-items="center">
-              <Button colorScheme="brand">구독하기</Button>
+              <Heading>김범수 콘서트</Heading>
+            </Flex>
+            <Divider p={5} />
+            <Flex flexDirection="column" gap={10}>
+              <Flex>
+                <Flex w="100px">
+                  <Text> 장소</Text>
+                </Flex>
+                <Text>피가로아트홀(구 훈아트홀) (피가로아트홀)</Text>
+              </Flex>
+              <Flex>
+                <Flex w="100px">
+                  <Text> 기간</Text>
+                </Flex>
+                <Text>2016.05.12 - 2016.07.31</Text>
+              </Flex>
+              <Flex>
+                <Flex w="100px">
+                  <Text> 관람 시간</Text>
+                </Flex>
+                <Text>1시간 30분</Text>
+              </Flex>
+              <Flex>
+                <Flex w="100px">
+                  <Text> 관람 등급</Text>
+                </Flex>
+                <Text>만 12세 이상</Text>
+              </Flex>
+              <Flex>
+                <Flex w="100px">
+                  <Text> 예매 가격</Text>
+                </Flex>
+                <Text>전석 30,000원</Text>
+              </Flex>
+              <Flex flexDirection="row-reverse">
+                <TicketingButton />
+              </Flex>
             </Flex>
           </Flex>
+        </Flex>
 
-          {/*reservation*/}
-          <Box>
-            <Stack direction="row" justifyContent="right" gap="10px">
-              <Badge fontSize="xl" variant="outline" colorScheme="brand" justifyContent="center">
-                금액
-              </Badge>
-              <Text fontSize="xl" as="b">
-                10,000원
-              </Text>
-            </Stack>
-          </Box>
+        <Box h="1000px">
+          <Tabs isFitted variant="enclosed">
+            <TabList mb="1em">
+              <Tab>상세 정보</Tab>
+              <Tab>관람후기</Tab>
+              <Tab>장소정보</Tab>
+              <Tab>예매/취소 안내</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Box>
+                  <ImageViewer images={images} />
+                </Box>
+              </TabPanel>
+              <TabPanel>
+                <Box>
+                  <Flex gap={3}>
+                    <Heading size="lg">관람후기</Heading>
+                    <Heading size="lg" color="red">
+                      0
+                    </Heading>
+                  </Flex>
+
+                  <Flex p="20px 0px">
+                    <Textarea rows={2} />
+                    <Button colorScheme="brand" m="10px">
+                      등록
+                    </Button>
+                  </Flex>
+                </Box>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </Box>
       </Box>
     </Box>
