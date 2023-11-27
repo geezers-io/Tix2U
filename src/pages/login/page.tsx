@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Image,
@@ -9,6 +10,7 @@ import {
   Divider,
   Flex,
   AbsoluteCenter,
+  Text,
 } from '@chakra-ui/react';
 
 const LoginPage = () => {
@@ -16,15 +18,15 @@ const LoginPage = () => {
   const handleClick = () => setShow(!show);
   return (
     <Box p="10px 200px" bg="purple.50">
-      <Box bgColor="white" p={5} minHeight="1000px" w="85%">
+      <Box m="0 auto" w="85%" bgColor="white" p={5} minHeight="1000px">
         <Box m="0 auto" w="50%" p="50px">
-          <Flex m="auto 0" justifyContent="center" flexDirection="column">
+          <Flex m="auto 0" flexDirection="column" justifyContent="center">
             <Flex m="0 auto">
               <Image src="/public/name_logo.png" w="500px" />
             </Flex>
 
-            <Flex w="80%" m="0 auto" flexDirection="column" gap="30px">
-              <Box gap="20px">
+            <Flex m="0 auto" w="80%" flexDirection="column" gap="30px">
+              <Flex flexDirection="column" gap="15px">
                 <Input placeholder="아이디(휴대폰 또는 이메일)" />
                 <InputGroup size="md">
                   <Input pr="4.5rem" type={show ? 'text' : 'password'} placeholder="비밀번호" />
@@ -34,10 +36,9 @@ const LoginPage = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-              </Box>
+              </Flex>
 
               <Button colorScheme="brand">로그인</Button>
-
               <Box position="relative" padding="10">
                 <Divider />
                 <AbsoluteCenter bg="white" px="4">
@@ -46,9 +47,19 @@ const LoginPage = () => {
               </Box>
 
               <Button colorScheme="blue">구글 로그인</Button>
+              <Flex m="0 auto" w="60%" justifyContent="space-between">
+                <Link to="/detail">
+                  <Text>아이디 찾기</Text>
+                </Link>
+                <Link to="/detail">
+                  <Text>비밀번호 찾기</Text>
+                </Link>
+                <Link to="/detail">
+                  <Text> 회원가입</Text>
+                </Link>
+              </Flex>
             </Flex>
           </Flex>
-          <Divider />
         </Box>
       </Box>
     </Box>
