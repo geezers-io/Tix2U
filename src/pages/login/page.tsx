@@ -14,12 +14,12 @@ import {
 } from '@chakra-ui/react';
 
 const LoginPage = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const handleClick = () => setShowPassword(!showPassword);
   return (
-    <Box p="10px 200px" bg="purple.50">
-      <Box m="0 auto" w="85%" bgColor="white" p={5} minHeight="1000px">
-        <Box m="0 auto" w="50%" p="50px">
+    <Box p="10px 5%" bg="purple.50">
+      <Box bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px" m="0 auto">
+        <Box p="50px">
           <Flex m="auto 0" flexDirection="column" justifyContent="center">
             <Flex m="0 auto">
               <Image src="/public/name_logo.png" w="500px" />
@@ -29,10 +29,10 @@ const LoginPage = () => {
               <Flex flexDirection="column" gap="15px">
                 <Input placeholder="아이디(휴대폰 또는 이메일)" />
                 <InputGroup size="md">
-                  <Input pr="4.5rem" type={show ? 'text' : 'password'} placeholder="비밀번호" />
+                  <Input pr="4.5rem" type={showPassword ? 'text' : 'password'} placeholder="비밀번호" />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleClick}>
-                      {show ? 'Hide' : 'Show'}
+                      {showPassword ? 'Hide' : 'Show'}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
