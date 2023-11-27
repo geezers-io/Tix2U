@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useState } from 'react';
 import { Search, PersonCircle, BoxArrowInRight, Cart } from 'react-bootstrap-icons';
-import { Box, Image, Flex, Spacer, Link, HStack, Text, Center, Input } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Box, Image, Flex, Spacer, HStack, Text, Center, Input } from '@chakra-ui/react';
 
 const PageHeader: FC<PropsWithChildren> = () => {
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
@@ -13,7 +14,7 @@ const PageHeader: FC<PropsWithChildren> = () => {
     <Box
       as="header"
       w="100%"
-      h="100px"
+      h={{ base: 'auto', md: '100px' }}
       position="sticky"
       top={0}
       paddingTop={{ base: 0, md: '8px' }}
@@ -22,31 +23,40 @@ const PageHeader: FC<PropsWithChildren> = () => {
       zIndex={999}
       alignContent="center"
     >
-      <Flex justify="space-between" align="center" h="100%" alignItems="center" pl={20}>
-        <Image src="/name_logo.png" alt="Logo" h="60px" />
-
-        <HStack spacing={10} ml={8} align="center">
-          <Link href="/all">
+      <Flex
+        direction={{ base: 'column', md: 'row' }}
+        justify="space-between"
+        align="center"
+        h="100%"
+        alignItems="center"
+        pl={{ base: 4, md: 20 }}
+        pr={{ base: 4, md: 20 }}
+      >
+        <Link to="/">
+          <Image src="/name_logo.png" h="60px" />
+        </Link>
+        <HStack spacing={10} mt={{ base: 4, md: 0 }} align={{ base: 'center', md: 'center' }}>
+          <Link to="/all">
             <Text fontWeight="bold" letterSpacing="0.1em">
               <Center>전체</Center>
             </Text>
           </Link>
-          <Link href="/exhibition">
+          <Link to="/concert">
             <Text fontWeight="bold" letterSpacing="0.1em">
-              <Center>전시회</Center>
+              <Center>음악회</Center>
             </Text>
           </Link>
-          <Link href="/concert">
-            <Text fontWeight="bold" letterSpacing="0.1em">
-              <Center>콘서트</Center>
-            </Text>
-          </Link>
-          <Link href="/musical">
+          <Link to="/musical">
             <Text fontWeight="bold" letterSpacing="0.1em">
               <Center>뮤지컬</Center>
             </Text>
           </Link>
-          <Link href="/play">
+          <Link to="/dancing">
+            <Text fontWeight="bold" letterSpacing="0.1em">
+              <Center>무용</Center>
+            </Text>
+          </Link>
+          <Link to="/play">
             <Text fontWeight="bold" letterSpacing="0.1em">
               <Center>연극</Center>
             </Text>
@@ -61,21 +71,21 @@ const PageHeader: FC<PropsWithChildren> = () => {
               <Search /> SEARCH
             </Center>
           </Text>
-          <Link href="/login">
+          <Link to="/login">
             <Text fontWeight="bold" letterSpacing="0.1em" _hover={{ textDecoration: 'underline' }}>
               <Center>
                 <BoxArrowInRight /> LOGIN
               </Center>
             </Text>
           </Link>
-          <Link href="/mypage">
+          <Link to="/mypage">
             <Text fontWeight="bold" letterSpacing="0.1em">
               <Center>
                 <PersonCircle /> MYPAGE
               </Center>
             </Text>
           </Link>
-          <Link href="/cart">
+          <Link to="/cart">
             <Text fontWeight="bold" letterSpacing="0.1em">
               <Center>
                 <Cart /> CART
