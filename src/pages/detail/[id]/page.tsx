@@ -47,55 +47,77 @@ const DetailPage: FC = () => {
   }, []);
   return (
     <Box p="10px 200px" bg="purple.50">
-      <Box bgColor="white" p={5} fontSize="lg">
-        <Flex p="50px">
+      <Box bgColor="white" p={5} fontSize="xl">
+        <Flex p="10px">
           <Flex flex={1} w="300px" h="100%" m="auto 0">
             <Image className="MainPoster" src="/public/poster/concert.jpg" />
           </Flex>
 
-          <Flex flexDirection="column" m="50px" w="100%" flex={2}>
-            <Flex gap={3} marginBottom="20px">
-              <Badge size="lg" fontSize="lg" p="5px">
+          <Flex flexDirection="column" m="50px" w="100%" flex={2} minH="700px">
+            <Flex gap={3} m="20px">
+              <Badge ml="1" borderRadius="10px" fontSize="lg" p="5px" colorScheme="brand" variant="solid">
                 콘서트
               </Badge>
               <Heading>김범수 콘서트</Heading>
             </Flex>
-
-            <Flex flexDirection="column" gap={10}>
-              <Flex>
-                <Flex w="100px">
-                  <Text> 장소</Text>
-                </Flex>
-                <Text>피가로아트홀(구 훈아트홀) (피가로아트홀)</Text>
-              </Flex>
-              <Flex>
-                <Flex w="100px">
-                  <Text> 기간</Text>
-                </Flex>
-                <Text>2016.05.12 - 2016.07.31</Text>
-              </Flex>
-              <Flex>
-                <Flex w="100px">
-                  <Text> 관람 시간</Text>
-                </Flex>
-                <Text>1시간 30분</Text>
-              </Flex>
-              <Flex>
-                <Flex w="100px">
-                  <Text> 관람 등급</Text>
-                </Flex>
-                <Text>만 12세 이상</Text>
-              </Flex>
-              <Flex>
-                <Flex w="100px">
-                  <Text> 예매 가격</Text>
-                </Flex>
-                <Text>전석 30,000원</Text>
-              </Flex>
-              <Flex flexDirection="row-reverse">
-                <TicketingButton />
-              </Flex>
-            </Flex>
+            <Box>
+              <Tabs isFitted variant="enclosed">
+                <TabList>
+                  <Tab>콘서트 정보</Tab>
+                  <Tab>티켓 할인 정보</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <Flex flexDirection="column" gap={10}>
+                      <Flex>
+                        <Flex w="100px">
+                          <Text> 장소</Text>
+                        </Flex>
+                        <Text as="b">피가로아트홀(구 훈아트홀) (피가로아트홀)</Text>
+                      </Flex>
+                      <Flex>
+                        <Flex w="100px">
+                          <Text> 기간</Text>
+                        </Flex>
+                        <Text as="b">2016.05.12 - 2016.07.31</Text>
+                      </Flex>
+                      <Flex>
+                        <Flex w="100px">
+                          <Text> 관람 시간</Text>
+                        </Flex>
+                        <Text as="b">1시간 30분</Text>
+                      </Flex>
+                      <Flex>
+                        <Flex w="100px">
+                          <Text> 관람 등급</Text>
+                        </Flex>
+                        <Text as="b">만 12세 이상</Text>
+                      </Flex>
+                      <Flex>
+                        <Flex w="100px">
+                          <Text> 예매 가격</Text>
+                        </Flex>
+                        <Text as="b">전석 30,000원</Text>
+                      </Flex>
+                      <Flex flexDirection="row-reverse">
+                        <TicketingButton />
+                      </Flex>
+                    </Flex>
+                  </TabPanel>
+                  <TabPanel>
+                    <Box gap={10}>
+                      <Text>
+                        프리뷰할인 10% 할인 <br />
+                        청소년(2005~2016년출생자/1인1매) 30% 할인 <br />
+                        청소년(2006~2017년출생자/1인1매) 30% 할인 <br />
+                        장애인할인(1~3급,중증/1인2매) 30% 할인 <br />
+                        장애인할인(4~6급,경증/1인1매) 30% 할인 <br />
+                      </Text>
+                    </Box>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
           </Flex>
         </Flex>
 
@@ -132,7 +154,7 @@ const DetailPage: FC = () => {
               </TabPanel>
               <TabPanel>장소</TabPanel>
               <TabPanel>
-                <Box>
+                <Box fontSize="lg">
                   <Heading size="xl">예매/취소 안내</Heading>
                   <Box>
                     <Heading size="lg">티켓 수령 안내</Heading>
@@ -158,7 +180,7 @@ const DetailPage: FC = () => {
                       <br /> <br /> <br />​
                     </Text>
 
-                    <Heading>예매 취소 안내</Heading>
+                    <Heading size="lg">예매 취소 안내</Heading>
                     <Text>
                       예매 당일 취소하는 경우 이외에는 예매수수료는 환불되지 않습니다. <br />
                       <br />
@@ -201,7 +223,7 @@ const DetailPage: FC = () => {
                       일부 공연의 경우 취소 가능 시간이 상이할 수 있습니다.​​​ <br />
                       <br />
                     </Text>
-                    <Heading>티켓 환불 안내</Heading>
+                    <Heading size="lg">티켓 환불 안내</Heading>
                     <Text>
                       예매취소 시 취소수수료와 배송료를 제외한 나머지 금액이 환불 됩니다.
                       <br />
