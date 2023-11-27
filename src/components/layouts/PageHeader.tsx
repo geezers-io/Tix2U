@@ -37,7 +37,7 @@ const PageHeader: FC<PropsWithChildren> = () => {
         </Link>
         <HStack spacing={10} mt={{ base: 4, md: 0 }} align={{ base: 'center', md: 'center' }}>
           <Link to="/all">
-            <Text fontWeight="bold" letterSpacing="0.1em">
+            <Text fontWeight="bold" letterSpacing="0.1em" pl={6}>
               <Center>전체</Center>
             </Text>
           </Link>
@@ -56,7 +56,7 @@ const PageHeader: FC<PropsWithChildren> = () => {
               <Center>무용</Center>
             </Text>
           </Link>
-          <Link to="/play">
+          <Link to="/theater">
             <Text fontWeight="bold" letterSpacing="0.1em">
               <Center>연극</Center>
             </Text>
