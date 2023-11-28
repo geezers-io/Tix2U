@@ -12,10 +12,22 @@ import {
   AbsoluteCenter,
   Text,
 } from '@chakra-ui/react';
+import supabase from '@/api/supabase';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
+
+  async function signInWithKakao() {
+    await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+    });
+  }
+
+  async function signOut() {
+    await supabase.auth.signOut();
+  }
+
   return (
     <Box p="10px 5%" bg="purple.50">
       <Box bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px" m="0 auto">
@@ -46,7 +58,9 @@ const LoginPage = () => {
                 </AbsoluteCenter>
               </Box>
 
-              <Button colorScheme="blue">구글 로그인</Button>
+              <Flex m="0 auto" onClick={signInWithKakao}>
+                <Image src="public/kakaoLogin.png" role="button" />
+              </Flex>
               <Flex m="0 auto" w="60%" justifyContent="space-between">
                 <Link to="/detail">
                   <Text>아이디 찾기</Text>
@@ -56,6 +70,9 @@ const LoginPage = () => {
                 </Link>
                 <Link to="/detail">
                   <Text> 회원가입</Text>
+                </Link>
+                <Link to="/">
+                  <Text onClick={signOut}> 로그아웃</Text>
                 </Link>
               </Flex>
             </Flex>
