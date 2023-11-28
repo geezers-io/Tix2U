@@ -3,6 +3,7 @@
 - [ ] Fix
 
 <!-- Jira Ticket - If the issue does not exist, remove it. -->
+Implements [issue TM-0](https://geezers-io.atlassian.net/browse/TM-0)
 
 ## What & Why
 <!-- 무엇을 작업하셨나요? -->
