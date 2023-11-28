@@ -15,7 +15,7 @@ const router = createBrowserRouter([
         element: <IndexPage />,
       },
       {
-        path: 'detail',
+        path: 'detail/:[id]',
         element: <DetailPage />,
       },
     ],
