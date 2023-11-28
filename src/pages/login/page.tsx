@@ -48,12 +48,10 @@ const LoginPage = () => {
 
               <Button colorScheme="blue">구글 로그인</Button>
               <Flex m="0 auto" w="60%" justifyContent="space-between">
-                <Link to="/detail">
-                  <Text>아이디 찾기</Text>
+                <Link to="/login/find">
+                  <Text>아이디/비밀번호 찾기</Text>
                 </Link>
-                <Link to="/detail">
-                  <Text>비밀번호 찾기</Text>
-                </Link>
+
                 <Link to="/detail">
                   <Text> 회원가입</Text>
                 </Link>
