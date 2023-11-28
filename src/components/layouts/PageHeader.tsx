@@ -5,9 +5,15 @@ import { Box, Image, Flex, Spacer, HStack, Text, Center, Input } from '@chakra-u
 
 const PageHeader: FC<PropsWithChildren> = () => {
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleSearchBar = () => {
     setIsSearchBarVisible(!isSearchBarVisible);
+  };
+
+  const handleSearch = () => {
+    // TODO: 검색 기능을 수행하고, 다른 페이지로 리다이렉션
+    console.log('검색어:', searchQuery);
   };
 
   return (
@@ -25,10 +31,9 @@ const PageHeader: FC<PropsWithChildren> = () => {
     >
       <Flex
         direction={{ base: 'column', md: 'row' }}
-        justify="space-between"
+        justify={{ base: 'center', md: 'space-between' }}
         align="center"
         h="100%"
-        alignItems="center"
         pl={{ base: 4, md: 20 }}
         pr={{ base: 4, md: 20 }}
       >
@@ -37,7 +42,7 @@ const PageHeader: FC<PropsWithChildren> = () => {
         </Link>
         <HStack spacing={10} mt={{ base: 4, md: 0 }} align={{ base: 'center', md: 'center' }}>
           <Link to="/all">
-            <Text fontWeight="bold" letterSpacing="0.1em" pl={6}>
+            <Text fontWeight="bold" letterSpacing="0.1em" pl={6} whiteSpace="nowrap">
               <Center>전체</Center>
             </Text>
           </Link>
@@ -95,12 +100,30 @@ const PageHeader: FC<PropsWithChildren> = () => {
         </HStack>
       </Flex>
       {isSearchBarVisible && (
-        <Box p={4} bg="white" position="absolute" top="100%" left={0} right={0} boxShadow="sm">
+        <Box
+          p={4}
+          bg="white"
+          position={{ base: 'absolute', md: 'fixed' }}
+          top={{ base: 0, md: '100px' }}
+          left={0}
+          right={0}
+          boxShadow="sm"
+          zIndex={1}
+          w="50%"
+          mx="auto"
+        >
           <Input
             placeholder="검색어를 입력해주세요."
             size="sm"
-            borderColor="gray.400"
+            borderColor="transparent"
+            borderBottomWidth="2px"
+            borderBottomColor="gray.600"
             _hover={{ borderColor: 'gray.600' }}
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSearch()}
+            minWidth="500px"
+            w="100%"
           />
         </Box>
       )}
