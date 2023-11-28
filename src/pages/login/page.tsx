@@ -18,7 +18,7 @@ const LoginPage = () => {
   const handleClick = () => setShowPassword(!showPassword);
   return (
     <Box p="10px 5%" bg="purple.50">
-      <Box bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px" m="0 auto">
+      <Box m="0 auto" bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px">
         <Box p="50px">
           <Flex m="auto 0" flexDirection="column" justifyContent="center">
             <Flex m="0 auto">
