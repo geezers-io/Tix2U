@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -99,8 +100,13 @@ const DetailPage: FC = () => {
                         </Flex>
                         <Text as="b">전석 30,000원</Text>
                       </Flex>
-                      <Flex flexDirection="row-reverse">
+                      <Flex flexDirection="row-reverse" gap="10px">
                         <TicketingButton />
+                        <Link to="/cart">
+                          <Button colorScheme="gray" size="lg" variant="outline">
+                            장바구니
+                          </Button>
+                        </Link>
                       </Flex>
                     </Flex>
                   </TabPanel>
