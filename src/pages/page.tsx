@@ -92,6 +92,7 @@ const IndexPage: FC = () => {
             py={1}
             borderRadius="md"
             mr={2}
+            shadow="xl"
           >
             MD&apos;s RECOMMENDS
           </Box>
@@ -173,6 +174,7 @@ const IndexPage: FC = () => {
             py={1}
             borderRadius="md"
             mr={2}
+            shadow="xl"
           >
             NEW ARRIVALS
           </Box>
