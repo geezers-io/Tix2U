@@ -5,6 +5,7 @@ import DetailPage from '@/pages/detail/[id]/page';
 import FindIDPage from '@/pages/login/find/page';
 import LoginPage from '@/pages/login/page';
 import IndexPage from '@/pages/page';
+import SearchPage from '@/pages/search/page';
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             element: <FindIDPage />,
           },
         ],
+      },
+      {
+        path: 'search',
+        element: <SearchPage />,
       },
     ],
   },
