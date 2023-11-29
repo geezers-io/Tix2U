@@ -15,7 +15,7 @@ import {
 import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
-import ImageSlider from '@/components/ImageCarousel';
+import ImageSlider from '@/components/shared/ImageCarousel';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
 

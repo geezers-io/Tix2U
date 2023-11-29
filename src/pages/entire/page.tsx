@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Box, Heading, Text, SimpleGrid, Image, AspectRatio, Button } from '@chakra-ui/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
-import InfiniteScroll from '@/components/InfiniteScroll';
+import InfiniteScroll from '@/components/shared/InfiniteScroll';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
 
