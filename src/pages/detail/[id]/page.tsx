@@ -47,16 +47,16 @@ const DetailPage: FC = () => {
     fetchSideImages();
   }, []);
   return (
-    <Box p="10px 200px" bg="purple.50">
-      <Box bgColor="white" p={5} fontSize="xl">
-        <Flex p="10px">
-          <Flex flex={1} w="300px" h="100%" m="auto 0">
+    <Box p="10px 10%" bg="purple.50">
+      <Box bgColor="white" fontSize="xl">
+        <Flex p="10px" flexDirection={{ base: 'column', md: 'row' }}>
+          <Flex flex={1} m="auto 0" p="50px">
             <Image className="MainPoster" src="/public/poster/concert.jpg" />
           </Flex>
 
-          <Flex flexDirection="column" m="50px" w="100%" flex={2} minH="700px">
-            <Flex gap={3} m="20px">
-              <Badge ml="1" borderRadius="10px" fontSize="lg" p="5px" colorScheme="brand" variant="solid">
+          <Flex flex={2} flexDirection="column" w="100%" minH="700px">
+            <Flex gap={3} m="20px" alignContent="center">
+              <Badge ml="1" borderRadius="10px" h="50px" fontSize="lg" p="5px" colorScheme="brand" variant="solid">
                 콘서트
               </Badge>
               <Heading>김범수 콘서트</Heading>
