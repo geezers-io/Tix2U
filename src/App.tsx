@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import EntirePage from './pages/entire/page';
 import Layout from '@/components/layouts/PageLayout';
 import DetailPage from '@/pages/detail/[id]/page';
 import LoginPage from '@/pages/login/page';
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'entire',
+        element: <EntirePage />,
       },
     ],
   },

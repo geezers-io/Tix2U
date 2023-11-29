@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import { Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import Loading from './Loading';
 
@@ -48,10 +49,10 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({ children, load, hasMore
   }, [hasMore]);
 
   return (
-    <div>
+    <Box>
       {children}
       <Observed ref={observedRef}>{hasMore ? <Loading /> : endMessage}</Observed>
-    </div>
+    </Box>
   );
 };
 

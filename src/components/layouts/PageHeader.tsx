@@ -41,7 +41,7 @@ const PageHeader: FC<PropsWithChildren> = () => {
           <Image src="/name_logo.png" h="60px" />
         </Link>
         <HStack spacing={10} mt={{ base: 4, md: 0 }} align={{ base: 'center', md: 'center' }}>
-          <Link to="/all">
+          <Link to="/entire">
             <Text fontWeight="bold" letterSpacing="0.1em" pl={6} whiteSpace="nowrap">
               <Center>전체</Center>
             </Text>
