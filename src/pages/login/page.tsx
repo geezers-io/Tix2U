@@ -13,19 +13,30 @@ import {
   Text,
 } from '@chakra-ui/react';
 import supabase from '@/api/supabase';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
+  const toast = useCustomToast();
 
   async function signInWithKakao() {
-    await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-    });
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: 'kakao',
+      });
+    } catch (e) {
+      toast.error(e);
+    }
   }
 
   async function signOut() {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+      toast.info('로그아웃 하였어요');
+    } catch (e) {
+      toast.error(e);
+    }
   }
 
   return (
