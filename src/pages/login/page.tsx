@@ -58,19 +58,19 @@ const LoginPage = () => {
                 </AbsoluteCenter>
               </Box>
 
-              <Flex m="0 auto" onClick={signInWithKakao}>
-                <Image src="public/kakaoLogin.png" role="button" />
-              </Flex>
-              <Flex m="0 auto" w="60%" justifyContent="space-between">
+              <Box m="0 auto">
+                <Image src="public/kakaoLogin.png" role="button" onClick={signInWithKakao} />
+                <Button colorScheme="red" w="100%" p="20px" onClick={signOut}>
+                  로그아웃
+                </Button>
+              </Box>
+              <Flex m="0 auto" w="50%" justifyContent="space-between">
                 <Link to="/login/find">
                   <Text>아이디/비밀번호 찾기</Text>
                 </Link>
 
                 <Link to="/detail">
                   <Text> 회원가입</Text>
-                </Link>
-                <Link to="/">
-                  <Text onClick={signOut}> 로그아웃</Text>
                 </Link>
               </Flex>
             </Flex>
