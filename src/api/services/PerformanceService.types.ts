@@ -1,4 +1,4 @@
-interface GetPerformanceListRequest {
+export interface GetPerformanceListRequest {
   stdate: string; // 공연시작일자	20160101
   eddate: string; // 공연종료일자	20160630
   cpage: string; // 현재페이지	1
@@ -14,7 +14,7 @@ interface GetPerformanceListRequest {
   openrun?: string; // 오픈런	Y
 }
 
-interface PerformanceSummary {
+export interface PerformanceSummary {
   mt20id: string; // 공연ID	PF132236
   prfnm: string; // 공연명	우리연애할까
   prfpdfrom: string; // 공연시작일	2016.05.12
@@ -30,7 +30,7 @@ interface GetPerformanceDetailRequest {
   mt20id: string; // 공연목록 조회 후 나오는 공연ID 참조  PF132236
 }
 
-interface PerformanceDetail {
+export interface PerformanceDetail {
   mt20id: string; // 공연ID	PF132236
   mt10id: string; // 공연시설ID	FC001431
   prfnm: string; // 공연명	우리연애할까

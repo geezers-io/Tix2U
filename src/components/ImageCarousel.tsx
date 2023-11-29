@@ -84,15 +84,25 @@ const ImageCarousel: FC<Props> = ({ images }) => {
       onTouchEnd={handleTouchEnd}
       css={css`
         @media (min-width: ${theme.breakpoints.md}) {
-          &:hover > .slider-float-buttons {
-            display: block;
-          }
+          width: 70%;
+          margin: 0 auto;
+        }
+
+        &:hover > .slider-float-buttons {
+          display: block;
         }
       `}
     >
-      <Flex flex="1" transition="transform 0.3s ease-in-out" transform={`translateX(-${currentImageIndex * 100}%)`}>
+      <Flex
+        flex="1"
+        transition="transform 0.3s ease-in-out"
+        transform={`translateX(-${currentImageIndex * (100 / images.length)}%)`}
+        width={`${images.length * 100}%`}
+      >
         {images.map((image, index) => (
-          <Image key={index} src={image} alt={`Slider Image ${index}`} width="100%" height="auto" />
+          <Box key={index} width={`${100 / images.length}%`}>
+            <Image src={image} alt={`Slider Image ${index}`} width="100%" />
+          </Box>
         ))}
       </Flex>
 
