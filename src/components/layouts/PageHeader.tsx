@@ -1,8 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
-import { PersonCircle, BoxArrowInRight, Cart } from 'react-bootstrap-icons';
+import { PersonCircle, BoxArrowInRight, Cart, Search } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Box, Image, Flex, Spacer, HStack, Text, Center } from '@chakra-ui/react';
-import SearchTerm from '@/components/SearchTerm';
 
 const PageHeader: FC<PropsWithChildren> = () => {
   return (
@@ -60,7 +59,13 @@ const PageHeader: FC<PropsWithChildren> = () => {
         <Spacer />
 
         <HStack spacing={10} mr={8} align="center" pr={20}>
-          <SearchTerm />
+          <Link to="/search">
+            <Text fontWeight="bold" letterSpacing="0.1em" cursor="pointer">
+              <Center>
+                <Search /> SEARCH
+              </Center>
+            </Text>
+          </Link>
 
           <Link to="/login">
             <Text fontWeight="bold" letterSpacing="0.1em" _hover={{ textDecoration: 'underline' }}>
