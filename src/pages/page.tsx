@@ -92,6 +92,7 @@ const IndexPage: FC = () => {
             py={1}
             borderRadius="md"
             mr={2}
+            shadow="xl"
           >
             MD&apos;s RECOMMENDS
           </Box>
@@ -101,7 +102,16 @@ const IndexPage: FC = () => {
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
         {isLoadingMdRecommend
           ? Array.from({ length: 4 }).map((_, index) => (
-              <Box key={index} flex="1" maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden">
+              <Box
+                key={index}
+                flex="1"
+                maxW="300px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                shadow="xl"
+                bg={colors.gray[50]}
+              >
                 <Skeleton height="180px" />
                 <Box p="4">
                   <Skeleton height="16px" mb="2" />
@@ -111,7 +121,16 @@ const IndexPage: FC = () => {
               </Box>
             ))
           : mdRecommendPerformance.map((performance, index) => (
-              <Box key={index} flex="1" maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden">
+              <Box
+                key={index}
+                flex="1"
+                maxW="300px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                shadow="xl"
+                bg={colors.gray[50]}
+              >
                 <Link to={`/detail/${performance.mt20id}`}>
                   <AspectRatio ratio={3 / 4}>
                     <Image src={performance.poster} alt={performance.prfnm} objectFit="cover" />
@@ -155,6 +174,7 @@ const IndexPage: FC = () => {
             py={1}
             borderRadius="md"
             mr={2}
+            shadow="xl"
           >
             NEW ARRIVALS
           </Box>
@@ -164,7 +184,16 @@ const IndexPage: FC = () => {
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
         {isLoadingNewArrival
           ? Array.from({ length: 8 }).map((_, index) => (
-              <Box key={index} flex="1" maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden">
+              <Box
+                key={index}
+                flex="1"
+                maxW="300px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                shadow="xl"
+                bg={colors.gray[50]}
+              >
                 <Skeleton height="180px" />
                 <Box p="4">
                   <Skeleton height="16px" mb="2" />
@@ -174,7 +203,16 @@ const IndexPage: FC = () => {
               </Box>
             ))
           : newArrivalPerformance.map((performance, index) => (
-              <Box key={index} flex="1" maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden">
+              <Box
+                key={index}
+                flex="1"
+                maxW="300px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                shadow="xl"
+                bg={colors.gray[50]}
+              >
                 <Link to={`/detail/${performance.mt20id}`}>
                   <AspectRatio ratio={3 / 4}>
                     <Image src={performance.poster} alt={performance.prfnm} objectFit="cover" />

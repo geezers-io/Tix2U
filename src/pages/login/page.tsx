@@ -12,10 +12,33 @@ import {
   AbsoluteCenter,
   Text,
 } from '@chakra-ui/react';
+import supabase from '@/api/supabase';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
+  const toast = useCustomToast();
+
+  async function signInWithKakao() {
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: 'kakao',
+      });
+    } catch (e) {
+      toast.error(e);
+    }
+  }
+
+  async function signOut() {
+    try {
+      await supabase.auth.signOut();
+      toast.info('로그아웃 하였어요');
+    } catch (e) {
+      toast.error(e);
+    }
+  }
+
   return (
     <Box p="10px 5%" bg="purple.50">
       <Box m="0 auto" bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px">
@@ -46,8 +69,13 @@ const LoginPage = () => {
                 </AbsoluteCenter>
               </Box>
 
-              <Button colorScheme="blue">구글 로그인</Button>
-              <Flex m="0 auto" w="60%" justifyContent="space-between">
+              <Box m="0 auto">
+                <Image src="public/kakaoLogin.png" role="button" onClick={signInWithKakao} />
+                <Button colorScheme="red" w="100%" p="20px" onClick={signOut}>
+                  로그아웃
+                </Button>
+              </Box>
+              <Flex m="0 auto" w="50%" justifyContent="space-between">
                 <Link to="/login/find">
                   <Text>아이디/비밀번호 찾기</Text>
                 </Link>

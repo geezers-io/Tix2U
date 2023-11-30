@@ -48,7 +48,7 @@ export interface PerformanceDetail {
   genrenm: string; // 장르	연극
   prfstate: string; // 공연상태	공연중
   openrun: string; // 오픈런	Y
-  styurls?: string[]; // 소개이미지 url 목록
+  styurls?: string; // 소개이미지 url 목록
   dtguidance: string; // 공연시간	화요일 ~ 금요일(20:00), 토요일(16:00,19:00), 일요일(15:00,18:00)
 }
 
