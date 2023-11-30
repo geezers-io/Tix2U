@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         element: <IndexPage />,
       },
       {
-        path: 'detail',
+        path: 'detail/:mt20id',
         element: <DetailPage />,
       },
       {
