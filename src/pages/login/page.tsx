@@ -15,7 +15,7 @@ import {
 import supabase from '@/api/supabase';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
-const LoginPage = () => {
+const SignInPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
@@ -80,7 +80,7 @@ const LoginPage = () => {
                   <Text>아이디/비밀번호 찾기</Text>
                 </Link>
 
-                <Link to="/detail">
+                <Link to="/termsofuse">
                   <Text> 회원가입</Text>
                 </Link>
               </Flex>
@@ -92,4 +92,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignInPage;
