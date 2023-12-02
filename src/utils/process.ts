@@ -7,9 +7,8 @@ export const processer = {
     const year = String(dateTime.getFullYear()).padStart(4, '0');
     const month = String(dateTime.getMonth() + 1).padStart(2, '0');
     const day = String(dateTime.getDate()).padStart(2, '0');
-    const hours = String(dateTime.getHours()).padStart(2, '0');
-    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+
+    return `${year}-${month}-${day}`;
   },
   dateToHHmm: (d: string) => dayjs(d).format('HH:mm'),
   suppressIfOneHundred: (count: number) => (count > 99 ? '99+' : String(count)),

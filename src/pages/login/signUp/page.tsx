@@ -15,8 +15,8 @@ import {
   InputRightElement,
   Image,
   Divider,
-  Radio,
-  RadioGroup,
+  Checkbox,
+  Text,
 } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps } from 'formik';
 import { Gender } from '@/api/@types/@enums';
@@ -30,8 +30,9 @@ type FormValues = {
   id: string;
   password: string;
   name: string;
+  email: string;
   birth: string;
-  phoneNumber: number;
+  phoneNumber: string;
   gender: Gender[];
 };
 
@@ -39,8 +40,9 @@ const { validators, getFormikStates } = generateValidators<FormValues>({
   id: { required: true, range: { min: 4, max: 30 }, regex: 'korEngNumSpace' },
   password: { required: true, range: { min: 4, max: 30 }, regex: 'korEngNumSpace' },
   name: { required: true, range: { min: 2, max: 10 } },
+  email: { required: true, regex: 'email' },
   birth: { required: true },
-  phoneNumber: { required: true, range: { min: 10, max: 11 } },
+  phoneNumber: { required: true, range: { min: 10, max: 11 }, regex: 'phone' },
   gender: { required: true },
 });
 
@@ -53,20 +55,10 @@ const SignUpPage = () => {
   const [pwValue, setPwValue] = useState<string>('');
   const [pwRevalue, setPwRevalue] = useState<string>('');
   const [activeButton, setActiveButton] = useState(null);
-  const [checkBoxes, setCheckBoxes] = useState([false]);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [checkedItems, setCheckedItems] = useState([false]);
 
-  const handleRadioClick = () => {
-    setIsChecked(!isChecked);
-  };
-
-  const handleSelectAll = () => {
-    const allChecked = checkBoxes.every(checkBox => checkBox);
-
-    const newCheckBoxes = checkBoxes.map(() => !allChecked); // 모든 체크박스를 반전
-
-    setCheckBoxes(newCheckBoxes); // 상태 업데이트
-  };
+  const allChecked = checkedItems.every(Boolean);
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const handleClick = () => setShow(!show);
 
@@ -83,7 +75,7 @@ const SignUpPage = () => {
   };
 
   const PasswordReconfirm = () => {
-    if (pwValue === pwRevalue) return toast.success('비밀번호가 확인되었어요');
+    if (pwValue === pwRevalue) return toast.success('비밀번호가 일치합니다');
 
     return toast.error('비밀번호가 다릅니다');
   };
@@ -92,9 +84,10 @@ const SignUpPage = () => {
     setActiveButton(value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (values: FormValues) => {
     toast.success('회원가입에 성공했어요!');
     navigate('/');
+    console.log(values);
   };
   return (
     <Formik<FormValues>
@@ -102,8 +95,9 @@ const SignUpPage = () => {
         id: '',
         password: '',
         name: '',
+        email: '',
         birth: processer.date(now),
-        phoneNumber: 0,
+        phoneNumber: '',
         gender: [],
       }}
       onSubmit={handleSubmit}
@@ -113,23 +107,39 @@ const SignUpPage = () => {
         return (
           <Form>
             <Box p="10px 5%" bg="purple.50">
-              <Box m="0 auto" bgColor="white" p={5} minHeight="800px" w="90%" maxW="700px">
-                <Flex m="auto 0">
-                  <Image src="/public/name_logo.png" w="500px" justifyItems="center" alignItems="center" />
-                </Flex>
+              <Box m="0 auto" bgColor="white" p={5} w="90%" maxW="700px">
+                <Box m="0 auto">
+                  <Image src="/public/name_logo.png" w="200px" justifyItems="center" alignItems="center" />
+                </Box>
 
-                <Box>
-                  <Radio checked={checkBoxes.every(checkBox => checkBox)} onChange={handleSelectAll}>
-                    전체 선택
-                  </Radio>
+                <Box m="30px 0">
+                  <Checkbox
+                    isChecked={allChecked}
+                    isIndeterminate={isIndeterminate}
+                    onChange={e => setCheckedItems([e.target.checked, e.target.checked])}
+                  >
+                    전체 동의하기
+                  </Checkbox>
+                  <Box>
+                    <Text>
+                      실명 인증된 아이디로 가입, 위치기반서비스 이용약관(선택), 이벤트・혜택 정보 수신(선택) 동의를
+                      포함합니다.
+                    </Text>
+                  </Box>
                   {termsOfUse &&
-                    termsOfUse.map(value => (
+                    termsOfUse.map((value, index) => (
                       <Box m="20px">
-                        <RadioGroup>
-                          <Radio key={value.id} value={value.title} checked={isChecked} onChange={handleRadioClick}>
-                            {value.title}
-                          </Radio>
-                        </RadioGroup>
+                        <Checkbox
+                          key={value.id}
+                          value={value.title}
+                          isChecked={checkedItems[index]}
+                          onChange={e => setCheckedItems([e.target.checked])}
+                        >
+                          {value.title}
+                        </Checkbox>
+                        <Flex maxH="200px" overflow="scroll" m="10px">
+                          {value.data}
+                        </Flex>
                       </Box>
                     ))}
                 </Box>
@@ -142,7 +152,7 @@ const SignUpPage = () => {
                         {({ field }: FieldProps<FormValues['id']>) => (
                           <FormControl isRequired isInvalid={showErrorDict.id}>
                             <InputGroup>
-                              <InputLeftAddon>아이디:</InputLeftAddon>
+                              <InputLeftAddon>아이디</InputLeftAddon>
                               <Input {...field} value={idValue} onChange={event => setIdValue(event.target.value)} />
                             </InputGroup>
                             <FormErrorMessage>{errors.id}</FormErrorMessage>
@@ -157,7 +167,7 @@ const SignUpPage = () => {
                         {({ field }: FieldProps<FormValues['password']>) => (
                           <FormControl isRequired isInvalid={showErrorDict.password}>
                             <InputGroup>
-                              <InputLeftAddon>비밀번호:</InputLeftAddon>
+                              <InputLeftAddon>비밀번호</InputLeftAddon>
                               <Input
                                 type={show ? 'text' : 'password'}
                                 {...field}
@@ -208,10 +218,24 @@ const SignUpPage = () => {
                         {({ field }: FieldProps<FormValues['name']>) => (
                           <FormControl isRequired isInvalid={showErrorDict.name}>
                             <InputGroup>
-                              <InputLeftAddon>이름:</InputLeftAddon>
+                              <InputLeftAddon>이름</InputLeftAddon>
                               <Input {...field} />
                             </InputGroup>
                             <FormErrorMessage>{errors.name}</FormErrorMessage>
+                          </FormControl>
+                        )}
+                      </Field>
+                    </Box>
+
+                    <Box m="20px">
+                      <Field name="email" validate={validators.email}>
+                        {({ field }: FieldProps<FormValues['email']>) => (
+                          <FormControl isRequired isInvalid={showErrorDict.email}>
+                            <InputGroup>
+                              <InputLeftAddon>이메일</InputLeftAddon>
+                              <Input {...field} />
+                            </InputGroup>
+                            <FormErrorMessage>{errors.email}</FormErrorMessage>
                           </FormControl>
                         )}
                       </Field>
@@ -222,9 +246,9 @@ const SignUpPage = () => {
                         {({ field }: FieldProps<FormValues['birth']>) => (
                           <FormControl isRequired isInvalid={showErrorDict.birth}>
                             <InputGroup>
-                              <InputLeftAddon>생년월일:</InputLeftAddon>
+                              <InputLeftAddon>생년월일</InputLeftAddon>
                               <Input
-                                placeholder="Select Date and Time"
+                                placeholder="생년월일을 입력하세요"
                                 size="md"
                                 type="date"
                                 min={processer.date(now)}
@@ -242,7 +266,7 @@ const SignUpPage = () => {
                         {({ field }: FieldProps<FormValues['phoneNumber']>) => (
                           <FormControl isRequired isInvalid={showErrorDict.phoneNumber}>
                             <InputGroup>
-                              <InputLeftAddon>전화번호:</InputLeftAddon>
+                              <InputLeftAddon>전화번호</InputLeftAddon>
                               <Input {...field} />
                               <InputRightElement pointerEvents="none">
                                 <Icon as={Phone} />
@@ -259,13 +283,13 @@ const SignUpPage = () => {
                         {({ field }: FieldProps<FormValues['gender']>) => (
                           <FormControl isRequired isInvalid={showErrorDict.gender}>
                             <InputGroup>
-                              <InputLeftAddon>성별:</InputLeftAddon>
+                              <InputLeftAddon>성별</InputLeftAddon>
 
                               {Object.entries(GENDER_LABEL).map(([value, label]) => (
                                 <Grid w="100%" m="0 10px">
                                   <Button
                                     {...field}
-                                    key={value}
+                                    key={`select - ${value}`}
                                     value={value}
                                     onClick={() => handleButtonClick(value)}
                                     colorScheme={activeButton === value ? 'brand' : 'gray'}

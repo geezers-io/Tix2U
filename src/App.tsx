@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import EntirePage from './pages/entire/page';
 import SignInPage from './pages/login/page';
+import SignUpPage from './pages/login/signUp/page';
 import Layout from '@/components/layouts/PageLayout';
 import DetailPage from '@/pages/detail/[id]/page';
 import FindIDPage from '@/pages/login/find/page';
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'signUp',
-        element: <SignInPage />,
+        element: <SignUpPage />,
       },
     ],
   },
