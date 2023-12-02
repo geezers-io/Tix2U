@@ -10,18 +10,14 @@ import {
   useColorModeValue,
   AspectRatio,
   Skeleton,
-  BoxProps,
 } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
 import ImageSlider from '@/components/shared/ImageCarousel';
+import MotionPoster from '@/components/shared/MotionPoster';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
-
-interface MotionBoxProps extends Omit<BoxProps, 'children'> {
-  children: React.ReactNode | ((props: { isHovered: boolean }) => React.ReactNode);
-}
 
 const IndexPage: FC = () => {
   const [bannerImages, setBannerImages] = useState<string[]>([]);
@@ -76,23 +72,6 @@ const IndexPage: FC = () => {
     }
   };
 
-  const MotionBox: FC<MotionBoxProps> = ({ children, ...rest }) => {
-    const [isHovered, setHovered] = useState(false);
-
-    return (
-      <Box
-        as="div"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        overflow="hidden"
-        position="relative"
-        {...rest}
-      >
-        {typeof children === 'function' ? children({ isHovered }) : children}
-      </Box>
-    );
-  };
-
   useEffect(() => {
     fetchBannerImages();
     fetchMdRecommendData();
@@ -144,7 +123,7 @@ const IndexPage: FC = () => {
               </Box>
             ))
           : mdRecommendPerformance.map((performance, index) => (
-              <MotionBox
+              <MotionPoster
                 key={index}
                 flex="1"
                 maxW="300px"
@@ -194,7 +173,7 @@ const IndexPage: FC = () => {
                     </Box>
                   </>
                 )}
-              </MotionBox>
+              </MotionPoster>
             ))}
       </SimpleGrid>
 
@@ -237,7 +216,7 @@ const IndexPage: FC = () => {
               </Box>
             ))
           : newArrivalPerformance.map((performance, index) => (
-              <MotionBox
+              <MotionPoster
                 key={index}
                 flex="1"
                 maxW="300px"
@@ -287,7 +266,7 @@ const IndexPage: FC = () => {
                     </Box>
                   </>
                 )}
-              </MotionBox>
+              </MotionPoster>
             ))}
       </SimpleGrid>
 
