@@ -108,7 +108,9 @@ const DetailPage: FC = () => {
                         <Text as="b">{detail.pcseguidance}</Text>
                       </Flex>
                       <Flex flexDirection="row-reverse" gap="10px">
-                        <TicketingButton />
+                        <Link to="ticketing">
+                          <TicketingButton />
+                        </Link>
                         <Link to="/cart">
                           <Button colorScheme="gray" size="lg" variant="outline">
                             장바구니
