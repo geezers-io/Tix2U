@@ -2,8 +2,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import EntirePage from './pages/entire/page';
 import SignInPage from './pages/login/page';
-import SignUpPage from './pages/login/signUp/page';
-import TermOfUsePage from './pages/login/signUp/termsOfUse/page';
 import Layout from '@/components/layouts/PageLayout';
 import DetailPage from '@/pages/detail/[id]/page';
 import FindIDPage from '@/pages/login/find/page';
@@ -42,17 +40,8 @@ const router = createBrowserRouter([
         element: <EntirePage />,
       },
       {
-        path: 'termsofuse',
-        children: [
-          {
-            index: true,
-            element: <TermOfUsePage />,
-          },
-          {
-            path: 'signUp',
-            element: <SignUpPage />,
-          },
-        ],
+        path: 'signUp',
+        element: <SignInPage />,
       },
     ],
   },
