@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -20,6 +20,17 @@ import {
   TabPanels,
   Grid,
   Button,
+  Checkbox,
+  Radio,
+  RadioGroup,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
@@ -29,6 +40,11 @@ const TicketingPage: FC = () => {
   const [detail, setDetail] = useState<PerformanceDetail>([]);
   const { mt20id } = useParams();
   const toast = useCustomToast();
+  const [payValue, setPayValue] = useState<string>('toss');
+  const [receipt, setReceipt] = useState<string>('true');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+
   const fetchDetail = async (mt20id: string) => {
     try {
       const response = await PerformanceService.getDetail({ mt20id });
@@ -47,14 +63,14 @@ const TicketingPage: FC = () => {
 
   return (
     <Box p="10px 5%" bg="purple.50">
-      <Box m="0 auto" bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px">
+      <Box m="0 auto" bgColor="white" p={5} w="90%" maxW="700px">
         <Box minH="inherit">
           <Box m="20px">
-            <Card direction={{ base: 'column', sm: 'row' }} overflow="hidden" variant="outline" h="200px">
+            <Card direction={{ base: 'column', sm: 'row' }} overflow="hidden" variant="outline" minH="200px">
               <Image objectFit="cover" maxW={{ base: '100%', sm: '200px' }} src={detail.poster} alt="Ticket Poster" />
 
               <Stack>
-                <CardBody>
+                <CardBody w="inherit">
                   <Heading size="md">{detail.prfnm}</Heading>
 
                   <Text>
@@ -123,19 +139,112 @@ const TicketingPage: FC = () => {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <p>one!</p>
+                    <RadioGroup onChange={setPayValue} value={payValue}>
+                      <Grid alignContent="center">
+                        <Card minH="50px" m="10px">
+                          <Radio value="toss">
+                            <Image src="/public/pay/tosspay.png" w="80px" />
+                            <Text>토스페이 </Text>
+                          </Radio>
+                        </Card>
+                        <Card minH="50px" m="10px">
+                          <Radio value="kakao">
+                            <Image src="/public/pay/kakaopay.png" w="80px" p="10px" />
+                            <Text>카카오페이 </Text>
+                          </Radio>
+                        </Card>
+                        <Card minH="50px" m="10px">
+                          <Radio value="naver">
+                            <Image src="/public/pay/naverpay.png" w="80px" />
+                            <Text>네이버페이 </Text>
+                          </Radio>
+                        </Card>
+                      </Grid>
+                    </RadioGroup>
                   </TabPanel>
                   <TabPanel>
-                    <p>two!</p>
+                    <Grid>
+                      <Card>
+                        <Checkbox as="b" defaultChecked>
+                          <Text>카드결제 </Text>
+                        </Checkbox>
+                      </Card>
+                    </Grid>
+                  </TabPanel>
+                  <TabPanel>
+                    <Grid>
+                      <Card>
+                        <Checkbox as="b" defaultChecked>
+                          <Text>무통장 입금 </Text>
+                        </Checkbox>
+                      </Card>
+                    </Grid>
+                  </TabPanel>
+                  <TabPanel>
+                    <Grid>
+                      <Card>
+                        <Checkbox as="b" defaultChecked>
+                          <Text>휴대폰 결제 </Text>
+                        </Checkbox>
+                      </Card>
+                    </Grid>
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </Card>
           </Box>
+          <Grid>
+            <Card m="20px">
+              <Text as="b">현금영수증</Text>
+              <Flex m="10px" flexDirection="row">
+                <RadioGroup onChange={setReceipt} value={receipt}>
+                  <Flex m="10px">
+                    <Radio value="true" defaultChecked>
+                      신청
+                    </Radio>
+                  </Flex>
+                  <Flex m="10px">
+                    <Radio value="false">미신청</Radio>
+                  </Flex>
+                </RadioGroup>
+              </Flex>
+            </Card>
+          </Grid>
+          <Grid m="20px">
+            <Card>
+              <Heading size="md">총 결제 금액</Heading>
+              <Text>{detail.pcseguidance}</Text>
+            </Card>
+          </Grid>
         </Box>
         <Grid>
-          <Button colorScheme="brand">결제하기</Button>
+          <Button colorScheme="brand" onClick={onOpen}>
+            결제하기
+          </Button>
         </Grid>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalCloseButton />
+
+            <ModalHeader />
+            <ModalBody py={6}>
+              <Text textAlign="center" as="b">
+                결제 진행하러 가겠습니다!
+              </Text>
+            </ModalBody>
+
+            <ModalFooter gap={2}>
+              <Button role="link" onClick={() => navigate('/chat')} colorScheme="brand" flex={1}>
+                네 결제하러 갈래요
+              </Button>
+
+              <Button variant="ghost" onClick={onClose} flex={1}>
+                조금만 더 생각해볼게요
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
     </Box>
   );
