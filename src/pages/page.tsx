@@ -80,7 +80,7 @@ const IndexPage: FC = () => {
 
   return (
     <Box p="10px 5%" bg="purple.50">
-      <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }}>
+      <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }} mx="auto" maxW="1200px">
         <Box mb={{ base: '4', md: '8' }}>
           <ImageSlider images={bannerImages} />
         </Box>
@@ -103,7 +103,7 @@ const IndexPage: FC = () => {
         </Box>
       </Box>
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }} mx="auto" maxW="1200px">
         {isLoadingMdRecommend
           ? Array.from({ length: 4 }).map((_, index) => (
               <Box
@@ -179,7 +179,7 @@ const IndexPage: FC = () => {
             ))}
       </SimpleGrid>
 
-      <Box mb={{ base: '4', md: '8' }} ml={{ base: '4', md: '0' }} mt={{ base: '4', md: '8' }}>
+      <Box mb={{ base: '4', md: '8' }} mx="auto" maxW="1200px" textAlign={{ base: 'left' }}>
         <Heading size="lg">
           <Box
             as="span"
@@ -189,15 +189,15 @@ const IndexPage: FC = () => {
             py={1}
             borderRadius="md"
             mr={2}
-            shadow="xl"
             ml={4}
+            shadow="xl"
           >
             NEW ARRIVALS
           </Box>
         </Heading>
       </Box>
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }} mx="auto" maxW="1200px">
         {isLoadingNewArrival
           ? Array.from({ length: 8 }).map((_, index) => (
               <Box

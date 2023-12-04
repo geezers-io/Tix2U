@@ -7,6 +7,7 @@ import { PerformanceSummary } from '@/api/services/PerformanceService.types';
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchList, setSearchList] = useState<PerformanceSummary[]>([]);
+  const [searchMessage, setSearchMessage] = useState<string>('');
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value.toLowerCase());
@@ -14,6 +15,7 @@ const SearchPage = () => {
     // 검색어가 비어 있으면 모든 항목을 보여줍니다.
     if (!searchTerm) {
       setSearchList([]);
+      setSearchMessage('');
       return;
     }
   };
@@ -26,8 +28,14 @@ const SearchPage = () => {
       rows: '5',
       shprfnm: searchTerm,
     });
+
+    if (res.length === 0) {
+      setSearchMessage('검색 결과가 없습니다.');
+    } else {
+      setSearchMessage('');
+    }
+
     setSearchList(res);
-    console.log(searchList);
   };
 
   return (
@@ -51,6 +59,9 @@ const SearchPage = () => {
             </Button>
           </Flex>
         </Flex>
+        <Text textAlign="center" color="gray.500" mt="4">
+          {searchMessage}
+        </Text>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
           {searchList.map((performance, index) => (
             <Box key={index} m="20px" maxW="500px" borderWidth="1px" borderRadius="lg" overflow="hidden">

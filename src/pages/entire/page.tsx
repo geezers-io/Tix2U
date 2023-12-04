@@ -70,7 +70,7 @@ const EntirePage: FC = () => {
 
   return (
     <>
-      <Box p="10px 5%" bg="purple.50">
+      <Box p="10px 5%" bg="purple.50" maxW="1440px" mx="auto">
         <Box marginY="40px">
           <Text
             fontSize="2xl"
