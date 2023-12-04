@@ -28,7 +28,7 @@ import TicketingButton from '@/components/TicketingButton';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const DetailPage: FC = () => {
-  const [detail, setDetail] = useState<PerformanceDetail>([]);
+  const [detail, setDetail] = useState<PerformanceDetail>();
   const { mt20id } = useParams();
   const toast = useCustomToast();
 
