@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import Loading from './Loading';
+import Loading from '../Loading';
 
 interface InfiniteScrollProps {
   load: () => void;

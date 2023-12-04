@@ -1,11 +1,17 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import Layout from '@/components/layouts/PageLayout';
+import ConcertPage from '@/pages/concert/page';
+import DancingPage from '@/pages/dancing/page';
 import DetailPage from '@/pages/detail/[id]/page';
+import EntirePage from '@/pages/entire/page';
 import FindIDPage from '@/pages/login/find/page';
 import LoginPage from '@/pages/login/page';
+import MusicalPage from '@/pages/musical/page';
 import IndexPage from '@/pages/page';
 import SearchPage from '@/pages/search/page';
+import TheaterPage from '@/pages/theater/page';
+
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -37,6 +43,26 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage />,
+      },
+      {
+        path: 'concert',
+        element: <ConcertPage />,
+      },
+      {
+        path: 'entire',
+        element: <EntirePage />,
+      },
+      {
+        path: 'musical',
+        element: <MusicalPage />,
+      },
+      {
+        path: 'dancing',
+        element: <DancingPage />,
+      },
+      {
+        path: 'theater',
+        element: <TheaterPage />,
       },
     ],
   },
