@@ -12,7 +12,6 @@ const PageAside: FC = () => {
       position="sticky"
       top={0}
       paddingTop={{ base: 0, md: '8px' }}
-      boxShadow="0 2px 2px -2px rgba(0,0,0,.3)"
       backgroundColor="white"
       zIndex={999}
       display="flex"
@@ -33,7 +32,7 @@ const PageAside: FC = () => {
         </Text>
       </HStack>
 
-      <Divider orientation="vertical" borderColor="gray.500" height="20px" marginY="4" maxW="88%" />
+      <Divider orientation="horizontal" borderColor="gray.500" height="20px" marginY="4" maxW="40%" />
 
       <HStack spacing="4">
         <Link to="https://github.com/geezers-io/Tix2U">
