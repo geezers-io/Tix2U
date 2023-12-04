@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -22,44 +22,49 @@ import {
   Td,
   TableContainer,
 } from '@chakra-ui/react';
-import ImageViewer from '@/components/ImageViewer';
+import { PerformanceService } from '@/api/services/PerformanceService';
+import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import TicketingButton from '@/components/TicketingButton';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 const DetailPage: FC = () => {
-  const [images, setImages] = useState<string[]>([]);
+  const [detail, setDetail] = useState<PerformanceDetail>([]);
+  const { mt20id } = useParams();
+  const toast = useCustomToast();
 
-  const fetchSideImages = async () => {
+  const fetchDetail = async (mt20id: string) => {
     try {
-      const images = [
-        'https://www.monthlypeople.com/news/photo/202306/560635_559345_3540.jpg',
-        'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201701/18/htm_20170118142849573637.jpg',
-        'https://i.namu.wiki/i/ETpJyld-Ok-H46FcqqlgUECJdmDctvaXpnrnM2MO-Dkn_S6H3vqFI8qYNBRmnSLM975rwaT5A6s5bDn4tC3aRA.webp',
-        'https://c.wallhere.com/photos/c0/1b/anime_city_clouds_skyscraper_5_Centimeters_Per_Second_Makoto_Shinkai-241157.jpg!d',
-        'https://dthezntil550i.cloudfront.net/25/latest/252001022015123200005691112/1280_960/68ee10fa-84b8-44b6-bcc2-94df2f5fac05.png',
-      ];
-      setImages(images);
-    } catch (error) {
-      console.error('이미지를 불러올 수 없습니다.:', error);
+      const response = await PerformanceService.getDetail({ mt20id });
+      setDetail(response);
+      console.log(detail);
+    } catch (e) {
+      toast.error(e);
     }
   };
 
   useEffect(() => {
-    fetchSideImages();
+    if (!mt20id) return;
+    fetchDetail(String(mt20id));
   }, []);
+
+  if (!detail) return;
+
   return (
     <Box p="10px 10%" bg="purple.50">
       <Box bgColor="white" fontSize="xl">
         <Flex p="10px" flexDirection={{ base: 'column', md: 'row' }}>
-          <Flex flex={1} m="auto 0" p="50px">
-            <Image className="MainPoster" src="/public/poster/concert.jpg" />
+          <Flex flex={1} m="0 auto" p="50px">
+            <Image className="MainPoster" src={detail.poster} objectFit="contain" />
           </Flex>
 
           <Flex flex={2} flexDirection="column" w="100%" minH="700px">
-            <Flex gap={3} m="20px" alignContent="center">
-              <Badge ml="1" borderRadius="10px" h="50px" fontSize="lg" p="5px" colorScheme="brand" variant="solid">
-                콘서트
-              </Badge>
-              <Heading>김범수 콘서트</Heading>
+            <Flex gap={3} m="20px">
+              <Heading>
+                <Badge borderRadius="10px" fontSize="lg" p="8px" m="10px 5px" colorScheme="brand" variant="solid">
+                  {detail.genrenm}
+                </Badge>
+                {detail.prfnm}
+              </Heading>
             </Flex>
             <Box>
               <Tabs isFitted variant="enclosed">
@@ -74,31 +79,33 @@ const DetailPage: FC = () => {
                         <Flex w="100px">
                           <Text> 장소</Text>
                         </Flex>
-                        <Text as="b">피가로아트홀(구 훈아트홀) (피가로아트홀)</Text>
+                        <Text as="b">{detail.fcltynm}</Text>
                       </Flex>
                       <Flex>
                         <Flex w="100px">
                           <Text> 기간</Text>
                         </Flex>
-                        <Text as="b">2016.05.12 - 2016.07.31</Text>
+                        <Text as="b">
+                          {detail.prfpdfrom} - {detail.prfpdto}
+                        </Text>
                       </Flex>
                       <Flex>
                         <Flex w="100px">
                           <Text> 관람 시간</Text>
                         </Flex>
-                        <Text as="b">1시간 30분</Text>
+                        <Text as="b">{detail.prfruntime}</Text>
                       </Flex>
                       <Flex>
                         <Flex w="100px">
                           <Text> 관람 등급</Text>
                         </Flex>
-                        <Text as="b">만 12세 이상</Text>
+                        <Text as="b">{detail.prfage}</Text>
                       </Flex>
                       <Flex>
                         <Flex w="100px">
                           <Text> 예매 가격</Text>
                         </Flex>
-                        <Text as="b">전석 30,000원</Text>
+                        <Text as="b">{detail.pcseguidance}</Text>
                       </Flex>
                       <Flex flexDirection="row-reverse" gap="10px">
                         <TicketingButton />
@@ -111,15 +118,15 @@ const DetailPage: FC = () => {
                     </Flex>
                   </TabPanel>
                   <TabPanel>
-                    <Box gap={10}>
+                    <Flex gap={10}>
                       <Text>
-                        프리뷰할인 10% 할인 <br />
-                        청소년(2005~2016년출생자/1인1매) 30% 할인 <br />
-                        청소년(2006~2017년출생자/1인1매) 30% 할인 <br />
-                        장애인할인(1~3급,중증/1인2매) 30% 할인 <br />
+                        프리뷰할인 10% 할인 <br /> <br />
+                        청소년(2005~2016년출생자/1인1매) 30% 할인 <br /> <br />
+                        청소년(2006~2017년출생자/1인1매) 30% 할인 <br /> <br />
+                        장애인할인(1~3급,중증/1인2매) 30% 할인 <br /> <br />
                         장애인할인(4~6급,경증/1인1매) 30% 할인 <br />
                       </Text>
-                    </Box>
+                    </Flex>
                   </TabPanel>
                 </TabPanels>
               </Tabs>
@@ -137,8 +144,8 @@ const DetailPage: FC = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Box>
-                  <ImageViewer images={images} />
+                <Box m="0 auto">
+                  <Image src={detail?.styurls} />
                 </Box>
               </TabPanel>
               <TabPanel>
@@ -158,7 +165,7 @@ const DetailPage: FC = () => {
                   </Flex>
                 </Box>
               </TabPanel>
-              <TabPanel>장소</TabPanel>
+              <TabPanel>장소 {detail.fcltynm}</TabPanel>
               <TabPanel>
                 <Box fontSize="lg">
                   <Heading size="xl">예매/취소 안내</Heading>

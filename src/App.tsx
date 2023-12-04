@@ -10,6 +10,7 @@ import LoginPage from '@/pages/login/page';
 import MusicalPage from '@/pages/musical/page';
 import IndexPage from '@/pages/page';
 import TheaterPage from '@/pages/theater/page';
+
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
         element: <IndexPage />,
       },
       {
-        path: 'detail',
+        path: 'detail/:mt20id',
         element: <DetailPage />,
       },
       {
@@ -39,8 +40,8 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'entire',
-        element: <EntirePage />,
+        path: 'search',
+        element: <SearchPage />,
       },
       {
         path: 'concert',
