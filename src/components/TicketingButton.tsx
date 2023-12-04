@@ -12,7 +12,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-const TicketingButton = () => {
+const TicketingButton = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
@@ -28,17 +28,17 @@ const TicketingButton = () => {
           <ModalCloseButton />
 
           <ModalHeader />
-          <ModalBody py={6}>
-            <Text textAlign="center">예약됐습니다😊 채팅으로 바로 이동할까요?</Text>
+          <ModalBody py={6} textAlign="center">
+            <Text as="b">티켓 예매 페이지로 이동하겠습니다!</Text>
           </ModalBody>
 
           <ModalFooter gap={2}>
-            <Button role="link" onClick={() => navigate('/chat')} colorScheme="blue" flex={1}>
-              채팅하러 갈래요!
+            <Button role="link" onClick={() => navigate(`/detail/${id}/ticketing`)} colorScheme="brand" flex={1}>
+              예매하러 갈래요!
             </Button>
 
             <Button variant="ghost" onClick={onClose} flex={1}>
-              아니요. 예약만 할게요
+              좀 더 고민해볼게요
             </Button>
           </ModalFooter>
         </ModalContent>

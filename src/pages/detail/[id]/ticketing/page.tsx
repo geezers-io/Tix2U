@@ -76,8 +76,14 @@ const TicketingPage: FC = () => {
                 상품 정보
               </Heading>
 
-              <Card direction={{ base: 'column', sm: 'row' }} overflow="hidden" variant="outline" minH="200px" p="10px">
-                <Image objectFit="cover" maxW={{ base: '100%', sm: '200px' }} src={detail.poster} alt="Ticket Poster" />
+              <Card direction={{ base: 'column', md: 'row' }} overflow="hidden" variant="outline" minH="200px" p="10px">
+                <Image
+                  maxW={{ base: '100%', md: '200px' }}
+                  maxH={{ base: '400px', md: '100%' }}
+                  src={detail.poster}
+                  alt="Ticket Poster"
+                  objectFit="contain"
+                />
 
                 <Stack>
                   <CardBody w="inherit">
@@ -90,7 +96,7 @@ const TicketingPage: FC = () => {
 
                   <CardFooter>
                     <Flex alignItems="center" justifyItems="left">
-                      <Badge borderRadius="10px" fontSize="lg" p="8px" m="10px 5px" colorScheme="brand" variant="solid">
+                      <Badge borderRadius="10px" fontSize="sm" p="8px" m="5px" colorScheme="brand" variant="solid">
                         가격
                       </Badge>
                       <Text as="b">{detail.pcseguidance}</Text>
@@ -237,13 +243,13 @@ const TicketingPage: FC = () => {
             <ModalHeader />
             <ModalBody py={6}>
               <Text textAlign="center" as="b">
-                결제 진행하러 가겠습니다!
+                결제 진행하겠습니다!
               </Text>
             </ModalBody>
 
             <ModalFooter gap={2}>
               <Button role="link" onClick={() => navigate('/chat')} colorScheme="brand" flex={1}>
-                네 결제하러 갈래요
+                네 진행해주세요
               </Button>
 
               <Button variant="ghost" onClick={onClose} flex={1}>
