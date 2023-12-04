@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import Layout from '@/components/layouts/PageLayout';
+import CartsPage from '@/pages/carts/page';
 import ConcertPage from '@/pages/concert/page';
 import DancingPage from '@/pages/dancing/page';
 import DetailPage from '@/pages/detail/[id]/page';
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage />,
+      },
+      {
+        path: 'cart',
+        element: <CartsPage />,
       },
       {
         path: 'concert',
