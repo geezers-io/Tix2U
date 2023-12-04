@@ -1,6 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import SearchPage from './pages/search/page';
 import Layout from '@/components/layouts/PageLayout';
 import ConcertPage from '@/pages/concert/page';
 import DancingPage from '@/pages/dancing/page';
@@ -10,6 +9,7 @@ import FindIDPage from '@/pages/login/find/page';
 import LoginPage from '@/pages/login/page';
 import MusicalPage from '@/pages/musical/page';
 import IndexPage from '@/pages/page';
+import SearchPage from '@/pages/search/page';
 import TheaterPage from '@/pages/theater/page';
 
 import theme from '@/styles/theme';
