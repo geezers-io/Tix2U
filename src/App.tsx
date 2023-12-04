@@ -1,6 +1,10 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import ConcertPage from './pages/concert/page';
+import DancingPage from './pages/dancing/page';
 import EntirePage from './pages/entire/page';
+import MusicalPage from './pages/musical/page';
+import TheaterPage from './pages/theater/page';
 import Layout from '@/components/layouts/PageLayout';
 import DetailPage from '@/pages/detail/[id]/page';
 import FindIDPage from '@/pages/login/find/page';
@@ -37,6 +41,22 @@ const router = createBrowserRouter([
       {
         path: 'entire',
         element: <EntirePage />,
+      },
+      {
+        path: 'concert',
+        element: <ConcertPage />,
+      },
+      {
+        path: 'musical',
+        element: <MusicalPage />,
+      },
+      {
+        path: 'dancing',
+        element: <DancingPage />,
+      },
+      {
+        path: 'theater',
+        element: <TheaterPage />,
       },
     ],
   },

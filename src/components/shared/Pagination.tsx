@@ -10,7 +10,7 @@ interface PaginationProps {
 
 const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   return (
-    <Flex justifyContent="center" alignItems="center" marginTop="4">
+    <Flex justifyContent="center" alignItems="center" marginTop="10" mb="100">
       <Button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
