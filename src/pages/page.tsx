@@ -79,26 +79,28 @@ const IndexPage: FC = () => {
   }, []);
 
   return (
-    <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }}>
-      <Box mb={{ base: '4', md: '8' }}>
-        <ImageSlider images={bannerImages} />
-      </Box>
+    <Box p="10px 5%" bg="purple.50">
+      <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }}>
+        <Box mb={{ base: '4', md: '8' }}>
+          <ImageSlider images={bannerImages} />
+        </Box>
 
-      <Box mb={{ base: '4', md: '8' }} ml={{ base: '4', md: '0' }} pt={{ base: '20', md: '0' }}>
-        <Heading size="lg">
-          <Box
-            as="span"
-            bgGradient={gradient}
-            color={useColorModeValue('white', 'black')}
-            px={2}
-            py={1}
-            borderRadius="md"
-            mr={2}
-            shadow="xl"
-          >
-            MD&apos;s RECOMMENDS
-          </Box>
-        </Heading>
+        <Box mb={{ base: '4', md: '8' }} ml={{ base: '4', md: '0' }} pt={{ base: '20', md: '0' }}>
+          <Heading size="lg">
+            <Box
+              as="span"
+              bgGradient={gradient}
+              color={useColorModeValue('white', 'black')}
+              px={2}
+              py={1}
+              borderRadius="md"
+              mr={2}
+              shadow="xl"
+            >
+              MD&apos;s RECOMMENDS
+            </Box>
+          </Heading>
+        </Box>
       </Box>
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
@@ -188,6 +190,7 @@ const IndexPage: FC = () => {
             borderRadius="md"
             mr={2}
             shadow="xl"
+            ml={4}
           >
             NEW ARRIVALS
           </Box>
