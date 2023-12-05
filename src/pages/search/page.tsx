@@ -16,7 +16,6 @@ const SearchPage = () => {
 
     if (!searchTerm) {
       setSearchList([]);
-
       return;
     }
   };
@@ -42,7 +41,6 @@ const SearchPage = () => {
             borderColor="transparent"
             borderBottomWidth="2px"
             borderBottomColor="gray.600"
-            // _hover={{ borderColor: 'gray.600' }}
             value={searchTerm}
             onChange={handleSearch}
             w="100%"
@@ -53,65 +51,69 @@ const SearchPage = () => {
             </Button>
           </Flex>
         </Flex>
-        <Text textAlign="center" color="gray.500" mt="4">
-          {searchMessage}
-        </Text>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
-          {searchList.map((performance, index) => (
-            <MotionPoster
-              key={index}
-              m="20px"
-              maxW="500px"
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              shadow="xl"
-              bg={colors.gray[50]}
-            >
-              {({ isHovered }: { isHovered: boolean }) => (
-                <>
-                  <Link to={`/detail/${performance.mt20id}`}>
-                    <AspectRatio ratio={3 / 4}>
-                      <Image
-                        src={performance.poster}
-                        alt={performance.prfnm}
-                        objectFit="cover"
-                        css={css`
-                          transition: transform 0.3s ease-in-out;
-                          transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
-                        `}
-                      />
-                    </AspectRatio>
-                  </Link>
-
-                  <Box p="4">
-                    <Text fontSize="sm" color="gray.500" mb="1">
-                      {performance.prfpdfrom} ~ {performance.prfpdto}
-                    </Text>
-
+        {searchList.length > 0 && (
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
+            {searchList.map((performance, index) => (
+              <MotionPoster
+                key={index}
+                m="20px"
+                maxW="500px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                shadow="xl"
+                bg={colors.gray[50]}
+              >
+                {({ isHovered }: { isHovered: boolean }) => (
+                  <>
                     <Link to={`/detail/${performance.mt20id}`}>
-                      <Heading size="md" mb="1" fontSize="xl">
-                        {performance.prfnm}
-                      </Heading>
+                      <AspectRatio ratio={3 / 4}>
+                        <Image
+                          src={performance.poster}
+                          alt={performance.prfnm}
+                          objectFit="cover"
+                          css={css`
+                            transition: transform 0.3s ease-in-out;
+                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                          `}
+                        />
+                      </AspectRatio>
                     </Link>
 
-                    <Text
-                      noOfLines={1}
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                      whiteSpace="nowrap"
-                      fontWeight="bold"
-                      color="brand.200"
-                      pt={4}
-                    >
-                      {performance.genrenm}
-                    </Text>
-                  </Box>
-                </>
-              )}
-            </MotionPoster>
-          ))}
-        </SimpleGrid>
+                    <Box p="4">
+                      <Text fontSize="sm" color="gray.500" mb="1">
+                        {performance.prfpdfrom} ~ {performance.prfpdto}
+                      </Text>
+
+                      <Link to={`/detail/${performance.mt20id}`}>
+                        <Heading size="md" mb="1" fontSize="xl">
+                          {performance.prfnm}
+                        </Heading>
+                      </Link>
+
+                      <Text
+                        noOfLines={1}
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                        fontWeight="bold"
+                        color="brand.200"
+                        pt={4}
+                      >
+                        {performance.genrenm}
+                      </Text>
+                    </Box>
+                  </>
+                )}
+              </MotionPoster>
+            ))}
+          </SimpleGrid>
+        )}
+        {searchList.length === 0 && (
+          <Box m="20px">
+            <Text>검색된 공연이 없습니다</Text>
+          </Box>
+        )}
       </Box>
     </Box>
   );
