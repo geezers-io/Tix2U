@@ -28,7 +28,7 @@ import TicketingButton from '@/components/TicketingButton';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const DetailPage: FC = () => {
-  const [detail, setDetail] = useState<PerformanceDetail>([]);
+  const [detail, setDetail] = useState<PerformanceDetail>();
   const { mt20id } = useParams();
   const toast = useCustomToast();
 
@@ -108,7 +108,8 @@ const DetailPage: FC = () => {
                         <Text as="b">{detail.pcseguidance}</Text>
                       </Flex>
                       <Flex flexDirection="row-reverse" gap="10px">
-                        <TicketingButton />
+                        <TicketingButton id={mt20id} />
+
                         <Link to="/cart">
                           <Button colorScheme="gray" size="lg" variant="outline">
                             장바구니
