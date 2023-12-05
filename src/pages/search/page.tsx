@@ -10,15 +10,13 @@ import { colors } from '@/styles/theme/@colors';
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchList, setSearchList] = useState<PerformanceSummary[]>([]);
-  const [searchMessage, setSearchMessage] = useState<string>('');
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value.toLowerCase());
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value.toLowerCase());
 
-    // 검색어가 비어 있으면 모든 항목을 보여줍니다.
     if (!searchTerm) {
       setSearchList([]);
-      setSearchMessage('');
+
       return;
     }
   };
@@ -31,13 +29,6 @@ const SearchPage = () => {
       rows: '5',
       shprfnm: searchTerm,
     });
-
-    if (res.length === 0) {
-      setSearchMessage('검색 결과가 없습니다.');
-    } else {
-      setSearchMessage('');
-    }
-
     setSearchList(res);
   };
 
