@@ -100,8 +100,8 @@ const ImageCarousel: FC<Props> = ({ images }) => {
         width={`${images.length * 100}%`}
       >
         {images.map((image, index) => (
-          <Box key={index} width={`${100 / images.length}%`}>
-            <Image src={image} alt={`Slider Image ${index}`} width="100%" />
+          <Box key={index} width={`${100 / images.length}%`} height="100%" position="relative" overflow="hidden">
+            <Image src={image} alt={`Slider Image ${index}`} width="100%" height="100%" objectFit="cover" />
           </Box>
         ))}
       </Flex>

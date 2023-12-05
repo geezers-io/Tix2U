@@ -70,7 +70,7 @@ const TheaterPage: FC = () => {
 
   return (
     <>
-      <Box p="10px 5%" bg="purple.50">
+      <Box p="10px 5%" bg="purple.50" maxW="1200px" mx="auto">
         <Box marginY="40px" display="flex" flexDirection="column" alignItems="center">
           <Text
             fontSize="2xl"
