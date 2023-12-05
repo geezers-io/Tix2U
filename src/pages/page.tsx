@@ -11,9 +11,11 @@ import {
   AspectRatio,
   Skeleton,
 } from '@chakra-ui/react';
+import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
-import ImageSlider from '@/components/ImageCarousel';
+import ImageSlider from '@/components/shared/ImageCarousel';
+import MotionPoster from '@/components/shared/MotionPoster';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
 
@@ -77,26 +79,28 @@ const IndexPage: FC = () => {
   }, []);
 
   return (
-    <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }}>
-      <Box mb={{ base: '4', md: '8' }}>
-        <ImageSlider images={bannerImages} />
-      </Box>
+    <Box p="10px 5%" bg="purple.50">
+      <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }}>
+        <Box mb={{ base: '4', md: '8' }}>
+          <ImageSlider images={bannerImages} />
+        </Box>
 
-      <Box mb={{ base: '4', md: '8' }} ml={{ base: '4', md: '0' }} pt={{ base: '20', md: '0' }}>
-        <Heading size="lg">
-          <Box
-            as="span"
-            bgGradient={gradient}
-            color={useColorModeValue('white', 'black')}
-            px={2}
-            py={1}
-            borderRadius="md"
-            mr={2}
-            shadow="xl"
-          >
-            MD&apos;s RECOMMENDS
-          </Box>
-        </Heading>
+        <Box mb={{ base: '4', md: '8' }} ml={{ base: '4', md: '0' }} pt={{ base: '20', md: '0' }}>
+          <Heading size="lg">
+            <Box
+              as="span"
+              bgGradient={gradient}
+              color={useColorModeValue('white', 'black')}
+              px={2}
+              py={1}
+              borderRadius="md"
+              mr={2}
+              shadow="xl"
+            >
+              MD&apos;s RECOMMENDS
+            </Box>
+          </Heading>
+        </Box>
       </Box>
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
@@ -121,7 +125,7 @@ const IndexPage: FC = () => {
               </Box>
             ))
           : mdRecommendPerformance.map((performance, index) => (
-              <Box
+              <MotionPoster
                 key={index}
                 flex="1"
                 maxW="300px"
@@ -131,36 +135,47 @@ const IndexPage: FC = () => {
                 shadow="xl"
                 bg={colors.gray[50]}
               >
-                <Link to={`/detail/${performance.mt20id}`}>
-                  <AspectRatio ratio={3 / 4}>
-                    <Image src={performance.poster} alt={performance.prfnm} objectFit="cover" />
-                  </AspectRatio>
-                </Link>
+                {({ isHovered }: { isHovered: boolean }) => (
+                  <>
+                    <Link to={`/detail/${performance.mt20id}`}>
+                      <AspectRatio ratio={3 / 4}>
+                        <Image
+                          src={performance.poster}
+                          alt={performance.prfnm}
+                          objectFit="cover"
+                          css={css`
+                            transition: transform 0.3s ease-in-out;
+                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                          `}
+                        />
+                      </AspectRatio>
+                    </Link>
+                    <Box p="4">
+                      <Text fontSize="sm" color="gray.500" mb="1">
+                        {performance.prfpdfrom} ~ {performance.prfpdto}
+                      </Text>
 
-                <Box p="4">
-                  <Text fontSize="sm" color="gray.500" mb="1">
-                    {performance.prfpdfrom} ~ {performance.prfpdto}
-                  </Text>
+                      <Link to={`/detail/${performance.mt20id}`}>
+                        <Heading size="md" mb="1" fontSize="xl">
+                          {performance.prfnm}
+                        </Heading>
+                      </Link>
 
-                  <Link to={`/detail/${performance.mt20id}`}>
-                    <Heading size="md" mb="1" fontSize="xl">
-                      {performance.prfnm}
-                    </Heading>
-                  </Link>
-
-                  <Text
-                    noOfLines={1}
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                    fontWeight="bold"
-                    color="brand.200"
-                    pt={4}
-                  >
-                    {performance.genrenm}
-                  </Text>
-                </Box>
-              </Box>
+                      <Text
+                        noOfLines={1}
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                        fontWeight="bold"
+                        color="brand.200"
+                        pt={4}
+                      >
+                        {performance.genrenm}
+                      </Text>
+                    </Box>
+                  </>
+                )}
+              </MotionPoster>
             ))}
       </SimpleGrid>
 
@@ -175,6 +190,7 @@ const IndexPage: FC = () => {
             borderRadius="md"
             mr={2}
             shadow="xl"
+            ml={4}
           >
             NEW ARRIVALS
           </Box>
@@ -203,7 +219,7 @@ const IndexPage: FC = () => {
               </Box>
             ))
           : newArrivalPerformance.map((performance, index) => (
-              <Box
+              <MotionPoster
                 key={index}
                 flex="1"
                 maxW="300px"
@@ -213,36 +229,47 @@ const IndexPage: FC = () => {
                 shadow="xl"
                 bg={colors.gray[50]}
               >
-                <Link to={`/detail/${performance.mt20id}`}>
-                  <AspectRatio ratio={3 / 4}>
-                    <Image src={performance.poster} alt={performance.prfnm} objectFit="cover" />
-                  </AspectRatio>
-                </Link>
+                {({ isHovered }: { isHovered: boolean }) => (
+                  <>
+                    <Link to={`/detail/${performance.mt20id}`}>
+                      <AspectRatio ratio={3 / 4}>
+                        <Image
+                          src={performance.poster}
+                          alt={performance.prfnm}
+                          objectFit="cover"
+                          css={css`
+                            transition: transform 0.3s ease-in-out;
+                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                          `}
+                        />
+                      </AspectRatio>
+                    </Link>
+                    <Box p="4">
+                      <Text fontSize="sm" color="gray.500" mb="1">
+                        {performance.prfpdfrom} ~ {performance.prfpdto}
+                      </Text>
 
-                <Box p="4">
-                  <Text fontSize="sm" color="gray.500" mb="1">
-                    {performance.prfpdfrom} ~ {performance.prfpdto}
-                  </Text>
+                      <Link to={`/detail/${performance.mt20id}`}>
+                        <Heading size="md" mb="1" fontSize="xl">
+                          {performance.prfnm}
+                        </Heading>
+                      </Link>
 
-                  <Link to={`/detail/${performance.mt20id}`}>
-                    <Heading size="md" mb="1" fontSize="xl">
-                      {performance.prfnm}
-                    </Heading>
-                  </Link>
-
-                  <Text
-                    noOfLines={1}
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                    fontWeight="bold"
-                    color="brand.200"
-                    pt={4}
-                  >
-                    {performance.genrenm}
-                  </Text>
-                </Box>
-              </Box>
+                      <Text
+                        noOfLines={1}
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                        fontWeight="bold"
+                        color="brand.200"
+                        pt={4}
+                      >
+                        {performance.genrenm}
+                      </Text>
+                    </Box>
+                  </>
+                )}
+              </MotionPoster>
             ))}
       </SimpleGrid>
 

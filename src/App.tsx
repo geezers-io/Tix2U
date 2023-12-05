@@ -4,10 +4,15 @@ import EntirePage from './pages/entire/page';
 import SignInPage from './pages/login/page';
 import SignUpPage from './pages/login/signUp/page';
 import Layout from '@/components/layouts/PageLayout';
+import ConcertPage from '@/pages/concert/page';
+import DancingPage from '@/pages/dancing/page';
 import DetailPage from '@/pages/detail/[id]/page';
 import FindIDPage from '@/pages/login/find/page';
-
+import MusicalPage from '@/pages/musical/page';
 import IndexPage from '@/pages/page';
+import SearchPage from '@/pages/search/page';
+import TheaterPage from '@/pages/theater/page';
+
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -37,12 +42,32 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: 'search',
+        element: <SearchPage />,
+      },
+      {
+        path: 'concert',
+        element: <ConcertPage />,
+      },
+      {
         path: 'entire',
         element: <EntirePage />,
       },
       {
         path: 'signUp',
         element: <SignUpPage />,
+      },
+      {
+        path: 'musical',
+        element: <MusicalPage />,
+      },
+      {
+        path: 'dancing',
+        element: <DancingPage />,
+      },
+      {
+        path: 'theater',
+        element: <TheaterPage />,
       },
     ],
   },
