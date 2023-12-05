@@ -35,6 +35,7 @@ const SearchPage = () => {
 
     if (!searchTerm) {
       setSearchList([]);
+
       return;
     }
   };
