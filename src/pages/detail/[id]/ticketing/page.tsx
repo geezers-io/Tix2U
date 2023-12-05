@@ -40,7 +40,7 @@ import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const TicketingPage: FC = () => {
-  const [detail, setDetail] = useState<PerformanceDetail>([]);
+  const [detail, setDetail] = useState<PerformanceDetail>();
   const { mt20id } = useParams();
   const toast = useCustomToast();
   const [payValue, setPayValue] = useState<string>('toss');
@@ -51,7 +51,6 @@ const TicketingPage: FC = () => {
     try {
       const response = await PerformanceService.getDetail({ mt20id });
       setDetail(response);
-      console.log(detail);
     } catch (e) {
       toast.error(e);
     }
@@ -241,14 +240,17 @@ const TicketingPage: FC = () => {
             <ModalCloseButton />
 
             <ModalHeader />
-            <ModalBody py={6}>
-              <Text textAlign="center" as="b">
-                결제 진행하겠습니다!
-              </Text>
+            <ModalBody py={6} textAlign="center">
+              <Text as="b">결제 진행하겠습니다!</Text>
             </ModalBody>
 
             <ModalFooter gap={2}>
-              <Button role="link" onClick={() => navigate('/chat')} colorScheme="brand" flex={1}>
+              <Button
+                role="link"
+                onClick={() => navigate(`/detail/${mt20id}/ticketing/result`)}
+                colorScheme="brand"
+                flex={1}
+              >
                 네 진행해주세요
               </Button>
 
