@@ -15,13 +15,11 @@ import {
   InputRightElement,
   Image,
   Divider,
-  Checkbox,
-  Text,
 } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps } from 'formik';
 import { Gender } from '@/api/@types/@enums';
+import TermsOfUse from '@/components/TermsOfUse';
 import { GENDER_LABEL } from '@/constants/labels';
-import termsOfUse from '@/constants/termsOfUse';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
 import { processer } from '@/utils/process';
@@ -55,10 +53,6 @@ const SignUpPage = () => {
   const [pwValue, setPwValue] = useState<string>('');
   const [pwRevalue, setPwRevalue] = useState<string>('');
   const [activeButton, setActiveButton] = useState(null);
-  const [checkedItems, setCheckedItems] = useState([false]);
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const handleClick = () => setShow(!show);
 
@@ -76,7 +70,7 @@ const SignUpPage = () => {
 
   const PasswordReconfirm = () => {
     if (pwValue === pwRevalue) return toast.success('비밀번호가 일치합니다');
-
+    if (pwRevalue === '' || pwRevalue === '') return toast.error('비밀번호가 공백입니다');
     return toast.error('비밀번호가 다릅니다');
   };
 
@@ -103,7 +97,7 @@ const SignUpPage = () => {
       onSubmit={handleSubmit}
     >
       {props => {
-        const { showErrorDict, canSubmit, errors } = getFormikStates(props);
+        const { showErrorDict, errors } = getFormikStates(props);
         return (
           <Form>
             <Box p="10px 5%" bg="purple.50">
@@ -113,35 +107,7 @@ const SignUpPage = () => {
                 </Box>
 
                 <Box m="30px 0">
-                  <Checkbox
-                    isChecked={allChecked}
-                    isIndeterminate={isIndeterminate}
-                    onChange={e => setCheckedItems([e.target.checked, e.target.checked])}
-                  >
-                    전체 동의하기
-                  </Checkbox>
-                  <Box>
-                    <Text>
-                      실명 인증된 아이디로 가입, 위치기반서비스 이용약관(선택), 이벤트・혜택 정보 수신(선택) 동의를
-                      포함합니다.
-                    </Text>
-                  </Box>
-                  {termsOfUse &&
-                    termsOfUse.map((value, index) => (
-                      <Box m="20px">
-                        <Checkbox
-                          key={value.id}
-                          value={value.title}
-                          isChecked={checkedItems[index]}
-                          onChange={e => setCheckedItems([e.target.checked])}
-                        >
-                          {value.title}
-                        </Checkbox>
-                        <Flex maxH="200px" overflow="scroll" m="10px">
-                          {value.data}
-                        </Flex>
-                      </Box>
-                    ))}
+                  <TermsOfUse />
                 </Box>
 
                 <Box minH="inherit">
@@ -251,7 +217,7 @@ const SignUpPage = () => {
                                 placeholder="생년월일을 입력하세요"
                                 size="md"
                                 type="date"
-                                min={processer.date(now)}
+                                max={processer.date(now)}
                                 {...field}
                               />
                             </InputGroup>
@@ -307,7 +273,7 @@ const SignUpPage = () => {
                   </Box>
                 </Box>
                 <Grid>
-                  <Button type="submit" isDisabled={!canSubmit}>
+                  <Button type="submit" colorScheme="brand">
                     가입하기
                   </Button>
                 </Grid>

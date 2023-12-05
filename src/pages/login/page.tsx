@@ -132,7 +132,7 @@ const SignInPage = () => {
                           <Text>아이디/비밀번호 찾기</Text>
                         </Link>
 
-                        <Link to="/detail">
+                        <Link to="/signUp">
                           <Text> 회원가입</Text>
                         </Link>
                       </Flex>
