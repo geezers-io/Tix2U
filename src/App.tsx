@@ -4,15 +4,17 @@ import EntirePage from './pages/entire/page';
 import SignInPage from './pages/login/page';
 import SignUpPage from './pages/login/signUp/page';
 import Layout from '@/components/layouts/PageLayout';
+import CartsPage from '@/pages/carts/page';
 import ConcertPage from '@/pages/concert/page';
 import DancingPage from '@/pages/dancing/page';
 import DetailPage from '@/pages/detail/[id]/page';
+import TicketingPage from '@/pages/detail/[id]/ticketing/page';
+import TicketingResultPage from '@/pages/detail/[id]/ticketing/result/page';
 import FindIDPage from '@/pages/login/find/page';
 import MusicalPage from '@/pages/musical/page';
 import IndexPage from '@/pages/page';
 import SearchPage from '@/pages/search/page';
 import TheaterPage from '@/pages/theater/page';
-
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -26,7 +28,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'detail/:mt20id',
-        element: <DetailPage />,
+        children: [
+          {
+            index: true,
+            element: <DetailPage />,
+          },
+          {
+            path: 'ticketing',
+            children: [
+              {
+                index: true,
+                element: <TicketingPage />,
+              },
+              {
+                path: 'result',
+                element: <TicketingResultPage />,
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'login',
@@ -44,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage />,
+      },
+      {
+        path: 'cart',
+        element: <CartsPage />,
       },
       {
         path: 'concert',
