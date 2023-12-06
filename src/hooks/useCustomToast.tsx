@@ -24,7 +24,7 @@ export function useCustomToast() {
       success: (description: string) => {
         toast({
           status: 'success',
-          colorScheme: 'success',
+          colorScheme: 'blue',
           description,
         });
       },
@@ -39,7 +39,7 @@ export function useCustomToast() {
       error: (e: unknown, options?: Omit<UseToastOptions, 'status' | 'colorScheme' | 'title' | 'description'>) => {
         return toast({
           status: 'error',
-          colorScheme: 'error',
+          colorScheme: 'red',
           title: 'Error',
           description: getErrorMessage(e),
           ...options,
