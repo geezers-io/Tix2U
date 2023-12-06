@@ -12,4 +12,7 @@ export const PerformanceService: PerformanceClient = {
   getDetail: async ({ mt20id }) => {
     return await axiosInstance.get(`${ROUTE}/${mt20id}`);
   },
+  getLocation: async ({ mt10id }) => {
+    return await axiosInstance.get(`${ROUTE}/${mt10id}`);
+  },
 };
