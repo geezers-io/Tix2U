@@ -25,7 +25,7 @@ type FormValues = {
 };
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
-  id: { required: true, range: { min: 4, max: 30 } },
+  id: { required: true, range: { min: 4, max: 30 }, regex: 'id' },
   password: { required: true, range: { min: 4, max: 30 } },
 });
 const SignInPage = () => {

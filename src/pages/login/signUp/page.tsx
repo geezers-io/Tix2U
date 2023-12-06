@@ -17,9 +17,7 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps } from 'formik';
-import { Gender } from '@/api/@types/@enums';
 import TermsOfUse from '@/components/TermsOfUse';
-import { GENDER_LABEL } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
 import { processer } from '@/utils/process';
@@ -31,17 +29,15 @@ type FormValues = {
   email: string;
   birth: string;
   phoneNumber: string;
-  gender: Gender[];
 };
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
-  id: { required: true, range: { min: 4, max: 30 }, regex: 'korEngNumSpace' },
+  id: { required: true, range: { min: 3, max: 20 }, regex: 'id' },
   password: { required: true, range: { min: 4, max: 30 }, regex: 'korEngNumSpace' },
   name: { required: true, range: { min: 2, max: 10 } },
   email: { required: true, regex: 'email' },
   birth: { required: true },
   phoneNumber: { required: true, range: { min: 10, max: 11 }, regex: 'phone' },
-  gender: { required: true },
 });
 
 const SignUpPage = () => {
@@ -49,34 +45,8 @@ const SignUpPage = () => {
   const toast = useCustomToast();
   const now = new Date();
   const [show, setShow] = useState<boolean>(false);
-  const [idValue, setIdValue] = useState<string>('');
-  const [pwValue, setPwValue] = useState<string>('');
-  const [pwRevalue, setPwRevalue] = useState<string>('');
-  const [activeButton, setActiveButton] = useState(null);
 
   const handleClick = () => setShow(!show);
-
-  const IDDuplication = () => {
-    if (idValue === '') return toast.error('값을 입력하세요');
-    if (idValue) return toast.success('사용가능한 아이디입니다');
-  };
-
-  const savePasswordValue = event => {
-    setPwValue(event.target.value);
-  };
-  const resavePasswordValue = event => {
-    setPwRevalue(event.target.value);
-  };
-
-  const PasswordReconfirm = () => {
-    if (pwValue === pwRevalue) return toast.success('비밀번호가 일치합니다');
-    if (pwRevalue === '' || pwRevalue === '') return toast.error('비밀번호가 공백입니다');
-    return toast.error('비밀번호가 다릅니다');
-  };
-
-  const handleButtonClick = value => {
-    setActiveButton(value);
-  };
 
   const handleSubmit = async (values: FormValues) => {
     toast.success('회원가입에 성공했어요!');
@@ -92,7 +62,6 @@ const SignUpPage = () => {
         email: '',
         birth: processer.date(now),
         phoneNumber: '',
-        gender: [],
       }}
       onSubmit={handleSubmit}
     >
@@ -119,13 +88,12 @@ const SignUpPage = () => {
                           <FormControl isRequired isInvalid={showErrorDict.id}>
                             <InputGroup>
                               <InputLeftAddon>아이디</InputLeftAddon>
-                              <Input {...field} value={idValue} onChange={event => setIdValue(event.target.value)} />
+                              <Input {...field} />
                             </InputGroup>
                             <FormErrorMessage>{errors.id}</FormErrorMessage>
                           </FormControl>
                         )}
                       </Field>
-                      <Button onClick={IDDuplication}>중복확인</Button>
                     </Flex>
 
                     <Box m="20px">
@@ -134,12 +102,7 @@ const SignUpPage = () => {
                           <FormControl isRequired isInvalid={showErrorDict.password}>
                             <InputGroup>
                               <InputLeftAddon>비밀번호</InputLeftAddon>
-                              <Input
-                                type={show ? 'text' : 'password'}
-                                {...field}
-                                value={pwValue}
-                                onChange={savePasswordValue}
-                              />
+                              <Input type={show ? 'text' : 'password'} {...field} />
 
                               <InputRightElement width="4.5rem">
                                 <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -152,32 +115,6 @@ const SignUpPage = () => {
                         )}
                       </Field>
                     </Box>
-
-                    <Flex m="20px">
-                      <Field name="password" validate={validators.password}>
-                        {({ field }: FieldProps<FormValues['password']>) => (
-                          <FormControl isRequired isInvalid={showErrorDict.id}>
-                            <InputGroup>
-                              <InputLeftAddon>비밀번호 재확인</InputLeftAddon>
-                              <Input
-                                type={show ? 'text' : 'password'}
-                                {...field}
-                                value={pwRevalue}
-                                onChange={resavePasswordValue}
-                              />
-
-                              <InputRightElement width="4.5rem">
-                                <Button h="1.75rem" size="sm" onClick={handleClick}>
-                                  {show ? 'Hide' : 'Show'}
-                                </Button>
-                              </InputRightElement>
-                            </InputGroup>
-                            <FormErrorMessage>{errors.password}</FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                      <Button onClick={PasswordReconfirm}>재확인</Button>
-                    </Flex>
 
                     <Box m="20px">
                       <Field name="name" validate={validators.name}>
@@ -239,33 +176,6 @@ const SignUpPage = () => {
                               </InputRightElement>
                             </InputGroup>
                             <FormErrorMessage>{errors.phoneNumber}</FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </Box>
-
-                    <Box m="20px">
-                      <Field name="gender" validate={validators.gender}>
-                        {({ field }: FieldProps<FormValues['gender']>) => (
-                          <FormControl isRequired isInvalid={showErrorDict.gender}>
-                            <InputGroup>
-                              <InputLeftAddon>성별</InputLeftAddon>
-
-                              {Object.entries(GENDER_LABEL).map(([value, label]) => (
-                                <Grid w="100%" m="0 10px">
-                                  <Button
-                                    {...field}
-                                    key={`select - ${value}`}
-                                    value={value}
-                                    onClick={() => handleButtonClick(value)}
-                                    colorScheme={activeButton === value ? 'brand' : 'gray'}
-                                  >
-                                    {label}
-                                  </Button>
-                                </Grid>
-                              ))}
-                            </InputGroup>
-                            <FormErrorMessage>{errors.gender}</FormErrorMessage>
                           </FormControl>
                         )}
                       </Field>

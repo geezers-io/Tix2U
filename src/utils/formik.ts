@@ -23,6 +23,7 @@ type GetFormikStates<T> = (props: FormikProps<T>) => FormikProps<T> & {
 };
 
 const predefinedRegex = {
+  id: /^[a-zA-Z0-9]{3,15}$/,
   nickname: /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{3,15}$/,
   phone: /([0-9]{3})-?([0-9]{4})-?([0-9]{4})/,
   email: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
