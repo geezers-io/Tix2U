@@ -1,25 +1,17 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Input, Image, AspectRatio, Heading, Text, SimpleGrid } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
 import MotionPoster from '@/components/shared/MotionPoster';
+import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchList, setSearchList] = useState<PerformanceSummary[]>([]);
-
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value.toLowerCase());
-
-    if (!searchTerm) {
-      setSearchList([]);
-
-      return;
-    }
-  };
+  const toast = useCustomToast();
 
   const onClickSearchInput = async (searchTerm: string) => {
     const res = await PerformanceService.getList({
@@ -29,7 +21,16 @@ const SearchPage = () => {
       rows: '5',
       shprfnm: searchTerm,
     });
+
     setSearchList(res);
+
+    if (searchList.length === 0) {
+      toast.error('검색된 결과가 없습니다');
+    }
+
+    if (!searchTerm) {
+      setSearchList([]);
+    }
   };
 
   return (
@@ -42,76 +43,74 @@ const SearchPage = () => {
             borderColor="transparent"
             borderBottomWidth="2px"
             borderBottomColor="gray.600"
-            // _hover={{ borderColor: 'gray.600' }}
             value={searchTerm}
-            onChange={handleSearch}
-            w="100%"
+            onChange={e => setSearchTerm(e.target.value.toLowerCase())}
           />
+
           <Flex p="10px" m="0 auto">
             <Button onClick={() => onClickSearchInput(searchTerm)} colorScheme="brand">
               검색
             </Button>
           </Flex>
         </Flex>
-        <Text textAlign="center" color="gray.500" mt="4">
-          {searchMessage}
-        </Text>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
-          {searchList.map((performance, index) => (
-            <MotionPoster
-              key={index}
-              m="20px"
-              maxW="500px"
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              shadow="xl"
-              bg={colors.gray[50]}
-            >
-              {({ isHovered }: { isHovered: boolean }) => (
-                <>
-                  <Link to={`/detail/${performance.mt20id}`}>
-                    <AspectRatio ratio={3 / 4}>
-                      <Image
-                        src={performance.poster}
-                        alt={performance.prfnm}
-                        objectFit="cover"
-                        css={css`
-                          transition: transform 0.3s ease-in-out;
-                          transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
-                        `}
-                      />
-                    </AspectRatio>
-                  </Link>
-
-                  <Box p="4">
-                    <Text fontSize="sm" color="gray.500" mb="1">
-                      {performance.prfpdfrom} ~ {performance.prfpdto}
-                    </Text>
-
+        {searchList.length > 0 && (
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
+            {searchList.map((performance, index) => (
+              <MotionPoster
+                key={index}
+                m="20px"
+                maxW="500px"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                shadow="xl"
+                bg={colors.gray[50]}
+              >
+                {({ isHovered }: { isHovered: boolean }) => (
+                  <>
                     <Link to={`/detail/${performance.mt20id}`}>
-                      <Heading size="md" mb="1" fontSize="xl">
-                        {performance.prfnm}
-                      </Heading>
+                      <AspectRatio ratio={3 / 4}>
+                        <Image
+                          src={performance.poster}
+                          alt={performance.prfnm}
+                          objectFit="cover"
+                          css={css`
+                            transition: transform 0.3s ease-in-out;
+                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                          `}
+                        />
+                      </AspectRatio>
                     </Link>
 
-                    <Text
-                      noOfLines={1}
-                      overflow="hidden"
-                      textOverflow="ellipsis"
-                      whiteSpace="nowrap"
-                      fontWeight="bold"
-                      color="brand.200"
-                      pt={4}
-                    >
-                      {performance.genrenm}
-                    </Text>
-                  </Box>
-                </>
-              )}
-            </MotionPoster>
-          ))}
-        </SimpleGrid>
+                    <Box p="4">
+                      <Text fontSize="sm" color="gray.500" mb="1">
+                        {performance.prfpdfrom} ~ {performance.prfpdto}
+                      </Text>
+
+                      <Link to={`/detail/${performance.mt20id}`}>
+                        <Heading size="md" mb="1" fontSize="xl">
+                          {performance.prfnm}
+                        </Heading>
+                      </Link>
+
+                      <Text
+                        noOfLines={1}
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                        fontWeight="bold"
+                        color="brand.200"
+                        pt={4}
+                      >
+                        {performance.genrenm}
+                      </Text>
+                    </Box>
+                  </>
+                )}
+              </MotionPoster>
+            ))}
+          </SimpleGrid>
+        )}
       </Box>
     </Box>
   );
