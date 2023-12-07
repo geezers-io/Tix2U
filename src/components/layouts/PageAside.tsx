@@ -12,7 +12,6 @@ const PageAside: FC = () => {
       position="sticky"
       top={0}
       paddingTop={{ base: 0, md: '8px' }}
-      backgroundColor="white"
       zIndex={999}
       display="flex"
       alignItems="center"
