@@ -66,28 +66,29 @@ const CartsPage: FC = () => {
 
   return (
     <>
-      <Box p="10px 5%" bg="purple.50">
+      <Box p={{ base: '10px 5%', md: '20px 10%' }} bg="purple.50">
         <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }} mx="auto" maxW="1200px" bg="white">
-          <Box marginY="40px">
+          <Box marginY={{ base: '20px', md: '40px' }}>
             <Heading size="lg" textAlign="center">
               <Box
                 as="span"
                 bgGradient={gradient}
                 color={useColorModeValue('white', 'black')}
-                px={70}
-                py={1}
+                px={{ base: 4, md: 6 }}
+                py={2}
                 borderRadius="md"
                 shadow="xl"
                 display="inline-block"
                 alignItems="center"
-                marginBottom="10"
+                marginBottom={{ base: '6', md: '10' }}
+                width="20%"
               >
                 Carts
               </Box>
             </Heading>
           </Box>
 
-          <VStack align="start" spacing="4">
+          <VStack align="start" spacing={{ base: '2', md: '4' }}>
             {cartItems.map(item => (
               <Box
                 key={item.mt20id}
@@ -103,26 +104,26 @@ const CartsPage: FC = () => {
                 }}
                 onClick={() => toggleExpansion(item.mt20id)}
               >
-                <HStack alignItems="center" spacing="4">
+                <HStack alignItems="start" spacing="4">
                   <Checkbox
                     isChecked={selectedItems.includes(item.mt20id)}
                     onChange={() => handleCheckboxToggle(item.mt20id)}
                   />
-                  <Image src={item.poster} objectFit="contain" boxSize="100px" />
+                  <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
                   <VStack align="start" flex="1">
                     <HStack>
                       <Button onClick={() => handleQuantityDecrease(item.mt20id)}>-</Button>
                       <Text>{item.quantity || 1}</Text>
                       <Button onClick={() => handleQuantityIncrease(item.mt20id)}>+</Button>
                       <VStack align="start" flex="1">
-                        <Text>{item.prfnm}</Text>
-                        <Text fontWeight="bold" marginBottom="1">
+                        <Text ml="5">{item.prfnm}</Text>
+                        <Text fontWeight="bold" marginBottom="1" ml="5">
                           {`제한 연령: ${item.prfage}`}
                         </Text>
                       </VStack>
-                      <Text pl="400">{`장소: ${item.fcltynm}`}</Text>
                     </HStack>
                   </VStack>
+                  <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
                 </HStack>
               </Box>
             ))}
@@ -131,14 +132,14 @@ const CartsPage: FC = () => {
           <Text
             fontSize="2xl"
             fontWeight="bold"
-            mb="10"
-            mt="10"
+            mb={{ base: '6', md: '10' }}
+            mt={{ base: '6', md: '10' }}
             textAlign="center"
             bgGradient={`linear(to-r, ${colors.sub[300]}, ${colors.accent[300]})`}
             color="white"
             display="inline-block"
-            px={4}
-            py={2}
+            px={{ base: '4', md: '6' }}
+            py={{ base: '2', md: '3' }}
             borderRadius="md"
             shadow="xl"
             width="100%"
@@ -147,12 +148,22 @@ const CartsPage: FC = () => {
           </Text>
 
           {cartItems.map(item => (
-            <Box key={item.mt20id} display="flex" flexDirection="row" marginBottom="4">
+            <Box key={item.mt20id} display="flex" flexDirection="row" marginBottom={{ base: '2', md: '4' }}>
               <Text>{item.pcseguidance}</Text>
             </Box>
           ))}
 
-          <Button onClick={handleDeleteSelectedItems} disabled={selectedItems.length === 0} ml="1030" mb="10">
+          <Button
+            onClick={handleDeleteSelectedItems}
+            disabled={selectedItems.length === 0}
+            ml={{ base: '2', md: 'auto' }}
+            mb={{ base: '6', md: '10' }}
+            mr={{ base: 'auto', md: 'auto' }}
+            mt={{ base: 'auto', md: '10' }}
+            transform={{ base: 'none', md: 'none' }}
+            colorScheme="accent"
+            variant="outline"
+          >
             선택된 상품 삭제
           </Button>
         </Box>
