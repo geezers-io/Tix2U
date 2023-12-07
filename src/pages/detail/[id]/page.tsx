@@ -45,6 +45,7 @@ const DetailPage: FC = () => {
   };
 
   const handleCommentSubmit = (content: string) => {
+    if (!content) return;
     setCommentList([
       ...commentList,
       {
@@ -235,8 +236,10 @@ const DetailPage: FC = () => {
                 </Card>
               </TabPanel>
               <TabPanel>
-                <Box fontSize="lg">
-                  <Heading size="xl">예매/취소 안내</Heading>
+                <Box fontSize="lg" m="0 20px">
+                  <Heading size="xl" m="20px 0">
+                    예매/취소 안내
+                  </Heading>
                   <Box>
                     <Heading size="lg">티켓 수령 안내</Heading>
 
