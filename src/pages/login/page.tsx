@@ -10,7 +10,6 @@ import {
   Divider,
   Flex,
   AbsoluteCenter,
-  Text,
   FormControl,
   FormErrorMessage,
 } from '@chakra-ui/react';
@@ -140,13 +139,17 @@ const SignInPage = () => {
                           로그아웃
                         </Button>
                       </Box>
-                      <Flex m="0 auto" w="50%" justifyContent="space-between">
+                      <Flex m="0 auto" justifyContent="space-between">
                         <Link to="/login/find">
-                          <Text>아이디/비밀번호 찾기</Text>
+                          <Button colorScheme="brand" size="sm" m="10px" variant="outline">
+                            아이디/비밀번호 찾기
+                          </Button>
                         </Link>
 
                         <Link to="/signUp">
-                          <Text> 회원가입</Text>
+                          <Button colorScheme="brand" size="sm" m="10px" variant="outline">
+                            회원가입
+                          </Button>
                         </Link>
                       </Flex>
                     </Flex>

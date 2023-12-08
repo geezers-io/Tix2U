@@ -80,7 +80,7 @@ const SignUpPage = () => {
       onSubmit={handleSubmit}
     >
       {props => {
-        const { showErrorDict, errors } = getFormikStates(props);
+        const { showErrorDict, errors, canSubmit } = getFormikStates(props);
         return (
           <Form>
             <Box p="10px 5%" bg="purple.50">
@@ -183,7 +183,7 @@ const SignUpPage = () => {
                   </Box>
                 </Box>
                 <Grid>
-                  <Button type="submit" colorScheme="brand">
+                  <Button type="submit" colorScheme="brand" isDisabled={!canSubmit}>
                     가입하기
                   </Button>
                 </Grid>

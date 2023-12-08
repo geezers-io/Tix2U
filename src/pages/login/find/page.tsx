@@ -35,7 +35,7 @@ const FindIDPage = () => {
           <Flex m="0 auto" justifyContent="center">
             <Image src="/public/name_logo.png" w="500px" />
           </Flex>
-          <Tabs isFitted variant="enclosed">
+          <Tabs isFitted variant="soft-rounded" colorScheme="brand">
             <TabList mb="1em">
               <Tab>아이디 찾기</Tab>
               <Tab>비밀번호 찾기</Tab>
@@ -54,7 +54,9 @@ const FindIDPage = () => {
                       <Text>전화번호</Text>
                     </Flex>
                     <Input placeholder="전화번호" />
-                    <Button onClick={AuthIDPhoneNumber}>인증번호</Button>
+                    <Button onClick={AuthIDPhoneNumber} colorScheme="brand" m="5px">
+                      인증번호
+                    </Button>
                   </Flex>
 
                   {idPhone && (
