@@ -3,7 +3,6 @@ import { Phone } from 'react-bootstrap-icons';
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormErrorMessage,
   Grid,
@@ -23,7 +22,6 @@ import { generateValidators } from '@/utils/formik';
 import { processer } from '@/utils/process';
 
 type FormValues = {
-  id: string;
   password: string;
   name: string;
   email: string;
@@ -32,7 +30,6 @@ type FormValues = {
 };
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
-  id: { required: true, range: { min: 3, max: 20 }, regex: 'id' },
   password: { required: true, range: { min: 4, max: 30 }, regex: 'korEngNumSpace' },
   name: { required: true, range: { min: 2, max: 10 } },
   email: { required: true, regex: 'email' },
@@ -62,7 +59,7 @@ const SignUpPage = () => {
         },
       });
       if (error) {
-        toast.error('입력 값을 다시 확인해주세요');
+        toast.error('회원가입에 성공하지 못했습니다. 입력값을 다시 확인해주세요');
       } else {
         toast.success('회원가입에 성공했어요');
       }
@@ -74,7 +71,6 @@ const SignUpPage = () => {
   return (
     <Formik<FormValues>
       initialValues={{
-        id: '',
         password: '',
         name: '',
         email: '',
@@ -100,19 +96,19 @@ const SignUpPage = () => {
                 <Box minH="inherit">
                   <Box m="20px">
                     <Divider />
-                    <Flex m="20px">
-                      <Field name="id" validate={validators.id}>
-                        {({ field }: FieldProps<FormValues['id']>) => (
-                          <FormControl isRequired isInvalid={showErrorDict.id}>
+                    <Box m="20px">
+                      <Field name="email" validate={validators.email}>
+                        {({ field }: FieldProps<FormValues['email']>) => (
+                          <FormControl isRequired isInvalid={showErrorDict.email}>
                             <InputGroup>
-                              <InputLeftAddon>아이디</InputLeftAddon>
+                              <InputLeftAddon>이메일</InputLeftAddon>
                               <Input {...field} />
                             </InputGroup>
-                            <FormErrorMessage>{errors.id}</FormErrorMessage>
+                            <FormErrorMessage>{errors.email}</FormErrorMessage>
                           </FormControl>
                         )}
                       </Field>
-                    </Flex>
+                    </Box>
 
                     <Box m="20px">
                       <Field name="password" validate={validators.password}>
@@ -143,20 +139,6 @@ const SignUpPage = () => {
                               <Input {...field} />
                             </InputGroup>
                             <FormErrorMessage>{errors.name}</FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </Box>
-
-                    <Box m="20px">
-                      <Field name="email" validate={validators.email}>
-                        {({ field }: FieldProps<FormValues['email']>) => (
-                          <FormControl isRequired isInvalid={showErrorDict.email}>
-                            <InputGroup>
-                              <InputLeftAddon>이메일</InputLeftAddon>
-                              <Input {...field} />
-                            </InputGroup>
-                            <FormErrorMessage>{errors.email}</FormErrorMessage>
                           </FormControl>
                         )}
                       </Field>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   Image,
@@ -20,23 +20,24 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
 
 type FormValues = {
-  id: string;
+  email: string;
   password: string;
 };
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
-  id: { required: true, range: { min: 4, max: 30 }, regex: 'email' },
+  email: { required: true, range: { min: 4, max: 30 }, regex: 'email' },
   password: { required: true, range: { min: 4, max: 30 } },
 });
 const SignInPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (value: FormValues) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: value.id,
+        email: value.email,
         password: value.password,
       });
       console.log(data);
@@ -44,6 +45,7 @@ const SignInPage = () => {
         toast.error(error);
       } else {
         toast.success('로그인에 성공했어요!');
+        navigate('/');
       }
     } catch (e) {
       toast.error(e);
@@ -73,7 +75,7 @@ const SignInPage = () => {
   return (
     <Formik<FormValues>
       initialValues={{
-        id: '',
+        email: '',
         password: '',
       }}
       onSubmit={handleSubmit}
@@ -92,11 +94,11 @@ const SignInPage = () => {
 
                     <Flex m="0 auto" w="80%" flexDirection="column" gap="30px">
                       <Flex flexDirection="column" gap="15px">
-                        <Field name="id" validate={validators.id}>
-                          {({ field }: FieldProps<FormValues['id']>) => (
-                            <FormControl isRequired isInvalid={showErrorDict.id}>
-                              <Input placeholder="아이디(이메일 또는 휴대폰)" {...field} />
-                              <FormErrorMessage>{errors.id}</FormErrorMessage>
+                        <Field name="email" validate={validators.email}>
+                          {({ field }: FieldProps<FormValues['email']>) => (
+                            <FormControl isRequired isInvalid={showErrorDict.email}>
+                              <Input placeholder="이메일" {...field} />
+                              <FormErrorMessage>{errors.email}</FormErrorMessage>
                             </FormControl>
                           )}
                         </Field>
