@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Image,
@@ -15,7 +15,7 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import supabase from '@/api/supabase';
+import supabase from '@/api/lib/supabase';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
 
@@ -25,7 +25,7 @@ type FormValues = {
 };
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
-  id: { required: true, range: { min: 4, max: 30 }, regex: 'id' },
+  id: { required: true, range: { min: 4, max: 30 }, regex: 'email' },
   password: { required: true, range: { min: 4, max: 30 } },
 });
 const SignInPage = () => {
@@ -33,14 +33,24 @@ const SignInPage = () => {
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
 
-  const navigate = useNavigate();
-
-  const handleSubmit = () => {
-    toast.success('로그인에 성공했어요!');
-    navigate('/');
+  const handleSubmit = async (value: FormValues) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: value.id,
+        password: value.password,
+      });
+      console.log(data);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success('로그인에 성공했어요!');
+      }
+    } catch (e) {
+      toast.error(e);
+    }
   };
 
-  async function signInWithKakao() {
+  const signInWithKakao = async () => {
     try {
       await supabase.auth.signInWithOAuth({
         provider: 'kakao',
@@ -48,17 +58,18 @@ const SignInPage = () => {
     } catch (e) {
       toast.error(e);
     }
-  }
+  };
 
-  async function signOut() {
+  const signOut = async () => {
     try {
       await supabase.auth.signOut();
       toast.info('로그아웃 하였어요');
     } catch (e) {
       toast.error(e);
     }
-  }
+  };
 
+  useEffect(() => {}, []);
   return (
     <Formik<FormValues>
       initialValues={{

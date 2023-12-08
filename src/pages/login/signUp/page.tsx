@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Phone } from 'react-bootstrap-icons';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -17,6 +16,7 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps } from 'formik';
+import { supabase } from '@/api/lib/supabase';
 import TermsOfUse from '@/components/TermsOfUse';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
@@ -41,7 +41,6 @@ const { validators, getFormikStates } = generateValidators<FormValues>({
 });
 
 const SignUpPage = () => {
-  const navigate = useNavigate();
   const toast = useCustomToast();
   const now = new Date();
   const [show, setShow] = useState<boolean>(false);
@@ -49,9 +48,28 @@ const SignUpPage = () => {
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (values: FormValues) => {
-    toast.success('회원가입에 성공했어요!');
-    navigate('/');
-    console.log(values);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            name: values.name,
+            birth: values.birth,
+            phone: values.phoneNumber,
+            confirmation_sent_at: Date.now(),
+          },
+        },
+      });
+      if (error) {
+        toast.error('입력 값을 다시 확인해주세요');
+      } else {
+        toast.success('회원가입에 성공했어요');
+      }
+      console.log(data);
+    } catch (error) {
+      toast.error(error);
+    }
   };
   return (
     <Formik<FormValues>
