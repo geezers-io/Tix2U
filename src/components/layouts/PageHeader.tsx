@@ -81,7 +81,7 @@ const PageHeader: FC = () => {
               </Center>
             </Text>
           </Link>
-          <Link to="/mypage">
+          <Link to="/my">
             <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
               <Center>
                 <PersonCircle /> MYPAGE
