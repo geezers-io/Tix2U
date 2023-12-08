@@ -31,6 +31,7 @@ interface GetPerformanceDetailRequest {
 }
 
 export interface PerformanceDetail {
+  quantity: number;
   mt20id: string; // 공연ID	PF132236
   mt10id: string; // 공연시설ID	FC001431
   prfnm: string; // 공연명	우리연애할까

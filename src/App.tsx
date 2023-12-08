@@ -12,6 +12,7 @@ import TicketingPage from '@/pages/detail/[id]/ticketing/page';
 import TicketingResultPage from '@/pages/detail/[id]/ticketing/result/page';
 import FindIDPage from '@/pages/login/find/page';
 import MusicalPage from '@/pages/musical/page';
+import MyPage from '@/pages/my/page';
 import IndexPage from '@/pages/page';
 import SearchPage from '@/pages/search/page';
 import TheaterPage from '@/pages/theater/page';
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage />,
+      },
+      {
+        path: 'my',
+        element: <MyPage />,
       },
       {
         path: 'cart',

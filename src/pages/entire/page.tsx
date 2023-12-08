@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Heading, Text, SimpleGrid, Image, AspectRatio, Button } from '@chakra-ui/react';
+import { Box, Heading, Text, SimpleGrid, Image, AspectRatio, Button, useColorModeValue } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
@@ -14,6 +14,7 @@ const EntirePage: FC = () => {
   const [enTirePerformance, setEnTirePerformance] = useState<PerformanceSummary[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
+  const gradient = `linear(to-r, ${colors.brand[300]}, ${colors.accent[300]})`;
 
   const handleSortByLatest = () => {
     setSortBy('latest');
@@ -70,90 +71,94 @@ const EntirePage: FC = () => {
 
   return (
     <>
-      <Box p="10px 5%" bg="purple.50" maxW="1440px" mx="auto">
-        <Box marginY="40px">
-          <Text
-            fontSize="2xl"
-            fontWeight="bold"
-            display="flex"
-            alignItems="center"
-            marginBottom="1"
-            paddingLeft="20"
-            paddingRight="20"
-          >
-            <Box as="span" marginRight="2" fontSize="2xl" color={colors.brand[200]}>
-              •
-            </Box>
-            전체상품
-          </Text>
-          <Box borderBottom="2px solid black" marginBottom="1" w="88%" marginLeft="20" />
-        </Box>
+      <Box p="10px 5%" bg="purple.50">
+        <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }} mx="auto" maxW="1200px">
+          <Box marginY="40px">
+            <Heading size="lg" textAlign="center">
+              <Box
+                as="span"
+                bgGradient={gradient}
+                color={useColorModeValue('white', 'black')}
+                px={70}
+                py={1}
+                borderRadius="md"
+                shadow="xl"
+                display="inline-block"
+                alignItems="center"
+                marginBottom="1"
+                minWidth={70}
+              >
+                All
+              </Box>
+            </Heading>
+          </Box>
 
-        <Box display="flex" justifyContent="center" marginBottom="4">
-          <Button onClick={handleSortByLatest} colorScheme={sortBy === 'latest' ? 'brand' : 'gray'} marginRight="2">
-            최신순
-          </Button>
-          <Button onClick={handleSortByOldest} colorScheme={sortBy === 'oldest' ? 'brand' : 'gray'}>
-            오래된순
-          </Button>
-        </Box>
+          <Box display="flex" justifyContent="center" marginBottom="4">
+            <Button onClick={handleSortByLatest} colorScheme={sortBy === 'latest' ? 'brand' : 'gray'} marginRight="2">
+              Newest
+            </Button>
+            <Button onClick={handleSortByOldest} colorScheme={sortBy === 'oldest' ? 'brand' : 'gray'}>
+              Oldest
+            </Button>
+          </Box>
 
-        <InfiniteScroll load={loadMore} hasMore={hasMore} endMessage="No more performances">
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
-            {enTirePerformance.map((performance, index) => (
-              <MotionPoster key={index}>
-                {({ isHovered }: { isHovered: boolean }) => (
-                  <Box
-                    flex="1"
-                    maxW="300px"
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    shadow="xl"
-                    bg={colors.gray[50]}
-                  >
-                    <Link to={`/detail/${performance.mt20id}`}>
-                      <AspectRatio ratio={3 / 4}>
-                        <Image
-                          src={performance.poster}
-                          alt={performance.prfnm}
-                          objectFit="cover"
-                          css={css`
-                            transition: transform 0.3s ease-in-out;
-                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
-                          `}
-                        />
-                      </AspectRatio>
-                    </Link>
-                    <Box p="4">
-                      <Text fontSize="sm" color="gray.500" mb="1">
-                        {performance.prfpdfrom} ~ {performance.prfpdto}
-                      </Text>
-
+          <InfiniteScroll load={loadMore} hasMore={hasMore} endMessage="No more performances">
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
+              {enTirePerformance.map((performance, index) => (
+                <MotionPoster key={index}>
+                  {({ isHovered }: { isHovered: boolean }) => (
+                    <Box
+                      flex="1"
+                      maxW="300px"
+                      borderWidth="1px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                      shadow="xl"
+                      bg={colors.gray[50]}
+                    >
                       <Link to={`/detail/${performance.mt20id}`}>
-                        <Heading size="md" mb="1" fontSize="xl">
-                          {performance.prfnm}
-                        </Heading>
+                        <AspectRatio ratio={3 / 4}>
+                          <Image
+                            src={performance.poster}
+                            alt={performance.prfnm}
+                            objectFit="cover"
+                            css={css`
+                              transition: transform 0.3s ease-in-out;
+                              transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                            `}
+                          />
+                        </AspectRatio>
                       </Link>
+                      <Box p="4">
+                        <Text fontSize="sm" color="gray.500" mb="1">
+                          {performance.prfpdfrom} ~ {performance.prfpdto}
+                        </Text>
 
-                      <Text
-                        noOfLines={1}
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        whiteSpace="nowrap"
-                        fontWeight="bold"
-                        color="brand.200"
-                        pt={4}
-                      >
-                        {performance.genrenm}
-                      </Text>
+                        <Link to={`/detail/${performance.mt20id}`}>
+                          <Heading size="md" mb="1" fontSize="xl">
+                            {performance.prfnm}
+                          </Heading>
+                        </Link>
+
+                        <Text
+                          noOfLines={1}
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                          fontWeight="bold"
+                          color="brand.200"
+                          pt={4}
+                        >
+                          {performance.genrenm}
+                        </Text>
+                      </Box>
                     </Box>
-                  </Box>
-                )}
-              </MotionPoster>
-            ))}
-          </SimpleGrid>
-        </InfiniteScroll>
+                  )}
+                </MotionPoster>
+              ))}
+            </SimpleGrid>
+          </InfiniteScroll>
+        </Box>
       </Box>
     </>
   );
