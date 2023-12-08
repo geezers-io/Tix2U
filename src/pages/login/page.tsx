@@ -25,10 +25,10 @@ type FormValues = {
 };
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
-  id: { required: true, range: { min: 4, max: 30 } },
+  id: { required: true, range: { min: 4, max: 30 }, regex: 'id' },
   password: { required: true, range: { min: 4, max: 30 } },
 });
-const LoginPage = () => {
+const SignInPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
@@ -132,7 +132,7 @@ const LoginPage = () => {
                           <Text>아이디/비밀번호 찾기</Text>
                         </Link>
 
-                        <Link to="/detail">
+                        <Link to="/signUp">
                           <Text> 회원가입</Text>
                         </Link>
                       </Flex>
@@ -148,4 +148,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignInPage;
