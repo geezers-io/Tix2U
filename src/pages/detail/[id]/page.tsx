@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { GeoAlt } from 'react-bootstrap-icons';
 import { Link, useParams } from 'react-router-dom';
 import {
   Box,
@@ -12,7 +13,6 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  Textarea,
   Button,
   Table,
   Thead,
@@ -21,16 +21,39 @@ import {
   Th,
   Td,
   TableContainer,
+  Card,
+  Avatar,
+  Input,
 } from '@chakra-ui/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
+import KakaoMap from '@/components/KakaoMap';
 import TicketingButton from '@/components/TicketingButton';
 import { useCustomToast } from '@/hooks/useCustomToast';
+
+type commentList = { user: string; content: string }[];
 
 const DetailPage: FC = () => {
   const [detail, setDetail] = useState<PerformanceDetail>();
   const { mt20id } = useParams();
   const toast = useCustomToast();
+  const [content, setContent] = useState<string>('');
+  const [commentList, setCommentList] = useState<commentList>([{ user: 'love_penguin', content: 'wow' }]);
+
+  const saveComment = e => {
+    setContent(e.target.value);
+  };
+
+  const handleCommentSubmit = (content: string) => {
+    if (!content) return;
+    setCommentList([
+      ...commentList,
+      {
+        user: 'heeee',
+        content: content,
+      },
+    ]);
+  };
 
   const fetchDetail = async (mt20id: string) => {
     try {
@@ -67,7 +90,7 @@ const DetailPage: FC = () => {
               </Heading>
             </Flex>
             <Box>
-              <Tabs isFitted variant="enclosed">
+              <Tabs isFitted variant="soft-rounded" colorScheme="brand">
                 <TabList>
                   <Tab>콘서트 정보</Tab>
                   <Tab>티켓 할인 정보</Tab>
@@ -136,7 +159,7 @@ const DetailPage: FC = () => {
         </Flex>
 
         <Box minH="1000px">
-          <Tabs isFitted variant="enclosed">
+          <Tabs isFitted variant="soft-rounded" colorScheme="brand">
             <TabList mb="1em">
               <Tab>상세 정보</Tab>
               <Tab>관람 후기</Tab>
@@ -154,22 +177,69 @@ const DetailPage: FC = () => {
                   <Flex gap={3}>
                     <Heading size="lg">관람 후기</Heading>
                     <Heading size="lg" color="red">
-                      0
+                      {commentList.length}
                     </Heading>
                   </Flex>
 
                   <Flex p="20px 0px">
-                    <Textarea rows={2} />
-                    <Button colorScheme="brand" m="10px">
+                    <Box>
+                      <Avatar name="heeee" src="https://bit.ly/broken-link" m="10px" size="lg" />
+                      <Text textAlign="center" color="gray">
+                        heeee
+                      </Text>
+                    </Box>
+
+                    <Input placeholder="댓글을 입력하세요" value={content} onChange={saveComment} m="auto 0" />
+                    <Button colorScheme="brand" m="0 10px" onClick={() => handleCommentSubmit(content)} my="auto">
                       등록
                     </Button>
                   </Flex>
+                  <Flex>
+                    <Box>
+                      {commentList &&
+                        commentList.map(value => (
+                          <Flex m="20px" flexDirection={{ base: 'column', md: 'row' }}>
+                            <Box>
+                              <Avatar name={value.user} src="https://bit.ly/broken-link" m="10px" size="lg" />
+                              <Text textAlign="center" color="gray">
+                                {value.user}
+                              </Text>
+                            </Box>
+                            <Box>
+                              <Box borderRadius="md" bg="gray.200" px={4} p="20px" m="10px">
+                                {value.content}
+                              </Box>
+                            </Box>
+                          </Flex>
+                        ))}
+                    </Box>
+                  </Flex>
                 </Box>
               </TabPanel>
-              <TabPanel>장소 {detail.fcltynm}</TabPanel>
               <TabPanel>
-                <Box fontSize="lg">
-                  <Heading size="xl">예매/취소 안내</Heading>
+                <Card m="10%" p="50px" variant="outline">
+                  <Flex>
+                    <Flex m="auto 10px">
+                      <GeoAlt size="50px" />
+                    </Flex>
+                    <Heading size="lg" m="auto 0">
+                      장소
+                    </Heading>
+                    <Link to={`https://map.kakao.com/link/search/${detail.fcltynm}`}>
+                      <Button colorScheme="brand" m="20px">
+                        장소 검색하러 가기
+                      </Button>
+                    </Link>
+                  </Flex>
+
+                  <KakaoMap detail={detail} />
+                </Card>
+              </TabPanel>
+              <TabPanel>
+                <Box fontSize="lg" m="0 20px">
+                  <Heading size="xl" m="20px 0">
+                    예매/취소 안내
+                  </Heading>
                   <Box>
                     <Heading size="lg">티켓 수령 안내</Heading>
 

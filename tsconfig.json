@@ -21,6 +21,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "src",
+    "types": ["vite/client", "@emotion/react/types/css-prop", "./@types/emotion.d.ts", "kakao.maps.d.ts"],
     "paths": {
       "@/*": ["./*"]
     }

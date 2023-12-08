@@ -53,7 +53,26 @@ export interface PerformanceDetail {
   dtguidance: string; // 공연시간	화요일 ~ 금요일(20:00), 토요일(16:00,19:00), 일요일(15:00,18:00)
 }
 
+interface GetPerformanceLocationRequest {
+  mt10id: string; // 공연목록 조회 후 나오는 공연ID 참조  PF132236
+}
+
+interface PerformanceLocation {
+  fcltynm: string; //올림픽공원</fcltynm>
+  mt10id: string; //FC001247</mt10id>
+  mt13cnt: string; //9</mt13cnt>
+  fcltychartr: string; //기타(공공)</fcltychartr>
+  opende: string; //1986</opende>
+  seatscale: string; //32349</seatscale>
+  telno: string; //02-410-1114</telno>
+  relateurl: string; //http://www.olympicpark.co.kr/</relateurl>
+  adres: string; //서울특별시 송파구 방이동</adres>
+  la: string; //37.52112</la>
+  lo: string; //127.12836360000005</lo>
+}
+
 export interface PerformanceClient {
   getList(request: GetPerformanceListRequest): Promise<PerformanceSummary[]>;
   getDetail(request: GetPerformanceDetailRequest): Promise<PerformanceDetail>;
+  getLocation(request: GetPerformanceLocationRequest): Promise<PerformanceLocation>;
 }
