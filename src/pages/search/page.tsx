@@ -35,81 +35,95 @@ const SearchPage = () => {
 
   return (
     <Box p="10px 10%" bg="purple.50">
-      <Box bgColor="white" fontSize="xl" minH="800px">
-        <Flex p="20px">
-          <Input
-            placeholder="검색어를 입력해주세요."
-            size="lg"
-            borderColor="transparent"
-            borderBottomWidth="2px"
-            borderBottomColor="gray.600"
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value.toLowerCase())}
-          />
+      <Flex>
+        <Image src="/public/name_logo.png" justifyItems="center" m="0 auto" />
+      </Flex>
+      <Box fontSize="xl">
+        <Box bgColor="white" borderWidth="1px">
+          <Flex p="10px">
+            <Input
+              placeholder="검색어를 입력해주세요."
+              size="lg"
+              borderColor="brand"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value.toLowerCase())}
+              alignItems="center"
+              m="auto 0"
+            />
 
-          <Flex p="10px" m="0 auto">
-            <Button onClick={() => onClickSearchInput(searchTerm)} colorScheme="brand">
-              검색
-            </Button>
+            <Flex p="10px 5px" m="0 auto">
+              <Button onClick={() => onClickSearchInput(searchTerm)} colorScheme="brand">
+                검색
+              </Button>
+            </Flex>
           </Flex>
-        </Flex>
+        </Box>
+
         {searchList.length > 0 && (
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
-            {searchList.map((performance, index) => (
-              <MotionPoster
-                key={index}
-                m="20px"
-                maxW="500px"
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                shadow="xl"
-                bg={colors.gray[50]}
-              >
-                {({ isHovered }: { isHovered: boolean }) => (
-                  <>
-                    <Link to={`/detail/${performance.mt20id}`}>
-                      <AspectRatio ratio={3 / 4}>
-                        <Image
-                          src={performance.poster}
-                          alt={performance.prfnm}
-                          objectFit="cover"
-                          css={css`
-                            transition: transform 0.3s ease-in-out;
-                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
-                          `}
-                        />
-                      </AspectRatio>
-                    </Link>
-
-                    <Box p="4">
-                      <Text fontSize="sm" color="gray.500" mb="1">
-                        {performance.prfpdfrom} ~ {performance.prfpdto}
-                      </Text>
-
+          <>
+            <Text p="0 30px">검색된 결과 {searchList.length}건 있습니다.</Text>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
+              {searchList.map((performance, index) => (
+                <MotionPoster
+                  key={index}
+                  m="20px"
+                  maxW="500px"
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  shadow="xl"
+                  bg={colors.gray[50]}
+                >
+                  {({ isHovered }: { isHovered: boolean }) => (
+                    <>
                       <Link to={`/detail/${performance.mt20id}`}>
-                        <Heading size="md" mb="1" fontSize="xl">
-                          {performance.prfnm}
-                        </Heading>
+                        <AspectRatio ratio={3 / 4}>
+                          <Image
+                            src={performance.poster}
+                            alt={performance.prfnm}
+                            objectFit="cover"
+                            css={css`
+                              transition: transform 0.3s ease-in-out;
+                              transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                            `}
+                          />
+                        </AspectRatio>
                       </Link>
 
-                      <Text
-                        noOfLines={1}
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        whiteSpace="nowrap"
-                        fontWeight="bold"
-                        color="brand.200"
-                        pt={4}
-                      >
-                        {performance.genrenm}
-                      </Text>
-                    </Box>
-                  </>
-                )}
-              </MotionPoster>
-            ))}
-          </SimpleGrid>
+                      <Box p="4">
+                        <Text fontSize="sm" color="gray.500" mb="1">
+                          {performance.prfpdfrom} ~ {performance.prfpdto}
+                        </Text>
+
+                        <Link to={`/detail/${performance.mt20id}`}>
+                          <Heading size="md" mb="1" fontSize="xl">
+                            {performance.prfnm}
+                          </Heading>
+                        </Link>
+
+                        <Text
+                          noOfLines={1}
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                          fontWeight="bold"
+                          color="brand.200"
+                          pt={4}
+                        >
+                          {performance.genrenm}
+                        </Text>
+                      </Box>
+                    </>
+                  )}
+                </MotionPoster>
+              ))}
+            </SimpleGrid>
+          </>
+        )}
+        {searchList.length === 0 && (
+          <Flex p="20% 0">
+            <Image src="public/logo.png" m="auto auto" />
+          </Flex>
         )}
       </Box>
     </Box>
