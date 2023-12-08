@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -15,32 +15,44 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import supabase from '@/api/supabase';
+import supabase from '@/api/lib/supabase';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
 
 type FormValues = {
-  id: string;
+  email: string;
   password: string;
 };
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
-  id: { required: true, range: { min: 4, max: 30 }, regex: 'id' },
+  email: { required: true, range: { min: 4, max: 30 }, regex: 'email' },
   password: { required: true, range: { min: 4, max: 30 } },
 });
 const SignInPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
-
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    toast.success('로그인에 성공했어요!');
-    navigate('/');
+  const handleSubmit = async (value: FormValues) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: value.email,
+        password: value.password,
+      });
+      console.log(data);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success('로그인에 성공했어요!');
+        navigate('/');
+      }
+    } catch (e) {
+      toast.error(e);
+    }
   };
 
-  async function signInWithKakao() {
+  const signInWithKakao = async () => {
     try {
       await supabase.auth.signInWithOAuth({
         provider: 'kakao',
@@ -48,21 +60,22 @@ const SignInPage = () => {
     } catch (e) {
       toast.error(e);
     }
-  }
+  };
 
-  async function signOut() {
+  const signOut = async () => {
     try {
       await supabase.auth.signOut();
       toast.info('로그아웃 하였어요');
     } catch (e) {
       toast.error(e);
     }
-  }
+  };
 
+  useEffect(() => {}, []);
   return (
     <Formik<FormValues>
       initialValues={{
-        id: '',
+        email: '',
         password: '',
       }}
       onSubmit={handleSubmit}
@@ -81,11 +94,11 @@ const SignInPage = () => {
 
                     <Flex m="0 auto" w="80%" flexDirection="column" gap="30px">
                       <Flex flexDirection="column" gap="15px">
-                        <Field name="id" validate={validators.id}>
-                          {({ field }: FieldProps<FormValues['id']>) => (
-                            <FormControl isRequired isInvalid={showErrorDict.id}>
-                              <Input placeholder="아이디(이메일 또는 휴대폰)" {...field} />
-                              <FormErrorMessage>{errors.id}</FormErrorMessage>
+                        <Field name="email" validate={validators.email}>
+                          {({ field }: FieldProps<FormValues['email']>) => (
+                            <FormControl isRequired isInvalid={showErrorDict.email}>
+                              <Input placeholder="이메일" {...field} />
+                              <FormErrorMessage>{errors.email}</FormErrorMessage>
                             </FormControl>
                           )}
                         </Field>
