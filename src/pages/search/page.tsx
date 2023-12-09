@@ -1,35 +1,34 @@
-import { useState } from 'react';
+import { useDeferredValue, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, Flex, Input, Image, AspectRatio, Heading, Text, SimpleGrid } from '@chakra-ui/react';
+import { Box, Flex, Input, Image, AspectRatio, Heading, Text, SimpleGrid } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
 import MotionPoster from '@/components/shared/MotionPoster';
-import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchList, setSearchList] = useState<PerformanceSummary[]>([]);
-  const toast = useCustomToast();
+  const deferredTerm = useDeferredValue(searchTerm);
 
-  const onClickSearchInput = async (searchTerm: string) => {
-    const res = await PerformanceService.getList({
-      stdate: '20230101',
-      eddate: '2030630',
-      cpage: '1',
-      rows: '5',
-      shprfnm: searchTerm,
-    });
+  const ChangeSearchTerm = async e => {
+    try {
+      setSearchTerm(e.target.value.toLowerCase());
 
-    setSearchList(res);
+      console.log(deferredTerm);
 
-    if (searchList.length === 0) {
-      toast.error('검색된 결과가 없습니다');
-    }
+      const res = await PerformanceService.getList({
+        stdate: '20230101',
+        eddate: '2030630',
+        cpage: '1',
+        rows: '5',
+        shprfnm: deferredTerm,
+      });
 
-    if (!searchTerm) {
-      setSearchList([]);
+      setSearchList(res);
+    } finally {
+      searchList.length === 0;
     }
   };
 
@@ -39,29 +38,27 @@ const SearchPage = () => {
         <Image src="/public/name_logo.png" justifyItems="center" m="0 auto" />
       </Flex>
       <Box fontSize="xl">
-        <Box bgColor="white" borderWidth="1px">
-          <Flex p="10px">
+        <Flex bgColor="white" borderWidth="1px" w="85%" m="0 auto">
+          <Flex p="10px" w="80%" m="0 auto">
             <Input
               placeholder="검색어를 입력해주세요."
               size="lg"
               borderColor="brand"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value.toLowerCase())}
+              onChange={ChangeSearchTerm}
               alignItems="center"
               m="auto 0"
             />
-
-            <Flex p="10px 5px" m="0 auto">
-              <Button onClick={() => onClickSearchInput(searchTerm)} colorScheme="brand">
-                검색
-              </Button>
-            </Flex>
           </Flex>
-        </Box>
+        </Flex>
 
         {searchList.length > 0 && (
           <>
-            <Text p="0 30px">검색된 결과 {searchList.length}건 있습니다.</Text>
+            <Flex>
+              <Text p="10px 0" m="0 auto">
+                검색된 결과 {searchList.length}건 있습니다.
+              </Text>
+            </Flex>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
               {searchList.map((performance, index) => (
                 <MotionPoster
