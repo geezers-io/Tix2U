@@ -44,7 +44,7 @@ const SignUpPage = () => {
 
   const handleClick = () => setShow(!show);
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleLoginSubmit = async (values: FormValues) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email: values.email,
@@ -77,7 +77,7 @@ const SignUpPage = () => {
         birth: processer.date(now),
         phoneNumber: '',
       }}
-      onSubmit={handleSubmit}
+      onSubmit={handleLoginSubmit}
     >
       {props => {
         const { showErrorDict, errors, canSubmit } = getFormikStates(props);
