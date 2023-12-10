@@ -231,8 +231,9 @@ const DetailPage: FC = () => {
                       </Button>
                     </Link>
                   </Flex>
-
-                  <KakaoMap detail={detail} />
+                  <Box h="800px">
+                    <KakaoMap detail={detail} />
+                  </Box>
                 </Card>
               </TabPanel>
               <TabPanel>
