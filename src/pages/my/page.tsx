@@ -1,36 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, VStack, HStack, Heading, Text, Button, Avatar, Divider, Input } from '@chakra-ui/react';
 
-import supabase from '@/api/lib/supabase';
-import { useCustomToast } from '@/hooks/useCustomToast';
-
 const MyPage: FC = () => {
-  const [name, setName] = useState<string>();
-  const toast = useCustomToast();
-
-  useEffect(() => {
-    getProfile();
-  }, []);
-
-  const getProfile = async () => {
-    try {
-      const { data } = await supabase.auth.getUser();
-
-      if (data) {
-        setName(data.user?.email);
-      }
-      console.log(name);
-    } catch {
-      toast.error('안돼');
-    }
-  };
-
-  useEffect(() => {
-    getProfile();
-  });
-
   return (
     <Box bgColor="purple.50" minHeight="100vh" p="10px 5%" display="flex" justifyContent="center" alignItems="center">
       <HStack spacing="4">
@@ -47,7 +19,7 @@ const MyPage: FC = () => {
           {/* 수정된 부분 */}
           <VStack spacing="4" align="center" id="profile">
             <Avatar size="xl" src="https://placekitten.com/200/200" />
-            <Heading size="lg">{name}</Heading>
+            <Heading size="lg">준현 희정</Heading>
             <Text color="gray.500">Tix2U</Text>
           </VStack>
           <VStack spacing="4" mt="8" align="left">
@@ -57,7 +29,7 @@ const MyPage: FC = () => {
             </Box>
             <Box>
               <Text fontWeight="bold">Name:</Text>
-              <Text>{}</Text>
+              <Text>준현 희정</Text>
             </Box>
             <Box>
               <Text fontWeight="bold">Location:</Text>
