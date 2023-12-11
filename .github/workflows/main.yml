@@ -1,0 +1,35 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # GitHub 레포지토리를 체크아웃합니다.
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Node.js를 설정합니다. Node.js 버전은 14를 사용합니다.
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      # 프로젝트 의존성을 설치합니다.
+      - name: Install Dependencies
+        run: npm install
+
+      # 프로젝트를 빌드합니다. 빌드 스크립트는 npm run dev를 사용합니다.
+      - name: Build
+        run: npm run dev  # 빌드 스크립트에 따라 변경 가능
+
+      # Vercel에 배포합니다. Secrets에 등록한 토큰과 프로젝트 ID를 사용합니다.
+      - name: Deploy to Vercel
+        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+        env:
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
