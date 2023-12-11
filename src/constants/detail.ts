@@ -1,6 +1,7 @@
 type saleList = { title: string; content: { subtitle: string; subcontent: string } }[];
 type payMethod = { title: string }[];
 type simplePayMethod = { image: string; name: string; value: string }[];
+type userInformation = { korean: string; english: string }[];
 
 export const ticketSale: saleList = [
   {
@@ -40,3 +41,24 @@ export const simplePayMethod: simplePayMethod = [
     value: 'naver',
   },
 ];
+
+export const userInformation: userInformation = [
+  {
+    korean: '이메일',
+    english: 'email',
+  },
+  {
+    korean: '이름',
+    english: 'name',
+  },
+  {
+    korean: '전화번호',
+    english: 'phone',
+  },
+  {
+    korean: '생년월일',
+    english: 'birth',
+  },
+];
+
+export const ProfileImage: string = 'https://bit.ly/broken-link';

@@ -28,7 +28,115 @@ export interface Database {
   };
   public: {
     Tables: {
-      [_ in never]: never;
+      performances: {
+        Row: {
+          created_at: string;
+          fcltynm: string | null;
+          genrenm: string | null;
+          id: number;
+          mt20id: string;
+          openrun: string[] | null;
+          poster: string | null;
+          prfnm: string;
+          prfpdfrom: string;
+          prfpdto: string;
+          prfstate: string;
+        };
+        Insert: {
+          created_at?: string;
+          fcltynm?: string | null;
+          genrenm?: string | null;
+          id?: number;
+          mt20id: string;
+          openrun?: string[] | null;
+          poster?: string | null;
+          prfnm: string;
+          prfpdfrom: string;
+          prfpdto: string;
+          prfstate: string;
+        };
+        Update: {
+          created_at?: string;
+          fcltynm?: string | null;
+          genrenm?: string | null;
+          id?: number;
+          mt20id?: string;
+          openrun?: string[] | null;
+          poster?: string | null;
+          prfnm?: string;
+          prfpdfrom?: string;
+          prfpdto?: string;
+          prfstate?: string;
+        };
+        Relationships: [];
+      };
+      profiles: {
+        Row: {
+          birth: string | null;
+          cart_ticket: string | null;
+          email: string | null;
+          id: string;
+          name: string | null;
+          phone: string | null;
+        };
+        Insert: {
+          birth?: string | null;
+          cart_ticket?: string | null;
+          email?: string | null;
+          id: string;
+          name?: string | null;
+          phone?: string | null;
+        };
+        Update: {
+          birth?: string | null;
+          cart_ticket?: string | null;
+          email?: string | null;
+          id?: string;
+          name?: string | null;
+          phone?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_id_fkey';
+            columns: ['id'];
+            isOneToOne: true;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      todos: {
+        Row: {
+          id: number;
+          inserted_at: string;
+          is_complete: boolean | null;
+          task: string | null;
+          user_id: string;
+        };
+        Insert: {
+          id?: number;
+          inserted_at?: string;
+          is_complete?: boolean | null;
+          task?: string | null;
+          user_id: string;
+        };
+        Update: {
+          id?: number;
+          inserted_at?: string;
+          is_complete?: boolean | null;
+          task?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'todos_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
