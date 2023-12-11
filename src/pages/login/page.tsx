@@ -47,7 +47,7 @@ const SignInPage = () => {
         navigate('/');
       }
     } catch (e) {
-      toast.error(e);
+      toast.error('로그인 접속에 성공하지 못했어요', e);
     }
   };
 
