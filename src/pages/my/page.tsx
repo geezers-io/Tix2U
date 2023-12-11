@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   VStack,
@@ -142,6 +142,14 @@ const MyPage: FC = () => {
   return (
     <Box bgColor="purple.50" minHeight="80vh" p="10px 5%" display="flex" justifyContent="center">
       <Box bgColor="white" p={5} w={{ base: '80%', md: '800px' }} minHeight="80vh">
+        <Flex gap={3} flexDirection="row-reverse">
+          <Button colorScheme="red" onClick={logoutSubmit}>
+            로그아웃
+          </Button>
+          <Button colorScheme="red" variant="outline">
+            회원탈퇴
+          </Button>
+        </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
             <Avatar size="xl" name={name ?? ' '} src={ProfileImage} />
@@ -192,6 +200,17 @@ const MyPage: FC = () => {
                       <ModalCloseButton />
                       <ModalBody>
                         <VStack spacing="4" mt="8" align="left" id="edit-profile">
+                          <Button color="white" variant="solid" colorScheme="brand" onClick={handleUploadButtonClick}>
+                            파일 업로드하기
+                            <input
+                              type="file"
+                              ref={inputRef}
+                              onChange={handleImageChange}
+                              hidden
+                              multiple
+                              accept="image/*"
+                            />
+                          </Button>
                           <Box>
                             <Text fontWeight="bold">Name:</Text>
                             <Input
@@ -235,49 +254,42 @@ const MyPage: FC = () => {
               <TabPanel>
                 <VStack align="start" spacing={{ base: '2', md: '4' }}>
                   {cartItems.map(item => (
-                    <Box
-                      key={item.mt20id}
-                      border="1px"
-                      borderRadius="md"
-                      p="4"
-                      width="100%"
-                      shadow="lg"
-                      transition="all 0.3s"
-                      _hover={{
-                        cursor: 'pointer',
-                        transform: 'scale(1.020)',
-                      }}
-                    >
-                      <HStack alignItems="start" spacing="4">
-                        <ChakraImage src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
-                        <VStack align="start" flex="1">
-                          <HStack direction={{ base: 'column', md: 'row' }}>
-                            <VStack align="start" flex="1">
-                              <Text ml="5">{item.prfnm}</Text>
-                              <Text fontWeight="bold" marginBottom="1" ml="5">
-                                {`제한 연령: ${item.prfage}`}
-                              </Text>
-                            </VStack>
-                          </HStack>
-                        </VStack>
-                        <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
-                      </HStack>
-                    </Box>
+                    <Link to={`../detail/${item.mt20id}`}>
+                      <Flex
+                        key={item.mt20id}
+                        border="1px"
+                        borderRadius="md"
+                        p="4"
+                        minWidth="100%"
+                        shadow="lg"
+                        transition="all 0.3s"
+                        _hover={{
+                          cursor: 'pointer',
+                          transform: 'scale(1.020)',
+                        }}
+                      >
+                        <HStack alignItems="start" spacing="4">
+                          <ChakraImage src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                          <VStack align="start" flex="1">
+                            <HStack direction={{ base: 'column', md: 'row' }}>
+                              <VStack align="start" flex="1">
+                                <Text ml="5">{item.prfnm}</Text>
+                                <Text fontWeight="bold" marginBottom="1" ml="5">
+                                  {`제한 연령: ${item.prfage}`}
+                                </Text>
+                              </VStack>
+                            </HStack>
+                          </VStack>
+                          <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
+                        </HStack>
+                      </Flex>
+                    </Link>
                   ))}
                 </VStack>
               </TabPanel>
             </TabPanels>
           </Tabs>
           <Divider mt={{ base: '4', md: '8' }} mb={{ base: '4', md: '6' }} />
-        </Flex>
-
-        <Flex gap={3} flexDirection="row-reverse">
-          <Button colorScheme="red" onClick={logoutSubmit}>
-            로그아웃
-          </Button>
-          <Button colorScheme="red" variant="outline">
-            회원탈퇴
-          </Button>
         </Flex>
       </Box>
     </Box>
