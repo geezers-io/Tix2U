@@ -37,6 +37,7 @@ import {
 } from '@chakra-ui/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
+import { payMethod, simplePayMethod } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const TicketingPage: FC = () => {
@@ -167,54 +168,28 @@ const TicketingPage: FC = () => {
                   <TabPanel>
                     <RadioGroup onChange={setPayValue} value={payValue}>
                       <Grid alignContent="center">
-                        <Card minH="50px" m="10px">
-                          <Radio value="toss">
-                            <Image src="/public/pay/tosspay.png" w="80px" />
-                            <Text>토스페이 </Text>
-                          </Radio>
-                        </Card>
-                        <Card minH="50px" m="10px">
-                          <Radio value="kakao">
-                            <Image src="/public/pay/kakaopay.png" w="80px" p="10px" />
-                            <Text>카카오페이 </Text>
-                          </Radio>
-                        </Card>
-                        <Card minH="50px" m="10px">
-                          <Radio value="naver">
-                            <Image src="/public/pay/naverpay.png" w="80px" />
-                            <Text>네이버페이 </Text>
-                          </Radio>
-                        </Card>
+                        {simplePayMethod.map(value => (
+                          <Card minH="50px" m="10px" key={value.value}>
+                            <Radio value={value.value}>
+                              <Image src={value.image} w="80px" />
+                              <Text>{value.name}</Text>
+                            </Radio>
+                          </Card>
+                        ))}
                       </Grid>
                     </RadioGroup>
                   </TabPanel>
-                  <TabPanel>
-                    <Grid>
-                      <Card>
-                        <Checkbox as="b" defaultChecked>
-                          <Text>카드결제 </Text>
-                        </Checkbox>
-                      </Card>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel>
-                    <Grid>
-                      <Card>
-                        <Checkbox as="b" defaultChecked>
-                          <Text>무통장 입금 </Text>
-                        </Checkbox>
-                      </Card>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel>
-                    <Grid>
-                      <Card>
-                        <Checkbox as="b" defaultChecked>
-                          <Text>휴대폰 결제 </Text>
-                        </Checkbox>
-                      </Card>
-                    </Grid>
-                  </TabPanel>
+                  {payMethod.map(value => (
+                    <TabPanel key={value.title}>
+                      <Grid>
+                        <Card>
+                          <Checkbox as="b" defaultChecked>
+                            <Text>{value.title} </Text>
+                          </Checkbox>
+                        </Card>
+                      </Grid>
+                    </TabPanel>
+                  ))}
                 </TabPanels>
               </Tabs>
             </Card>

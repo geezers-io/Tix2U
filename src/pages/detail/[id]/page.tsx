@@ -29,6 +29,7 @@ import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import KakaoMap from '@/components/KakaoMap';
 import TicketingButton from '@/components/TicketingButton';
+import { ticketSale } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 type commentList = { user: string; content: string }[];
@@ -90,7 +91,7 @@ const DetailPage: FC = () => {
               </Heading>
             </Flex>
             <Box>
-              <Tabs isFitted variant="soft-rounded" colorScheme="brand">
+              <Tabs isFitted colorScheme="brand">
                 <TabList>
                   <Tab>콘서트 정보</Tab>
                   <Tab>티켓 할인 정보</Tab>
@@ -100,13 +101,13 @@ const DetailPage: FC = () => {
                     <Flex flexDirection="column" gap={10}>
                       <Flex>
                         <Flex w="100px">
-                          <Text> 장소</Text>
+                          <Text>장소</Text>
                         </Flex>
                         <Text as="b">{detail.fcltynm}</Text>
                       </Flex>
                       <Flex>
                         <Flex w="100px">
-                          <Text> 기간</Text>
+                          <Text>기간</Text>
                         </Flex>
                         <Text as="b">
                           {detail.prfpdfrom} - {detail.prfpdto}
@@ -114,52 +115,59 @@ const DetailPage: FC = () => {
                       </Flex>
                       <Flex>
                         <Flex w="100px">
-                          <Text> 관람 시간</Text>
+                          <Text>관람 시간</Text>
                         </Flex>
                         <Text as="b">{detail.prfruntime}</Text>
                       </Flex>
                       <Flex>
                         <Flex w="100px">
-                          <Text> 관람 등급</Text>
+                          <Text>관람 등급</Text>
                         </Flex>
                         <Text as="b">{detail.prfage}</Text>
                       </Flex>
                       <Flex>
                         <Flex w="100px">
-                          <Text> 예매 가격</Text>
+                          <Text>예매 가격</Text>
                         </Flex>
                         <Text as="b">{detail.pcseguidance}</Text>
-                      </Flex>
-                      <Flex flexDirection="row-reverse" gap="10px">
-                        <TicketingButton id={mt20id} />
-
-                        <Link to="/cart">
-                          <Button colorScheme="gray" size="lg" variant="outline">
-                            장바구니
-                          </Button>
-                        </Link>
                       </Flex>
                     </Flex>
                   </TabPanel>
                   <TabPanel>
-                    <Flex gap={10}>
-                      <Text>
-                        프리뷰할인 10% 할인 <br /> <br />
-                        청소년(2005~2016년출생자/1인1매) 30% 할인 <br /> <br />
-                        청소년(2006~2017년출생자/1인1매) 30% 할인 <br /> <br />
-                        장애인할인(1~3급,중증/1인2매) 30% 할인 <br /> <br />
-                        장애인할인(4~6급,경증/1인1매) 30% 할인 <br />
-                      </Text>
+                    <Flex flexDirection="column" gap={10}>
+                      {ticketSale &&
+                        ticketSale.map(value => (
+                          <Flex>
+                            <Flex textAlign="center">
+                              <Badge ml="1" fontSize="0.8em" colorScheme="brand">
+                                {value.title}
+                              </Badge>
+                            </Flex>
+                            <Flex w="250px">
+                              <Text> {value.content.subtitle}</Text>
+                            </Flex>
+                            <Text as="b">{value.content.subcontent}</Text>
+                          </Flex>
+                        ))}
                     </Flex>
                   </TabPanel>
                 </TabPanels>
               </Tabs>
             </Box>
+            <Flex flexDirection="row-reverse" gap="10px" m="40px" h="100%" alignItems="flex-end">
+              <TicketingButton id={mt20id} />
+
+              <Link to="/cart">
+                <Button colorScheme="gray" size="lg" variant="outline">
+                  장바구니
+                </Button>
+              </Link>
+            </Flex>
           </Flex>
         </Flex>
 
         <Box minH="1000px">
-          <Tabs isFitted variant="soft-rounded" colorScheme="brand">
+          <Tabs isFitted colorScheme="brand">
             <TabList mb="1em">
               <Tab>상세 정보</Tab>
               <Tab>관람 후기</Tab>
@@ -168,9 +176,9 @@ const DetailPage: FC = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Box m="0 auto">
-                  <Image src={detail?.styurls} />
-                </Box>
+                <Flex>
+                  <Image src={detail?.styurls} m="0 auto" />
+                </Flex>
               </TabPanel>
               <TabPanel>
                 <Box>
@@ -231,18 +239,18 @@ const DetailPage: FC = () => {
                       </Button>
                     </Link>
                   </Flex>
-
-                  <KakaoMap detail={detail} />
+                  <Box h="800px">
+                    <KakaoMap detail={detail} />
+                  </Box>
                 </Card>
               </TabPanel>
               <TabPanel>
-                <Box fontSize="lg" m="0 20px">
-                  <Heading size="xl" m="20px 0">
-                    예매/취소 안내
-                  </Heading>
+                <Flex m="0 auto" fontSize="lg">
                   <Box>
+                    <Heading size="xl" m="20px 0">
+                      예매/취소 안내
+                    </Heading>
                     <Heading size="lg">티켓 수령 안내</Heading>
-
                     <Text as="b">
                       <br />
                       1. 일반배송
@@ -279,8 +287,9 @@ const DetailPage: FC = () => {
                       <br />
                       <br />
                     </Text>
+
                     <TableContainer>
-                      <Table variant="simple">
+                      <Table>
                         <Thead>
                           <Tr>
                             <Th>관람일 구분</Th>
@@ -330,7 +339,7 @@ const DetailPage: FC = () => {
                       <br />
                     </Text>
                   </Box>
-                </Box>
+                </Flex>
               </TabPanel>
             </TabPanels>
           </Tabs>
