@@ -73,27 +73,27 @@ export interface Database {
       profiles: {
         Row: {
           birth: string | null;
-          cart_ticket: string | null;
           email: string | null;
           id: string;
           name: string | null;
           phone: string | null;
+          updated_at: string | null;
         };
         Insert: {
           birth?: string | null;
-          cart_ticket?: string | null;
           email?: string | null;
           id: string;
           name?: string | null;
           phone?: string | null;
+          updated_at?: string | null;
         };
         Update: {
           birth?: string | null;
-          cart_ticket?: string | null;
           email?: string | null;
           id?: string;
           name?: string | null;
           phone?: string | null;
+          updated_at?: string | null;
         };
         Relationships: [
           {
