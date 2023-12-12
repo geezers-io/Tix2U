@@ -1,6 +1,8 @@
 type saleList = { title: string; content: { subtitle: string; subcontent: string } }[];
 type payMethod = { title: string }[];
 type simplePayMethod = { image: string; name: string; value: string }[];
+type userInformation = { korean: string; english: string }[];
+type Category = { english: string; korean: string }[];
 
 export const ticketSale: saleList = [
   {
@@ -18,8 +20,6 @@ export const ticketSale: saleList = [
     },
   },
 ];
-
-export const payMethod: payMethod = [{ title: '카드결제' }, { title: '무통장 입금' }, { title: '휴대폰 결제' }];
 
 export const simplePayMethod: simplePayMethod = [
   {
@@ -40,3 +40,47 @@ export const simplePayMethod: simplePayMethod = [
     value: 'naver',
   },
 ];
+
+export const userInformation: userInformation = [
+  {
+    korean: '이메일',
+    english: 'email',
+  },
+  {
+    korean: '이름',
+    english: 'name',
+  },
+  {
+    korean: '전화번호',
+    english: 'phone',
+  },
+  {
+    korean: '생년월일',
+    english: 'birth',
+  },
+];
+
+export const category: Category = [
+  {
+    english: 'entire',
+    korean: '전체',
+  },
+  {
+    english: 'concert',
+    korean: '음악회',
+  },
+  {
+    english: 'musical',
+    korean: '뮤지컬',
+  },
+  {
+    english: 'dancing',
+    korean: '무용',
+  },
+  {
+    english: 'theater',
+    korean: '연극',
+  },
+];
+
+export const payMethod: payMethod = [{ title: '카드결제' }, { title: '무통장 입금' }, { title: '휴대폰 결제' }];

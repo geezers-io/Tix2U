@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   VStack,
@@ -6,32 +7,46 @@ import {
   Heading,
   Text,
   Button,
-  Avatar,
   Divider,
   Tab,
   TabList,
   Tabs,
   TabPanel,
   TabPanels,
-  TabIndicator,
   Input,
+  Image,
+  Flex,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { Image as ChakraImage } from '@chakra-ui/react';
+import { Tables } from '@/api/lib/database.types';
+import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
+import ImageUpload from '@/components/ImageUploader';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { processer } from '@/utils/process';
 
 const MyPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
-  const [currentTab, setCurrentTab] = useState<number>(0);
   const mt20ids = ['PF215946', 'PF228209'];
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const toast = useCustomToast();
-  const [userInfo, setUserInfo] = useState({
-    email: 'Tix2u@google.com',
-    name: '준현 희정',
-    location: 'Seoul, Korea',
-  });
+  const [name, setName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [emailID, setEmailID] = useState<string | undefined>('');
+  const [phone, setPhone] = useState<string | null>(null);
+  const [birth, setBirth] = useState<string | null>(null);
+  const [userID, setUserID] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  const now = new Date();
 
   const fetchCart = async (mt20id: string) => {
     try {
@@ -44,162 +59,225 @@ const MyPage: FC = () => {
     }
   };
 
-  const handleTabChange = (index: number) => {
-    setCurrentTab(index);
+  // database user_id 들고오기
+  const getID = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      if (user.data.user) {
+        setUserID(user.data.user?.id);
+        setEmailID(user.data.user?.email);
+      }
+    } catch {
+      toast.error('유저 아이디를 들고 오지 못했습니다.');
+    }
   };
 
-  const handleUserInfoChange = (newUserInfo: { email?: string; name?: string; location?: string }) => {
-    setUserInfo(prevUserInfo => ({
-      ...prevUserInfo,
-      ...newUserInfo,
-    }));
+  //프로필 정보 들고오기
+  const getProfile = async () => {
+    try {
+      const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
+
+      if (data) {
+        setName(data.name);
+        setPhone(data.phone);
+        setEmail(data.email);
+        setBirth(data.birth);
+        setImageUrl(data.imageUrl);
+      }
+    } catch {
+      toast.error('유저 정보를 들고 오지 못했습니다.');
+    }
   };
 
-  const toggleExpansion = (mt20id: string) => {
-    setExpandedItems(prevExpanded =>
-      isExpanded(mt20id) ? prevExpanded.filter(id => id !== mt20id) : [...prevExpanded, mt20id],
-    );
+  //프로필 정보 업데이트
+  const updateProfile = async event => {
+    event.preventDefault();
+
+    try {
+      const updates: Tables<'profiles'> = {
+        id: userID,
+        name,
+        birth,
+        phone,
+        email,
+        updated_at: processer.date(now),
+        imageUrl,
+      };
+
+      await supabase.from('profiles').upsert(updates).select();
+      onClose();
+    } catch {
+      toast.error('업데이트에 실패했습니다.');
+    }
   };
 
-  const isExpanded = (mt20id: string) => expandedItems.includes(mt20id);
+  const logoutSubmit = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate('/');
+      toast.success('로그아웃 되었습니다.');
+    } catch {
+      toast.error('로그아웃에 실패했습니다.');
+    }
+  };
 
   useEffect(() => {
+    getID();
+    getProfile();
     mt20ids.forEach(id => fetchCart(id));
-  }, [mt20ids]);
+  }, [userID]);
+
+  if (!userID) {
+    navigate('/login');
+  }
 
   return (
-    <Box bgColor="purple.50" minHeight="100vh" p="10px 5%" display="flex" justifyContent="center" alignItems="center">
-      <Box bgColor="white" p={5} w={{ base: '100%', md: '70%' }} alignSelf="flex-start" minHeight="100vh">
+    <Box bgColor="purple.50" minHeight="80vh" p="10px 5%" display="flex" justifyContent="center">
+      <Box bgColor="white" p={5} w={{ base: '80%', md: '800px' }} minHeight="80vh">
+        <Flex gap={3} flexDirection="row-reverse">
+          <Button colorScheme="red" onClick={logoutSubmit}>
+            로그아웃
+          </Button>
+          <Button colorScheme="red" variant="outline">
+            회원탈퇴
+          </Button>
+        </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
-          <VStack spacing="4" align="left">
-            <Avatar size="xl" src="https://placekitten.com/200/200" />
+          <VStack spacing="4" m="20px auto">
+            <ImageUpload
+              url={imageUrl ?? null}
+              onUpload={(url: string) => {
+                setImageUrl(url);
+              }}
+            />
             <Heading size="lg" textAlign="left">
-              {userInfo.name}
+              {name}
             </Heading>
             <Text color="gray.500" textAlign="left">
-              Tix2U
+              {emailID}
             </Text>
           </VStack>
-
+        </HStack>
+        <Flex h="inherit" flexDirection="column" m="0 auto">
           <Tabs
             position="relative"
-            variant="unstyled"
+            variant="soft-rounded"
+            colorScheme="brand"
             align="center"
-            w={{ base: '100%', md: '30%' }}
-            index={currentTab}
-            onChange={handleTabChange}
+            w="100%"
+            flexDirection={{ base: 'column', md: 'row' }}
           >
-            <TabList
-              sx={{
-                overflowX: 'auto',
-                '& > button': {
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                  maxWidth: '120px',
-                  overflow: 'hidden',
-                },
-              }}
-            >
+            <TabList>
               <Tab>회원정보</Tab>
-              <Tab>회원정보 수정</Tab>
-              <Tab>주문 목록</Tab>
+              <Tab>장바구니 목록</Tab>
             </TabList>
-            <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
-          </Tabs>
-        </HStack>
 
-        <Tabs index={currentTab} onChange={handleTabChange} flexDirection={{ base: 'column', md: 'row' }}>
-          <TabPanels>
-            <TabPanel>
-              <VStack spacing="4" mt="8" align="left">
-                <Box>
-                  <Text fontWeight="bold">Email:</Text>
-                  <Text>{userInfo.email}</Text>
-                </Box>
-                <Box>
-                  <Text fontWeight="bold">Name:</Text>
-                  <Text>{userInfo.name}</Text>
-                </Box>
-                <Box>
-                  <Text fontWeight="bold">Location:</Text>
-                  <Text>{userInfo.location}</Text>
-                </Box>
-                <Button colorScheme="red" variant="outline">
-                  회원탈퇴
-                </Button>
-              </VStack>
-            </TabPanel>
-            <TabPanel>
-              <VStack spacing="4" mt="8" align="left" id="edit-profile">
-                <Box>
-                  <Text fontWeight="bold">Email:</Text>
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    onChange={e => handleUserInfoChange({ email: e.target.value })}
-                  />
-                </Box>
-                <Box>
-                  <Text fontWeight="bold">Name:</Text>
-                  <Input
-                    type="text"
-                    placeholder="Enter your name"
-                    onChange={e => handleUserInfoChange({ name: e.target.value })}
-                  />
-                </Box>
-                <Box>
-                  <Text fontWeight="bold">Location:</Text>
-                  <Input
-                    type="text"
-                    placeholder="Enter your location"
-                    onChange={e => handleUserInfoChange({ location: e.target.value })}
-                  />
-                </Box>
-                <Button colorScheme="accent" variant="outline">
-                  비밀번호 변경
-                </Button>
-                <Button colorScheme="accent">정보 변경</Button>
-              </VStack>
-            </TabPanel>
-            <TabPanel>
-              <VStack align="start" spacing={{ base: '2', md: '4' }}>
-                {cartItems.map(item => (
-                  <Box
-                    key={item.mt20id}
-                    border="1px"
-                    borderRadius="md"
-                    p="4"
-                    width="100%"
-                    shadow="lg"
-                    transition="all 0.3s"
-                    _hover={{
-                      cursor: 'pointer',
-                      transform: 'scale(1.020)',
-                    }}
-                    onClick={() => toggleExpansion(item.mt20id)}
-                  >
-                    <HStack alignItems="start" spacing="4">
-                      <ChakraImage src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
-                      <VStack align="start" flex="1">
-                        <HStack>
-                          <VStack align="start" flex="1">
-                            <Text ml="5">{item.prfnm}</Text>
-                            <Text fontWeight="bold" marginBottom="1" ml="5">
-                              {`제한 연령: ${item.prfage}`}
-                            </Text>
-                          </VStack>
-                        </HStack>
-                      </VStack>
-                      <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
-                    </HStack>
+            <TabPanels>
+              <TabPanel>
+                <VStack spacing="4" mt="8" align="left">
+                  <Box>
+                    <Text fontWeight="bold">Name:</Text>
+                    <Text>{name ? name : '이름 정보가 없습니다'}</Text>
                   </Box>
-                ))}
-              </VStack>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+                  <Box>
+                    <Text fontWeight="bold">Phone:</Text>
+                    <Text>{phone ? phone : '전화번호 정보가 없습니다'}</Text>
+                  </Box>
+                  <Box>
+                    <Text fontWeight="bold">Birth:</Text>
+                    <Text>{birth ? birth : '생년월일 정보가 없습니다'}</Text>
+                  </Box>
+                  <Button colorScheme="accent" onClick={onOpen}>
+                    정보 변경
+                  </Button>
+                  <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>회원 정보 변경하기</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <VStack spacing="4" mt="8" align="left" id="edit-profile">
+                          <Box>
+                            <Text fontWeight="bold">Name:</Text>
+                            <Input
+                              type="text"
+                              placeholder={name ? name : '이름 정보가 없습니다'}
+                              onChange={e => setName(e.target.value)}
+                            />
+                          </Box>
+                          <Box>
+                            <Text fontWeight="bold">Phone:</Text>
+                            <Input
+                              type="text"
+                              placeholder={phone ? phone : '전화번호 정보가 없습니다'}
+                              onChange={e => setPhone(e.target.value)}
+                            />
+                          </Box>
+                          <Box>
+                            <Text fontWeight="bold">Birth:</Text>
+                            <Input
+                              placeholder={birth ? birth : '생년월일 정보가 없습니다'}
+                              onChange={e => setBirth(e.target.value)}
+                              type="date"
+                              max={processer.date(now)}
+                            />
+                          </Box>
+                        </VStack>
+                      </ModalBody>
 
-        <Divider mt={{ base: '4', md: '8' }} mb={{ base: '4', md: '6' }} />
+                      <ModalFooter gap={3}>
+                        <Button colorScheme="brand" onClick={updateProfile}>
+                          변경하기
+                        </Button>
+                        <Button variant="ghost" mr={3} onClick={onClose}>
+                          닫기
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                </VStack>
+              </TabPanel>
+              <TabPanel>
+                <VStack align="start" spacing={{ base: '2', md: '4' }}>
+                  {cartItems.map(item => (
+                    <Link to={`../detail/${item.mt20id}`}>
+                      <Box
+                        key={item.mt20id}
+                        border="1px"
+                        borderRadius="md"
+                        p="4"
+                        width="100%"
+                        shadow="lg"
+                        transition="all 0.3s"
+                        _hover={{
+                          cursor: 'pointer',
+                          transform: 'scale(1.05)',
+                        }}
+                      >
+                        <HStack alignItems="start" spacing="4">
+                          <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                          <VStack align="start" flex="1">
+                            <HStack>
+                              <VStack align="start" flex="1">
+                                <Text ml="5">{item.prfnm}</Text>
+                                <Text fontWeight="bold" marginBottom="1" ml="5">
+                                  {`제한 연령: ${item.prfage}`}
+                                </Text>
+                              </VStack>
+                            </HStack>
+                          </VStack>
+                          <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
+                        </HStack>
+                      </Box>
+                    </Link>
+                  ))}
+                </VStack>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+          <Divider mt={{ base: '4', md: '8' }} mb={{ base: '4', md: '6' }} />
+        </Flex>
       </Box>
     </Box>
   );

@@ -30,6 +30,7 @@ import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import KakaoMap from '@/components/KakaoMap';
 import TicketingButton from '@/components/TicketingButton';
 import { ticketSale } from '@/constants/detail';
+import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 type commentList = { user: string; content: string }[];
@@ -191,7 +192,7 @@ const DetailPage: FC = () => {
 
                   <Flex p="20px 0px">
                     <Box>
-                      <Avatar name="heeee" src="https://bit.ly/broken-link" m="10px" size="lg" />
+                      <Avatar name="heeee" src={ProfileImage} m="10px" size="lg" />
                       <Text textAlign="center" color="gray">
                         heeee
                       </Text>
