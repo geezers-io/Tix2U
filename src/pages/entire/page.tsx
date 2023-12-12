@@ -103,7 +103,7 @@ const EntirePage: FC = () => {
           </Box>
 
           <InfiniteScroll load={loadMore} hasMore={hasMore} endMessage="No more performances">
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} p={{ base: 2, md: 4 }}>
               {enTirePerformance.map((performance, index) => (
                 <MotionPoster key={index}>
                   {({ isHovered }: { isHovered: boolean }) => (
@@ -113,8 +113,9 @@ const EntirePage: FC = () => {
                       borderWidth="1px"
                       borderRadius="lg"
                       overflow="hidden"
-                      shadow="xl"
+                      shadow="xxl"
                       bg={colors.gray[50]}
+                      h="100%"
                     >
                       <Link to={`/detail/${performance.mt20id}`}>
                         <AspectRatio ratio={3 / 4}>

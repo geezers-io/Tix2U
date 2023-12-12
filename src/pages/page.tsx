@@ -1,98 +1,85 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Heading,
-  Spacer,
-  Text,
-  SimpleGrid,
-  Image,
-  useColorModeValue,
-  AspectRatio,
-  Skeleton,
-} from '@chakra-ui/react';
+import Slider from 'react-slick';
+import { Box, Heading, Spacer, Text, Image, AspectRatio, Skeleton } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceSummary } from '@/api/services/PerformanceService.types';
-import ImageSlider from '@/components/shared/ImageCarousel';
+import ImageCarousel from '@/components/shared/ImageCarousel';
 import MotionPoster from '@/components/shared/MotionPoster';
-import { useCustomToast } from '@/hooks/useCustomToast';
+import ThemeSwitcher from '@/components/shared/ThemeSwitcher';
 import { colors } from '@/styles/theme/@colors';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+interface SliderSettings {
+  infinite: boolean;
+  speed: number;
+  autoplay: boolean;
+  autoplaySpeed: number;
+  slidesToShow: number;
+  slidesToScroll: number;
+}
 
 const IndexPage: FC = () => {
-  const [bannerImages, setBannerImages] = useState<string[]>([]);
-  const [mdRecommendPerformance, setMdRecommendPerformance] = useState<PerformanceSummary[]>([]);
-  const [newArrivalPerformance, setNewArrivalPerformance] = useState<PerformanceSummary[]>([]);
-  const [isLoadingMdRecommend, setIsLoadingMdRecommend] = useState(true);
-  const [isLoadingNewArrival, setIsLoadingNewArrival] = useState(true);
-  const toast = useCustomToast();
-  const gradient = `linear(to-r, ${colors.brand[300]}, ${colors.sub[300]})`;
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const bannerImages = [
+    'public/banner1.png',
+    'public/banner2.png',
+    'https://a.cdn-hotels.com/gdcs/production121/d1688/b022527b-c68d-4a3f-96b4-322f557dea34.jpg?impolicy=fcrop&w=800&h=533&q=medium',
+    'https://majormap.s3.ap-northeast-2.amazonaws.com/contents/career/%E1%84%80%E1%85%A9%E1%86%BC%E1%84%8B%E1%85%A7%E1%86%AB%E1%84%80%E1%85%B5%E1%84%92%E1%85%AC%E1%86%A8%E1%84%8C%E1%85%A1.jpg',
+  ];
 
-  const fetchMdRecommendData = async () => {
-    try {
-      const response = await PerformanceService.getList({
+  const { data: mdRecommendPerformance, isLoading: isLoadingMdRecommend } = useQuery<PerformanceSummary[], Error>(
+    ['mdRecommendPerformance'],
+    () =>
+      PerformanceService.getList({
         stdate: '20230101',
         eddate: '2030630',
         cpage: '1',
-        rows: '4',
-      });
-      setMdRecommendPerformance(response);
-    } catch (e) {
-      toast.error(e);
-    } finally {
-      setIsLoadingMdRecommend(false);
-    }
-  };
+        rows: '8',
+      }),
+  );
 
-  const fetchNewArrivalData = async () => {
-    try {
-      const response = await PerformanceService.getList({
+  const { data: newArrivalPerformance, isLoading: isLoadingNewArrival } = useQuery<PerformanceSummary[], Error>(
+    ['newArrivalPerformance'],
+    () =>
+      PerformanceService.getList({
         stdate: '20231222',
         eddate: '20240101',
         cpage: '2',
         rows: '8',
-      });
-      setNewArrivalPerformance(response);
-    } catch (e) {
-      toast.error(e);
-    } finally {
-      setIsLoadingNewArrival(false);
-    }
+      }),
+  );
+
+  const handleThemeToggle = () => {
+    setIsDarkMode(prevMode => !prevMode);
   };
 
-  const fetchBannerImages = async () => {
-    try {
-      const images = [
-        'public/banner1.png',
-        'public/banner2.png',
-        'https://a.cdn-hotels.com/gdcs/production121/d1688/b022527b-c68d-4a3f-96b4-322f557dea34.jpg?impolicy=fcrop&w=800&h=533&q=medium',
-        'https://majormap.s3.ap-northeast-2.amazonaws.com/contents/career/%E1%84%80%E1%85%A9%E1%86%BC%E1%84%8B%E1%85%A7%E1%86%AB%E1%84%80%E1%85%B5%E1%84%92%E1%85%AC%E1%86%A8%E1%84%8C%E1%85%A1.jpg',
-      ];
-      setBannerImages(images);
-    } catch (error) {
-      console.error('이미지를 불러올 수 없습니다.:', error);
-    }
+  const settings: SliderSettings = {
+    infinite: true,
+    speed: 7000,
+    autoplay: true,
+    autoplaySpeed: 7000,
+    slidesToShow: 6,
+    slidesToScroll: 3,
   };
-
-  useEffect(() => {
-    fetchBannerImages();
-    fetchMdRecommendData();
-    fetchNewArrivalData();
-  }, []);
 
   return (
-    <Box p="10px 5%" bg="purple.50">
+    <Box p="10px 5%" bg={isDarkMode ? 'brand.900' : 'purple.50'}>
+      <ThemeSwitcher onToggle={handleThemeToggle} isDarkMode={isDarkMode} />
       <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }} mx="auto" maxW="1200px">
         <Box mb={{ base: '4', md: '8' }}>
-          <ImageSlider images={bannerImages} />
+          <ImageCarousel images={bannerImages} />
         </Box>
 
-        <Box mb={{ base: '4', md: '8' }} ml={{ base: '4', md: '0' }} pt={{ base: '20', md: '0' }}>
+        <Box mb={{ base: '4', md: '8' }} ml={{ base: '4', md: '0' }} pt={{ base: '20', md: '0' }} textAlign="center">
           <Heading size="lg">
             <Box
               as="span"
-              bgGradient={gradient}
-              color={useColorModeValue('white', 'black')}
+              bgGradient={`linear(to-r, ${colors.brand[300]}, ${colors.sub[300]})`}
+              color="white"
               px={2}
               py={1}
               borderRadius="md"
@@ -105,9 +92,9 @@ const IndexPage: FC = () => {
         </Box>
       </Box>
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }} mx="auto" maxW="1200px">
+      <Slider {...settings} css={{ margin: '0 -10px' }}>
         {isLoadingMdRecommend
-          ? Array.from({ length: 4 }).map((_, index) => (
+          ? Array.from({ length: 8 }).map((_, index) => (
               <Box
                 key={index}
                 flex="1"
@@ -126,7 +113,7 @@ const IndexPage: FC = () => {
                 </Box>
               </Box>
             ))
-          : mdRecommendPerformance.map((performance, index) => (
+          : mdRecommendPerformance?.map((performance, index) => (
               <MotionPoster
                 key={index}
                 flex="1"
@@ -136,6 +123,7 @@ const IndexPage: FC = () => {
                 overflow="hidden"
                 shadow="xl"
                 bg={colors.gray[50]}
+                mb="10"
               >
                 {({ isHovered }: { isHovered: boolean }) => (
                   <>
@@ -158,7 +146,15 @@ const IndexPage: FC = () => {
                       </Text>
 
                       <Link to={`/detail/${performance.mt20id}`}>
-                        <Heading size="md" mb="1" fontSize="xl">
+                        <Heading
+                          size="md"
+                          mb="1"
+                          fontSize="xl"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                          title={performance.prfnm}
+                        >
                           {performance.prfnm}
                         </Heading>
                       </Link>
@@ -179,14 +175,14 @@ const IndexPage: FC = () => {
                 )}
               </MotionPoster>
             ))}
-      </SimpleGrid>
+      </Slider>
 
-      <Box mb={{ base: '4', md: '8' }} mx="auto" maxW="1200px" textAlign={{ base: 'left' }}>
+      <Box mb={{ base: '4', md: '8' }} mx="auto" maxW="1200px" textAlign="center">
         <Heading size="lg">
           <Box
             as="span"
-            bgGradient={gradient}
-            color={useColorModeValue('white', 'black')}
+            bgGradient={`linear(to-r, ${colors.brand[300]}, ${colors.sub[300]})`}
+            color="white"
             px={2}
             py={1}
             borderRadius="md"
@@ -199,7 +195,7 @@ const IndexPage: FC = () => {
         </Heading>
       </Box>
 
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={2} p={{ base: 2, md: 4 }} mx="auto" maxW="1200px">
+      <Slider {...settings} css={{ margin: '0 -10px' }}>
         {isLoadingNewArrival
           ? Array.from({ length: 8 }).map((_, index) => (
               <Box
@@ -220,7 +216,7 @@ const IndexPage: FC = () => {
                 </Box>
               </Box>
             ))
-          : newArrivalPerformance.map((performance, index) => (
+          : newArrivalPerformance?.map((performance, index) => (
               <MotionPoster
                 key={index}
                 flex="1"
@@ -252,7 +248,15 @@ const IndexPage: FC = () => {
                       </Text>
 
                       <Link to={`/detail/${performance.mt20id}`}>
-                        <Heading size="md" mb="1" fontSize="xl">
+                        <Heading
+                          size="md"
+                          mb="1"
+                          fontSize="xl"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                          title={performance.prfnm}
+                        >
                           {performance.prfnm}
                         </Heading>
                       </Link>
@@ -273,7 +277,7 @@ const IndexPage: FC = () => {
                 )}
               </MotionPoster>
             ))}
-      </SimpleGrid>
+      </Slider>
 
       <Spacer h={{ base: '12', md: '24' }} />
     </Box>
