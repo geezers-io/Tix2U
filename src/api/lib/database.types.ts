@@ -75,6 +75,7 @@ export interface Database {
           birth: string | null;
           email: string | null;
           id: string;
+          imageUrl: string | null;
           name: string | null;
           phone: string | null;
           updated_at: string | null;
@@ -83,6 +84,7 @@ export interface Database {
           birth?: string | null;
           email?: string | null;
           id: string;
+          imageUrl?: string | null;
           name?: string | null;
           phone?: string | null;
           updated_at?: string | null;
@@ -91,6 +93,7 @@ export interface Database {
           birth?: string | null;
           email?: string | null;
           id?: string;
+          imageUrl?: string | null;
           name?: string | null;
           phone?: string | null;
           updated_at?: string | null;
@@ -107,24 +110,27 @@ export interface Database {
       };
       todos: {
         Row: {
+          age: string | null;
           id: number;
-          inserted_at: string;
-          is_complete: boolean | null;
-          task: string | null;
+          image: string | null;
+          location: string;
+          title: string | null;
           user_id: string;
         };
         Insert: {
+          age?: string | null;
           id?: number;
-          inserted_at?: string;
-          is_complete?: boolean | null;
-          task?: string | null;
+          image?: string | null;
+          location: string;
+          title?: string | null;
           user_id: string;
         };
         Update: {
+          age?: string | null;
           id?: number;
-          inserted_at?: string;
-          is_complete?: boolean | null;
-          task?: string | null;
+          image?: string | null;
+          location?: string;
+          title?: string | null;
           user_id?: string;
         };
         Relationships: [

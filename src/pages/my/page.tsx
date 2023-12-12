@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -30,6 +30,7 @@ import { Tables } from '@/api/lib/database.types';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
+import ImageUpload from '@/components/ImageUploader';
 import { ProfileImage } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { processer } from '@/utils/process';
@@ -37,14 +38,14 @@ import { processer } from '@/utils/process';
 const MyPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
   const mt20ids = ['PF215946', 'PF228209'];
-  // const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const toast = useCustomToast();
-  const [name, setName] = useState<string | null>('');
-  const [email, setEmail] = useState<string | null>('');
+  const [name, setName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [emailID, setEmailID] = useState<string | undefined>('');
-  const [phone, setPhone] = useState<string | null>('');
-  const [birth, setBirth] = useState<string | null>('');
+  const [phone, setPhone] = useState<string | null>(null);
+  const [birth, setBirth] = useState<string | null>(null);
   const [userID, setUserID] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const now = new Date();
@@ -84,6 +85,8 @@ const MyPage: FC = () => {
         setPhone(data.phone);
         setEmail(data.email);
         setBirth(data.birth);
+        setImageUrl(data.imageUrl);
+        console.log(imageUrl);
       }
     } catch {
       toast.error('유저 정보를 들고 오지 못했습니다.');
@@ -91,7 +94,7 @@ const MyPage: FC = () => {
   };
 
   //프로필 정보 업데이트
-  const updateProfile: MouseEventHandler<HTMLButtonElement> = async e => {
+  const updateProfile = async e => {
     e.preventDefault();
 
     try {
@@ -102,6 +105,7 @@ const MyPage: FC = () => {
         phone,
         email,
         updated_at: processer.date(now),
+        imageUrl,
       };
 
       await supabase.from('profiles').upsert(updates).select();
@@ -115,18 +119,11 @@ const MyPage: FC = () => {
     try {
       await supabase.auth.signOut();
       navigate('/');
+      toast.success('로그아웃 되었습니다.');
     } catch {
       toast.error('로그아웃에 실패했습니다.');
     }
   };
-
-  // const toggleExpansion = (mt20id: string) => {
-  //   setExpandedItems(prevExpanded =>
-  //     isExpanded(mt20id) ? prevExpanded.filter(id => id !== mt20id) : [...prevExpanded, mt20id],
-  //   );
-  // };
-
-  // const isExpanded = (mt20id: string) => expandedItems.includes(mt20id);
 
   useEffect(() => {
     getID();
@@ -152,7 +149,7 @@ const MyPage: FC = () => {
         </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
-            <Avatar size="xl" name={name ?? ' '} src={ProfileImage} />
+            <Avatar size="xl" name={name ?? ' '} src={imageUrl ?? ProfileImage} />
             <Heading size="lg" textAlign="left">
               {name}
             </Heading>
@@ -200,17 +197,16 @@ const MyPage: FC = () => {
                       <ModalCloseButton />
                       <ModalBody>
                         <VStack spacing="4" mt="8" align="left" id="edit-profile">
-                          <Button color="white" variant="solid" colorScheme="brand" onClick={handleUploadButtonClick}>
-                            파일 업로드하기
-                            <input
-                              type="file"
-                              ref={inputRef}
-                              onChange={handleImageChange}
-                              hidden
-                              multiple
-                              accept="image/*"
-                            />
-                          </Button>
+                          <ImageUpload
+                            url={imageUrl ?? null}
+                            onUpload={(url: string) => {
+                              setImageUrl(url);
+                              updateProfile({
+                                avatar_url: url,
+                              });
+                            }}
+                          />
+
                           <Box>
                             <Text fontWeight="bold">Name:</Text>
                             <Input
