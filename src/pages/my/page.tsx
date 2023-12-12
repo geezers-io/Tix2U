@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -7,7 +7,6 @@ import {
   Heading,
   Text,
   Button,
-  Avatar,
   Divider,
   Tab,
   TabList,
@@ -15,6 +14,7 @@ import {
   TabPanel,
   TabPanels,
   Input,
+  Image,
   Flex,
   Modal,
   ModalOverlay,
@@ -25,13 +25,11 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Image as ChakraImage } from '@chakra-ui/react';
 import { Tables } from '@/api/lib/database.types';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import ImageUpload from '@/components/ImageUploader';
-import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { processer } from '@/utils/process';
 
@@ -86,7 +84,6 @@ const MyPage: FC = () => {
         setEmail(data.email);
         setBirth(data.birth);
         setImageUrl(data.imageUrl);
-        console.log(imageUrl);
       }
     } catch {
       toast.error('유저 정보를 들고 오지 못했습니다.');
@@ -94,7 +91,7 @@ const MyPage: FC = () => {
   };
 
   //프로필 정보 업데이트
-  const updateProfile: ChangeEventHandler<HTMLInputElement> = async event => {
+  const updateProfile = async event => {
     event.preventDefault();
 
     try {
@@ -148,7 +145,12 @@ const MyPage: FC = () => {
         </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
-            <Avatar size="xl" name={name ?? ' '} src={imageUrl ?? ProfileImage} />
+            <ImageUpload
+              url={imageUrl ?? null}
+              onUpload={(url: string) => {
+                setImageUrl(url);
+              }}
+            />
             <Heading size="lg" textAlign="left">
               {name}
             </Heading>
@@ -196,16 +198,6 @@ const MyPage: FC = () => {
                       <ModalCloseButton />
                       <ModalBody>
                         <VStack spacing="4" mt="8" align="left" id="edit-profile">
-                          <ImageUpload
-                            url={imageUrl ?? null}
-                            onUpload={(url: string) => {
-                              setImageUrl(url);
-                              updateProfile({
-                                avatar_url: url,
-                              });
-                            }}
-                          />
-
                           <Box>
                             <Text fontWeight="bold">Name:</Text>
                             <Input
@@ -250,23 +242,23 @@ const MyPage: FC = () => {
                 <VStack align="start" spacing={{ base: '2', md: '4' }}>
                   {cartItems.map(item => (
                     <Link to={`../detail/${item.mt20id}`}>
-                      <Flex
+                      <Box
                         key={item.mt20id}
                         border="1px"
                         borderRadius="md"
                         p="4"
-                        minWidth="100%"
+                        width="100%"
                         shadow="lg"
                         transition="all 0.3s"
                         _hover={{
                           cursor: 'pointer',
-                          transform: 'scale(1.020)',
+                          transform: 'scale(1.05)',
                         }}
                       >
                         <HStack alignItems="start" spacing="4">
-                          <ChakraImage src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                          <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
                           <VStack align="start" flex="1">
-                            <HStack direction={{ base: 'column', md: 'row' }}>
+                            <HStack>
                               <VStack align="start" flex="1">
                                 <Text ml="5">{item.prfnm}</Text>
                                 <Text fontWeight="bold" marginBottom="1" ml="5">
@@ -277,7 +269,7 @@ const MyPage: FC = () => {
                           </VStack>
                           <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
                         </HStack>
-                      </Flex>
+                      </Box>
                     </Link>
                   ))}
                 </VStack>
