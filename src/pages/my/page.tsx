@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { ChangeEventHandler, FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -94,8 +94,8 @@ const MyPage: FC = () => {
   };
 
   //프로필 정보 업데이트
-  const updateProfile = async e => {
-    e.preventDefault();
+  const updateProfile: ChangeEventHandler<HTMLInputElement> = async event => {
+    event.preventDefault();
 
     try {
       const updates: Tables<'profiles'> = {
@@ -131,10 +131,9 @@ const MyPage: FC = () => {
     mt20ids.forEach(id => fetchCart(id));
   }, [userID]);
 
-  // if (!userID) {
-  //   toast.error('로그인을 해주세요');
-  //   navigate('/login');
-  // }
+  if (!userID) {
+    navigate('/login');
+  }
 
   return (
     <Box bgColor="purple.50" minHeight="80vh" p="10px 5%" display="flex" justifyContent="center">

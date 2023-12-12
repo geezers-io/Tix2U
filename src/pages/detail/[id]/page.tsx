@@ -29,7 +29,8 @@ import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import KakaoMap from '@/components/KakaoMap';
 import TicketingButton from '@/components/TicketingButton';
-import { ProfileImage, ticketSale } from '@/constants/link';
+import { ticketSale } from '@/constants/detail';
+import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 type commentList = { user: string; content: string }[];
