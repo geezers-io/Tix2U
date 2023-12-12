@@ -31,7 +31,7 @@ import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import ImageUpload from '@/components/ImageUploader';
-import { ProfileImage } from '@/constants/detail';
+import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { processer } from '@/utils/process';
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -35,19 +35,18 @@ const SignInPage = () => {
 
   const handleSubmit = async (value: FormValues) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: value.email,
         password: value.password,
       });
-      console.log(data);
       if (error) {
         toast.error(error);
       } else {
         toast.success('로그인에 성공했어요!');
         navigate('/');
       }
-    } catch (e) {
-      toast.error('로그인 접속에 성공하지 못했어요', e);
+    } catch {
+      toast.error('로그인 접속에 성공하지 못했어요');
     }
   };
 
@@ -56,8 +55,8 @@ const SignInPage = () => {
       await supabase.auth.signInWithOAuth({
         provider: 'kakao',
       });
-    } catch (e) {
-      toast.error(e);
+    } catch {
+      toast.error('카카오 로그인에 실패했어요.');
     }
   };
 
@@ -65,12 +64,12 @@ const SignInPage = () => {
     try {
       await supabase.auth.signOut();
       toast.info('로그아웃 하였어요');
-    } catch (e) {
-      toast.error(e);
+      navigate('/');
+    } catch {
+      toast.error('로그아웃에 실패했어요.');
     }
   };
 
-  useEffect(() => {}, []);
   return (
     <Formik<FormValues>
       initialValues={{

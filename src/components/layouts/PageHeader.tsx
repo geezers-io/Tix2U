@@ -1,10 +1,43 @@
-import { FC } from 'react';
-import { PersonCircle, BoxArrowInRight, Cart, Search } from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
+import { PersonCircle, BoxArrowInRight, Cart, Search, BoxArrowInLeft } from 'react-bootstrap-icons';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, Image, Flex, Spacer, HStack, Text, Center, useMediaQuery } from '@chakra-ui/react';
+import supabase from '@/api/lib/supabase';
+import { category } from '@/constants/detail';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 const PageHeader: FC = () => {
   const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
+  const [session, setSession] = useState<string | undefined>(undefined);
+  const toast = useCustomToast();
+  const navigate = useNavigate();
+
+  const fetchLogin = async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      if (data) {
+        setSession(data.session?.access_token);
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast.info('로그아웃 하였어요');
+      navigate('/');
+    } catch {
+      toast.error('로그아웃에 실패했어요.');
+    }
+  };
+
+  useEffect(() => {
+    fetchLogin();
+  }, [session]);
+
   return (
     <Box
       as="header"
@@ -31,31 +64,14 @@ const PageHeader: FC = () => {
           <Image src="/name_logo.png" pr={10} h={{ base: '40px', md: '60px' }} />
         </Link>
         <HStack spacing={{ base: 2, md: 10 }}>
-          <Link to="/entire">
-            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-              전체
-            </Text>
-          </Link>
-          <Link to="/concert">
-            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-              음악회
-            </Text>
-          </Link>
-          <Link to="/musical">
-            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-              뮤지컬
-            </Text>
-          </Link>
-          <Link to="/dancing">
-            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-              무용
-            </Text>
-          </Link>
-          <Link to="/theater">
-            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-              연극
-            </Text>
-          </Link>
+          {category &&
+            category.map(value => (
+              <Link to={`/${value.english}`} key={`${value.english} - ${value.korean}`}>
+                <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
+                  {value.korean}
+                </Text>
+              </Link>
+            ))}
         </HStack>
 
         <Spacer display={{ base: 'none', md: 'block' }} />
@@ -69,32 +85,54 @@ const PageHeader: FC = () => {
             </Text>
           </Link>
 
-          <Link to="/login">
-            <Text
-              fontWeight="bold"
-              letterSpacing="0.1em"
-              _hover={{ textDecoration: 'underline' }}
-              fontSize={isLargerThanMd ? 'md' : 'sm'}
-            >
-              <Center>
-                <BoxArrowInRight /> LOGIN
-              </Center>
-            </Text>
-          </Link>
-          <Link to="/my">
-            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-              <Center>
-                <PersonCircle /> MYPAGE
-              </Center>
-            </Text>
-          </Link>
-          <Link to="/cart">
-            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-              <Center>
-                <Cart /> CART
-              </Center>
-            </Text>
-          </Link>
+          {/*로그인 되었을 때 */}
+          {!!session && (
+            <>
+              <Text
+                fontWeight="bold"
+                letterSpacing="0.1em"
+                _hover={{ textDecoration: 'underline' }}
+                fontSize={isLargerThanMd ? 'md' : 'sm'}
+                onClick={signOut}
+                cursor="pointer"
+              >
+                <Center>
+                  <BoxArrowInLeft /> LOGOUT
+                </Center>
+              </Text>
+
+              <Link to="/my">
+                <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
+                  <Center>
+                    <PersonCircle /> MYPAGE
+                  </Center>
+                </Text>
+              </Link>
+              <Link to="/cart">
+                <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
+                  <Center>
+                    <Cart /> CART
+                  </Center>
+                </Text>
+              </Link>
+            </>
+          )}
+
+          {/*로그인되지 않았을 때 */}
+          {!session && (
+            <Link to="/login">
+              <Text
+                fontWeight="bold"
+                letterSpacing="0.1em"
+                _hover={{ textDecoration: 'underline' }}
+                fontSize={isLargerThanMd ? 'md' : 'sm'}
+              >
+                <Center>
+                  <BoxArrowInRight /> LOGIN
+                </Center>
+              </Text>
+            </Link>
+          )}
         </HStack>
       </Flex>
     </Box>

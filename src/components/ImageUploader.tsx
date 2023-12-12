@@ -1,7 +1,7 @@
 import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { Button, Avatar } from '@chakra-ui/react';
 import supabase from '@/api/lib/supabase';
-import { ProfileImage } from '@/constants/detail';
+import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 interface Props {
