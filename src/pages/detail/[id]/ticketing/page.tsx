@@ -49,7 +49,7 @@ const TicketingPage: FC = () => {
   const navigate = useNavigate();
   const [userID, setUserID] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | undefined>(undefined);
   const [phone, setPhone] = useState<string | null>(null);
 
   const getID = async () => {
@@ -58,6 +58,7 @@ const TicketingPage: FC = () => {
 
       if (user.data.user) {
         setUserID(user.data.user?.id);
+        setEmail(user.data.user?.email);
       } else {
         toast.error('로그인 정보가 없습니다.');
         navigate('/login');
@@ -76,7 +77,6 @@ const TicketingPage: FC = () => {
       if (data) {
         setName(data.name);
         setPhone(data.phone);
-        setEmail(data.email);
       }
     } catch {
       toast.error('유저 정보를 들고 오지 못했습니다.');
@@ -162,7 +162,7 @@ const TicketingPage: FC = () => {
                       <Card variant="outline">
                         <Input
                           type="text"
-                          placeholder={name ?? '이름 정보가 없습니다'}
+                          placeholder={name ? name : '이름 정보가 없습니다'}
                           color={name ?? 'inherit'}
                           onChange={e => setName(e.target.value)}
                         />
@@ -175,7 +175,7 @@ const TicketingPage: FC = () => {
                       <Card variant="outline">
                         <Input
                           type="text"
-                          placeholder={phone ?? '전화번호 정보가 없습니다'}
+                          placeholder={phone ? phone : '전화번호 정보가 없습니다'}
                           color={phone ?? 'inherit'}
                           onChange={e => setPhone(e.target.value)}
                         />
@@ -188,7 +188,7 @@ const TicketingPage: FC = () => {
                       <Card variant="outline">
                         <Input
                           type="email"
-                          placeholder={email ?? '이메일 정보가 없습니다'}
+                          placeholder={email ? email : '이메일 정보가 없습니다'}
                           color={email ?? 'inherit'}
                           onChange={e => setEmail(e.target.value)}
                         />
