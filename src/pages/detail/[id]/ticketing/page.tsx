@@ -32,6 +32,7 @@ import {
   ModalOverlay,
   useDisclosure,
   Input,
+  FormControl,
 } from '@chakra-ui/react';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
@@ -40,7 +41,7 @@ import { payMethod, simplePayMethod } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const TicketingPage: FC = () => {
-  const [detail, setDetail] = useState<PerformanceDetail[]>([]);
+  const [detail, setDetail] = useState<PerformanceDetail>();
   const { mt20id } = useParams();
   const toast = useCustomToast();
   const [payValue, setPayValue] = useState<string>('toss');
@@ -57,6 +58,9 @@ const TicketingPage: FC = () => {
 
       if (user.data.user) {
         setUserID(user.data.user?.id);
+      } else {
+        toast.error('로그인 정보가 없습니다.');
+        navigate('/login');
       }
     } catch {
       toast.error('유저 아이디를 들고 오지 못했습니다.');
@@ -65,7 +69,7 @@ const TicketingPage: FC = () => {
   };
 
   //프로필 정보 들고오기
-  const getProfile = async () => {
+  const getProfile = async (userID: string) => {
     try {
       const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
 
@@ -91,12 +95,11 @@ const TicketingPage: FC = () => {
     if (!mt20id) return;
     fetchDetail(String(mt20id));
     getID();
-    getProfile();
+    getProfile(String(userID));
   }, []);
 
-  if (!detail) {
-    toast.error('티켓 데이터를 불러올 수 없습니다');
-  }
+  if (!detail) return;
+  if (!userID) return;
 
   return (
     <Box p="10px 5%" bg="purple.50">
@@ -141,51 +144,57 @@ const TicketingPage: FC = () => {
               </Card>
             </Card>
           </Box>
-          <Box m="10px">
+          <Box m="5px">
             <Card variant="outline">
               <CardHeader>
                 <Heading size="md">주문자 확인</Heading>
-                <Text>주문자의 정보가 틀리다면, 직접 수정해주세요!</Text>
+                <Text>주문자의 정보가 틀리다면, 직접 수정해주세요! </Text>
+                <Text as="b">주문자의 정보가 모두 들어가야 예매가 가능합니다 😊</Text>
               </CardHeader>
 
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="4">
-                  <Box>
-                    <Heading size="xs" m="10px">
-                      주문자 성명
-                    </Heading>
-                    <Card variant="outline">
-                      <Input
-                        type="text"
-                        placeholder={name ? name : '이름 정보가 없습니다'}
-                        onChange={e => setName(e.target.value)}
-                      />
-                    </Card>
-                  </Box>
-                  <Box>
-                    <Heading size="xs" m="10px">
-                      주문자 전화번호
-                    </Heading>
-                    <Card variant="outline">
-                      <Input
-                        type="text"
-                        placeholder={phone ? phone : '전화번호 정보가 없습니다'}
-                        onChange={e => setPhone(e.target.value)}
-                      />
-                    </Card>
-                  </Box>
-                  <Box>
-                    <Heading size="xs" m="10px">
-                      주문자 이메일
-                    </Heading>
-                    <Card variant="outline">
-                      <Input
-                        type="text"
-                        placeholder={email ? email : '전화번호 정보가 없습니다'}
-                        onChange={e => setEmail(e.target.value)}
-                      />
-                    </Card>
-                  </Box>
+                  <FormControl>
+                    <Box>
+                      <Heading size="xs" m="10px">
+                        주문자 성명
+                      </Heading>
+                      <Card variant="outline">
+                        <Input
+                          type="text"
+                          placeholder={name ?? '이름 정보가 없습니다'}
+                          color={name ?? 'inherit'}
+                          onChange={e => setName(e.target.value)}
+                        />
+                      </Card>
+                    </Box>
+                    <Box>
+                      <Heading size="xs" m="10px">
+                        주문자 전화번호
+                      </Heading>
+                      <Card variant="outline">
+                        <Input
+                          type="text"
+                          placeholder={phone ?? '전화번호 정보가 없습니다'}
+                          color={phone ?? 'inherit'}
+                          onChange={e => setPhone(e.target.value)}
+                        />
+                      </Card>
+                    </Box>
+                    <Box>
+                      <Heading size="xs" m="10px">
+                        주문자 이메일
+                      </Heading>
+                      <Card variant="outline">
+                        <Input
+                          type="email"
+                          placeholder={email ?? '이메일 정보가 없습니다'}
+                          color={email ?? 'inherit'}
+                          onChange={e => setEmail(e.target.value)}
+                        />
+                      </Card>
+                    </Box>
+                  </FormControl>
                 </Stack>
               </CardBody>
             </Card>
