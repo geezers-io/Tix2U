@@ -1,3 +1,5 @@
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import Layout from '@/components/layouts/PageLayout';
@@ -62,7 +64,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-
       {
         path: 'search',
         element: <SearchPage />,
@@ -102,10 +103,16 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
     <ChakraProvider theme={theme}>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </ChakraProvider>
   );
 };

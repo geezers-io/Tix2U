@@ -1,39 +1,52 @@
 import { FC } from 'react';
-import { CaretLeftFill, CaretRightFill } from 'react-bootstrap-icons';
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { ChevronCompactLeft, ChevronCompactRight } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
+import { Box } from '@chakra-ui/react';
+import { colors } from '@/styles/theme/@colors';
 
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
+const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (page: number) => void }> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
+  const renderPageNumbers = () => {
+    const maxPagesToShow = 5;
+    const startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+    return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+  };
+
   return (
-    <Flex justifyContent="center" alignItems="center" marginTop="10" mb="100">
-      <Button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        leftIcon={<CaretLeftFill />}
-        colorScheme="brand"
-        variant="outline"
-        marginRight="2"
-      >
-        티켓 더보기
-      </Button>
-      <Text fontSize="sm" fontWeight="bold" color="brand.200" marginRight="2">
-        {currentPage}/{totalPages}
-      </Text>
-      <Button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        rightIcon={<CaretRightFill />}
-        colorScheme="brand"
-        variant="outline"
-      >
-        티켓 더보기
-      </Button>
-    </Flex>
+    <Box display="flex" alignItems="center">
+      {currentPage > 1 && (
+        <Link to="#" onClick={() => onPageChange(currentPage - 1)} style={{ marginRight: '8px' }}>
+          <ChevronCompactLeft />
+        </Link>
+      )}
+
+      {renderPageNumbers().map(page => (
+        <Link
+          key={page}
+          to="#"
+          onClick={() => onPageChange(page)}
+          style={{
+            margin: '0 4px',
+            fontWeight: currentPage === page ? 'bold' : 'normal',
+            color: currentPage === page ? colors.brand[300] : 'inherit',
+            opacity: currentPage === page ? 1 : 0.5,
+          }}
+        >
+          {page}
+        </Link>
+      ))}
+
+      {currentPage < totalPages && (
+        <Link to="#" onClick={() => onPageChange(currentPage + 1)} style={{ marginLeft: '8px' }}>
+          <ChevronCompactRight />
+        </Link>
+      )}
+    </Box>
   );
 };
 

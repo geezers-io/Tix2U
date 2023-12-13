@@ -29,6 +29,7 @@ const ConcertPage: FC = () => {
 
   const fetchConcertData = async (page: number) => {
     try {
+      setLoading(true);
       const response = await PerformanceService.getList({
         stdate: '20230101',
         eddate: '20241231',
@@ -113,7 +114,7 @@ const ConcertPage: FC = () => {
 
           <SimpleGrid
             columns={{ base: 1, md: 2, lg: 4 }}
-            spacing={2}
+            spacing={6}
             p={{ base: 2, md: 4 }}
             justifyContent="space-between"
           >
@@ -152,6 +153,7 @@ const ConcertPage: FC = () => {
                         borderBottomColor="gray.300"
                         shadow="xl"
                         bg={colors.gray[50]}
+                        h="100%"
                       >
                         <Link to={`/detail/${performance.mt20id}`}>
                           <AspectRatio ratio={3 / 4}>
@@ -195,9 +197,11 @@ const ConcertPage: FC = () => {
                   </MotionPoster>
                 ))}
           </SimpleGrid>
+          <Box display="flex" justifyContent="center" mb="10" mt="10">
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+          </Box>
         </Box>
       </Box>
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </>
   );
 };
