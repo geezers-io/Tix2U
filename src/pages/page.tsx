@@ -134,7 +134,7 @@ const IndexPage: FC = () => {
                 <Skeleton height="180px" />
                 <Box p="4">
                   <Skeleton height="16px" mb="2" />
-                  <Skeleton height="20px" mb="" />
+                  <Skeleton height="20px" mb="4" />
                   <Skeleton height="12px" />
                 </Box>
               </Box>
