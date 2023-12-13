@@ -30,6 +30,7 @@ import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import ImageUpload from '@/components/ImageUploader';
+import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { processer } from '@/utils/process';
 
@@ -125,6 +126,14 @@ const MyPage: FC = () => {
     }
   };
 
+  const deleteUserSubmit = async (userID: string) => {
+    try {
+      await supabase.auth.admin.deleteUser(userID);
+    } catch {
+      navigate('/');
+    }
+  };
+
   useEffect(() => {
     getID();
     getProfile();
@@ -142,18 +151,19 @@ const MyPage: FC = () => {
           <Button colorScheme="red" onClick={logoutSubmit}>
             로그아웃
           </Button>
-          <Button colorScheme="red" variant="outline">
+          <Button colorScheme="red" variant="outline" onClick={() => deleteUserSubmit(userID)}>
             회원탈퇴
           </Button>
         </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
             <ImageUpload
-              url={imageUrl ?? null}
+              url={imageUrl ?? ProfileImage}
               onUpload={(url: string) => {
                 setImageUrl(url);
               }}
             />
+
             <Heading size="lg" textAlign="left">
               {name}
             </Heading>

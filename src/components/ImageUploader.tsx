@@ -18,7 +18,7 @@ const ImageUpload: FC<Props> = ({ url, onUpload }) => {
     inputRef.current?.click();
   };
 
-  const downloadImage = async path => {
+  const downloadImage = async (path: string) => {
     try {
       const { data } = await supabase.storage.from('avatars').download(path);
 

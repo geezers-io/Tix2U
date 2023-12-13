@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, Button, Heading, Text, Image, useColorModeValue, Checkbox, HStack, VStack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Heading, Text, Image, Checkbox, HStack, VStack } from '@chakra-ui/react';
+import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import { useCustomToast } from '@/hooks/useCustomToast';
@@ -13,6 +15,24 @@ const CartsPage: FC = () => {
   const gradient = `linear(to-r, ${colors.brand[300]}, ${colors.accent[300]})`;
   const mt20ids = ['PF215946', 'PF228209'];
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [userID, setUserID] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const getID = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      if (user.data.user) {
+        setUserID(user.data.user?.id);
+      } else {
+        toast.error('로그인 정보가 없습니다.');
+        navigate('/login');
+      }
+    } catch {
+      toast.error('유저 아이디를 들고 오지 못했습니다.');
+      navigate('/');
+    }
+  };
 
   const fetchCart = async (mt20id: string) => {
     try {
@@ -62,7 +82,10 @@ const CartsPage: FC = () => {
 
   useEffect(() => {
     mt20ids.forEach(id => fetchCart(id));
+    getID();
   }, [mt20ids]);
+
+  if (!userID) return;
 
   return (
     <>
@@ -73,7 +96,7 @@ const CartsPage: FC = () => {
               <Box
                 as="span"
                 bgGradient={gradient}
-                color={useColorModeValue('white', 'black')}
+                // color={useColorModeValue('white', 'black')}
                 px={{ base: 4, md: 6 }}
                 py={2}
                 borderRadius="md"

@@ -252,7 +252,7 @@ const TicketingPage: FC = () => {
           </Card>
         </Box>
         <Grid>
-          <Button colorScheme="brand" onClick={onOpen} isDisabled={!name | !phone | !email}>
+          <Button colorScheme="brand" onClick={onOpen} isDisabled={!name || !phone || !email}>
             결제하기
           </Button>
         </Grid>
