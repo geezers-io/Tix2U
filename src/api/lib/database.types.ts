@@ -72,6 +72,7 @@ export interface Database {
       };
       profiles: {
         Row: {
+          address: string | null;
           birth: string | null;
           email: string | null;
           id: string;
@@ -81,6 +82,7 @@ export interface Database {
           updated_at: string | null;
         };
         Insert: {
+          address?: string | null;
           birth?: string | null;
           email?: string | null;
           id: string;
@@ -90,6 +92,7 @@ export interface Database {
           updated_at?: string | null;
         };
         Update: {
+          address?: string | null;
           birth?: string | null;
           email?: string | null;
           id?: string;
