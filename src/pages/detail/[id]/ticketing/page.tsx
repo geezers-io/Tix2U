@@ -31,22 +31,53 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  Editable,
-  EditablePreview,
-  EditableInput,
+  Input,
 } from '@chakra-ui/react';
+import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import { payMethod, simplePayMethod } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const TicketingPage: FC = () => {
-  const [detail, setDetail] = useState<PerformanceDetail>();
+  const [detail, setDetail] = useState<PerformanceDetail[]>([]);
   const { mt20id } = useParams();
   const toast = useCustomToast();
   const [payValue, setPayValue] = useState<string>('toss');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const [userID, setUserID] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [phone, setPhone] = useState<string | null>(null);
+
+  const getID = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      if (user.data.user) {
+        setUserID(user.data.user?.id);
+      }
+    } catch {
+      toast.error('유저 아이디를 들고 오지 못했습니다.');
+      navigate('/');
+    }
+  };
+
+  //프로필 정보 들고오기
+  const getProfile = async () => {
+    try {
+      const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
+
+      if (data) {
+        setName(data.name);
+        setPhone(data.phone);
+        setEmail(data.email);
+      }
+    } catch {
+      toast.error('유저 정보를 들고 오지 못했습니다.');
+    }
+  };
 
   const fetchDetail = async (mt20id: string) => {
     try {
@@ -59,9 +90,13 @@ const TicketingPage: FC = () => {
   useEffect(() => {
     if (!mt20id) return;
     fetchDetail(String(mt20id));
+    getID();
+    getProfile();
   }, []);
 
-  if (!detail) return;
+  if (!detail) {
+    toast.error('티켓 데이터를 불러올 수 없습니다');
+  }
 
   return (
     <Box p="10px 5%" bg="purple.50">
@@ -120,10 +155,11 @@ const TicketingPage: FC = () => {
                       주문자 성명
                     </Heading>
                     <Card variant="outline">
-                      <Editable defaultValue="김아무개" justifyItems="center" justifyContent="center">
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
+                      <Input
+                        type="text"
+                        placeholder={name ? name : '이름 정보가 없습니다'}
+                        onChange={e => setName(e.target.value)}
+                      />
                     </Card>
                   </Box>
                   <Box>
@@ -131,10 +167,11 @@ const TicketingPage: FC = () => {
                       주문자 전화번호
                     </Heading>
                     <Card variant="outline">
-                      <Editable defaultValue="01040303105" justifyItems="center" justifyContent="center">
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
+                      <Input
+                        type="text"
+                        placeholder={phone ? phone : '전화번호 정보가 없습니다'}
+                        onChange={e => setPhone(e.target.value)}
+                      />
                     </Card>
                   </Box>
                   <Box>
@@ -142,10 +179,11 @@ const TicketingPage: FC = () => {
                       주문자 이메일
                     </Heading>
                     <Card variant="outline">
-                      <Editable defaultValue="acb4287@gmail.com" justifyItems="center" justifyContent="center">
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
+                      <Input
+                        type="text"
+                        placeholder={email ? email : '전화번호 정보가 없습니다'}
+                        onChange={e => setEmail(e.target.value)}
+                      />
                     </Card>
                   </Box>
                 </Stack>
@@ -205,7 +243,7 @@ const TicketingPage: FC = () => {
           </Card>
         </Box>
         <Grid>
-          <Button colorScheme="brand" onClick={onOpen}>
+          <Button colorScheme="brand" onClick={onOpen} isDisabled={!name | !phone | !email}>
             결제하기
           </Button>
         </Grid>

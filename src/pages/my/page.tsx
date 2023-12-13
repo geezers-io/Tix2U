@@ -105,6 +105,7 @@ const MyPage: FC = () => {
         email,
         updated_at: processer.date(now),
         imageUrl,
+        address,
       };
 
       await supabase.from('profiles').upsert(updates).select();
@@ -221,7 +222,7 @@ const MyPage: FC = () => {
                             />
                           </Box>
                           <Box>
-                            <Text fontWeight="bold">생년월일:</Text>
+                            <Text fontWeight="bold">생년월일 :</Text>
                             <Input
                               placeholder={birth ? birth : '생년월일 정보가 없습니다'}
                               onChange={e => setBirth(e.target.value)}
