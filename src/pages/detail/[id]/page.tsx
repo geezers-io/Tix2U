@@ -61,7 +61,6 @@ const DetailPage: FC = () => {
     try {
       const response = await PerformanceService.getDetail({ mt20id });
       setDetail(response);
-      console.log(detail);
     } catch (e) {
       toast.error(e);
     }
@@ -158,7 +157,7 @@ const DetailPage: FC = () => {
             <Flex flexDirection="row-reverse" gap="10px" m="40px" h="100%" alignItems="flex-end">
               <TicketingButton id={mt20id} />
 
-              <Link to="/cart">
+              <Link to={`/detail/${mt20id}/carts`}>
                 <Button colorScheme="gray" size="lg" variant="outline">
                   장바구니
                 </Button>

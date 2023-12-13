@@ -6,6 +6,7 @@ import Layout from '@/components/layouts/PageLayout';
 import CartsPage from '@/pages/carts/page';
 import ConcertPage from '@/pages/concert/page';
 import DancingPage from '@/pages/dancing/page';
+import DetailCartsPage from '@/pages/detail/[id]/carts/page';
 import DetailPage from '@/pages/detail/[id]/page';
 import TicketingPage from '@/pages/detail/[id]/ticketing/page';
 import TicketingResultPage from '@/pages/detail/[id]/ticketing/result/page';
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <DetailPage />,
+          },
+          {
+            path: 'carts',
+            element: <DetailCartsPage />,
           },
           {
             path: 'ticketing',

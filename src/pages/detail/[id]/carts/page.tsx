@@ -7,7 +7,7 @@ import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
 
-const CartsPage: FC = () => {
+const DetailCartsPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [, setQuantity] = useState(1);
@@ -195,4 +195,4 @@ const CartsPage: FC = () => {
   );
 };
 
-export default CartsPage;
+export default DetailCartsPage;

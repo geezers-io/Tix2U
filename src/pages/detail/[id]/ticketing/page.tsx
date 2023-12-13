@@ -31,10 +31,10 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  Editable,
-  EditablePreview,
-  EditableInput,
+  Input,
+  FormControl,
 } from '@chakra-ui/react';
+import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import { payMethod, simplePayMethod } from '@/constants/detail';
@@ -47,6 +47,41 @@ const TicketingPage: FC = () => {
   const [payValue, setPayValue] = useState<string>('toss');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const [userID, setUserID] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | undefined>(undefined);
+  const [phone, setPhone] = useState<string | null>(null);
+
+  const getID = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      if (user.data.user) {
+        setUserID(user.data.user?.id);
+        setEmail(user.data.user?.email);
+      } else {
+        toast.error('로그인 정보가 없습니다.');
+        navigate('/login');
+      }
+    } catch {
+      toast.error('유저 아이디를 들고 오지 못했습니다.');
+      navigate('/');
+    }
+  };
+
+  //프로필 정보 들고오기
+  const getProfile = async (userID: string) => {
+    try {
+      const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
+
+      if (data) {
+        setName(data.name);
+        setPhone(data.phone);
+      }
+    } catch {
+      toast.error('유저 정보를 들고 오지 못했습니다.');
+    }
+  };
 
   const fetchDetail = async (mt20id: string) => {
     try {
@@ -59,9 +94,12 @@ const TicketingPage: FC = () => {
   useEffect(() => {
     if (!mt20id) return;
     fetchDetail(String(mt20id));
+    getID();
+    getProfile(String(userID));
   }, []);
 
   if (!detail) return;
+  if (!userID) return;
 
   return (
     <Box p="10px 5%" bg="purple.50">
@@ -106,48 +144,57 @@ const TicketingPage: FC = () => {
               </Card>
             </Card>
           </Box>
-          <Box m="10px">
+          <Box m="5px">
             <Card variant="outline">
               <CardHeader>
                 <Heading size="md">주문자 확인</Heading>
-                <Text>주문자의 정보가 틀리다면, 직접 수정해주세요!</Text>
+                <Text>주문자의 정보가 틀리다면, 직접 수정해주세요! </Text>
+                <Text as="b">주문자의 정보가 모두 들어가야 예매가 가능합니다 😊</Text>
               </CardHeader>
 
               <CardBody>
                 <Stack divider={<StackDivider />} spacing="4">
-                  <Box>
-                    <Heading size="xs" m="10px">
-                      주문자 성명
-                    </Heading>
-                    <Card variant="outline">
-                      <Editable defaultValue="김아무개" justifyItems="center" justifyContent="center">
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                    </Card>
-                  </Box>
-                  <Box>
-                    <Heading size="xs" m="10px">
-                      주문자 전화번호
-                    </Heading>
-                    <Card variant="outline">
-                      <Editable defaultValue="01040303105" justifyItems="center" justifyContent="center">
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                    </Card>
-                  </Box>
-                  <Box>
-                    <Heading size="xs" m="10px">
-                      주문자 이메일
-                    </Heading>
-                    <Card variant="outline">
-                      <Editable defaultValue="acb4287@gmail.com" justifyItems="center" justifyContent="center">
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                    </Card>
-                  </Box>
+                  <FormControl>
+                    <Box>
+                      <Heading size="xs" m="10px">
+                        주문자 성명
+                      </Heading>
+                      <Card variant="outline">
+                        <Input
+                          type="text"
+                          placeholder={name ? name : '이름 정보가 없습니다'}
+                          color={name ?? 'inherit'}
+                          onChange={e => setName(e.target.value)}
+                        />
+                      </Card>
+                    </Box>
+                    <Box>
+                      <Heading size="xs" m="10px">
+                        주문자 전화번호
+                      </Heading>
+                      <Card variant="outline">
+                        <Input
+                          type="text"
+                          placeholder={phone ? phone : '전화번호 정보가 없습니다'}
+                          color={phone ?? 'inherit'}
+                          onChange={e => setPhone(e.target.value)}
+                        />
+                      </Card>
+                    </Box>
+                    <Box>
+                      <Heading size="xs" m="10px">
+                        주문자 이메일
+                      </Heading>
+                      <Card variant="outline">
+                        <Input
+                          type="email"
+                          placeholder={email ? email : '이메일 정보가 없습니다'}
+                          color={email ?? 'inherit'}
+                          onChange={e => setEmail(e.target.value)}
+                        />
+                      </Card>
+                    </Box>
+                  </FormControl>
                 </Stack>
               </CardBody>
             </Card>
@@ -205,7 +252,7 @@ const TicketingPage: FC = () => {
           </Card>
         </Box>
         <Grid>
-          <Button colorScheme="brand" onClick={onOpen}>
+          <Button colorScheme="brand" onClick={onOpen} isDisabled={!name || !phone || !email}>
             결제하기
           </Button>
         </Grid>

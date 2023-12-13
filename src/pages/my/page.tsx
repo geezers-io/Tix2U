@@ -30,6 +30,7 @@ import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import ImageUpload from '@/components/ImageUploader';
+import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { processer } from '@/utils/process';
 
@@ -42,6 +43,7 @@ const MyPage: FC = () => {
   const [emailID, setEmailID] = useState<string | undefined>('');
   const [phone, setPhone] = useState<string | null>(null);
   const [birth, setBirth] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
   const [userID, setUserID] = useState<string>('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,6 +86,7 @@ const MyPage: FC = () => {
         setEmail(data.email);
         setBirth(data.birth);
         setImageUrl(data.imageUrl);
+        setAddress(data.address);
       }
     } catch {
       toast.error('유저 정보를 들고 오지 못했습니다.');
@@ -103,6 +106,7 @@ const MyPage: FC = () => {
         email,
         updated_at: processer.date(now),
         imageUrl,
+        address,
       };
 
       await supabase.from('profiles').upsert(updates).select();
@@ -119,6 +123,14 @@ const MyPage: FC = () => {
       toast.success('로그아웃 되었습니다.');
     } catch {
       toast.error('로그아웃에 실패했습니다.');
+    }
+  };
+
+  const deleteUserSubmit = async (userID: string) => {
+    try {
+      await supabase.auth.admin.deleteUser(userID);
+    } catch {
+      navigate('/');
     }
   };
 
@@ -139,18 +151,19 @@ const MyPage: FC = () => {
           <Button colorScheme="red" onClick={logoutSubmit}>
             로그아웃
           </Button>
-          <Button colorScheme="red" variant="outline">
+          <Button colorScheme="red" variant="outline" onClick={() => deleteUserSubmit(userID)}>
             회원탈퇴
           </Button>
         </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
             <ImageUpload
-              url={imageUrl ?? null}
+              url={imageUrl ?? ProfileImage}
               onUpload={(url: string) => {
                 setImageUrl(url);
               }}
             />
+
             <Heading size="lg" textAlign="left">
               {name}
             </Heading>
@@ -177,16 +190,20 @@ const MyPage: FC = () => {
               <TabPanel>
                 <VStack spacing="4" mt="8" align="left">
                   <Box>
-                    <Text fontWeight="bold">Name:</Text>
+                    <Text fontWeight="bold">이름:</Text>
                     <Text>{name ? name : '이름 정보가 없습니다'}</Text>
                   </Box>
                   <Box>
-                    <Text fontWeight="bold">Phone:</Text>
+                    <Text fontWeight="bold">전화번호:</Text>
                     <Text>{phone ? phone : '전화번호 정보가 없습니다'}</Text>
                   </Box>
                   <Box>
-                    <Text fontWeight="bold">Birth:</Text>
+                    <Text fontWeight="bold">생년월일:</Text>
                     <Text>{birth ? birth : '생년월일 정보가 없습니다'}</Text>
+                  </Box>
+                  <Box>
+                    <Text fontWeight="bold">주소:</Text>
+                    <Text>{address ? address : '주소 정보가 없습니다'}</Text>
                   </Box>
                   <Button colorScheme="accent" onClick={onOpen}>
                     정보 변경
@@ -199,7 +216,7 @@ const MyPage: FC = () => {
                       <ModalBody>
                         <VStack spacing="4" mt="8" align="left" id="edit-profile">
                           <Box>
-                            <Text fontWeight="bold">Name:</Text>
+                            <Text fontWeight="bold">이름:</Text>
                             <Input
                               type="text"
                               placeholder={name ? name : '이름 정보가 없습니다'}
@@ -207,7 +224,7 @@ const MyPage: FC = () => {
                             />
                           </Box>
                           <Box>
-                            <Text fontWeight="bold">Phone:</Text>
+                            <Text fontWeight="bold">전화번호:</Text>
                             <Input
                               type="text"
                               placeholder={phone ? phone : '전화번호 정보가 없습니다'}
@@ -215,12 +232,20 @@ const MyPage: FC = () => {
                             />
                           </Box>
                           <Box>
-                            <Text fontWeight="bold">Birth:</Text>
+                            <Text fontWeight="bold">생년월일 :</Text>
                             <Input
                               placeholder={birth ? birth : '생년월일 정보가 없습니다'}
                               onChange={e => setBirth(e.target.value)}
                               type="date"
                               max={processer.date(now)}
+                            />
+                          </Box>
+                          <Box>
+                            <Text fontWeight="bold">주소:</Text>
+                            <Input
+                              placeholder={address ? address : '주소 정보가 없습니다'}
+                              onChange={e => setAddress(e.target.value)}
+                              type="text"
                             />
                           </Box>
                         </VStack>
