@@ -33,10 +33,9 @@ const PageHeader: FC = () => {
 
   const fetchLogin = async () => {
     try {
-      const { data } = await supabase.auth.getSession();
+      const { data } = await supabase.auth.getUser();
       if (data) {
-        setSession(data.session?.access_token);
-        navigate('/');
+        setSession(data.user?.id);
       }
     } catch (error) {
       console.log(error);
