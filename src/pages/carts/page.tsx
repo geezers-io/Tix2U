@@ -37,9 +37,12 @@ const CartsPage: FC = () => {
   const fetchCart = async (mt20id: string) => {
     try {
       const response = await PerformanceService.getDetail({ mt20id });
-      if (!cartItems.some(item => item.mt20id === response.mt20id)) {
-        setCartItems(prevItems => [...prevItems, response]);
-      }
+      setCartItems(prevItems => {
+        if (prevItems.some(item => item.mt20id === response.mt20id)) {
+          return prevItems;
+        }
+        return [...prevItems, response];
+      });
     } catch (e) {
       toast.error(e);
     }
@@ -79,24 +82,25 @@ const CartsPage: FC = () => {
       isExpanded(mt20id) ? prevExpanded.filter(id => id !== mt20id) : [...prevExpanded, mt20id],
     );
   };
-
   useEffect(() => {
-    mt20ids.forEach(id => fetchCart(id));
-    getID();
-  }, [mt20ids]);
+    if (cartItems.length !== mt20ids.length) {
+      mt20ids.forEach(id => fetchCart(id));
+      getID();
+    }
+  }, [cartItems]);
 
   if (!userID) return;
 
   return (
     <>
-      <Box p={{ base: '10px 5%', md: '20px 10%' }} bg="purple.50">
-        <Box pt={{ base: '40px', md: '60px' }} px={{ base: 2, md: 4 }} mx="auto" maxW="1200px" bg="white">
+      <Box p={{ base: '10px 5%', md: '10px 10%' }} bg="purple.50">
+        <Box pt={{ base: '40px', md: '45px' }} px={{ base: 2, md: 4 }} mx="auto" maxW="1200px" bg="white">
           <Box marginY={{ base: '20px', md: '40px' }}>
             <Heading size="lg" textAlign="center">
               <Box
                 as="span"
                 bgGradient={gradient}
-                // color={useColorModeValue('white', 'black')}
+                color="white"
                 px={{ base: 4, md: 6 }}
                 py={2}
                 borderRadius="md"
@@ -109,6 +113,22 @@ const CartsPage: FC = () => {
                 Carts
               </Box>
             </Heading>
+          </Box>
+
+          <Box>
+            <Button
+              onClick={handleDeleteSelectedItems}
+              disabled={selectedItems.length === 0}
+              ml={{ base: '2', md: 'auto' }}
+              mb={{ base: '6', md: '10' }}
+              mr={{ base: 'auto', md: 'auto' }}
+              mt={{ base: 'auto', md: '10' }}
+              transform={{ base: 'none', md: 'none' }}
+              colorScheme="accent"
+              variant="outline"
+            >
+              선택된 상품 삭제
+            </Button>
           </Box>
 
           <VStack align="start" spacing={{ base: '2', md: '4' }}>
@@ -170,25 +190,13 @@ const CartsPage: FC = () => {
             Amount
           </Text>
 
-          {cartItems.map(item => (
-            <Box key={item.mt20id} display="flex" flexDirection="row" marginBottom={{ base: '2', md: '4' }}>
-              <Text>{item.pcseguidance}</Text>
-            </Box>
-          ))}
-
-          <Button
-            onClick={handleDeleteSelectedItems}
-            disabled={selectedItems.length === 0}
-            ml={{ base: '2', md: 'auto' }}
-            mb={{ base: '6', md: '10' }}
-            mr={{ base: 'auto', md: 'auto' }}
-            mt={{ base: 'auto', md: '10' }}
-            transform={{ base: 'none', md: 'none' }}
-            colorScheme="accent"
-            variant="outline"
-          >
-            선택된 상품 삭제
-          </Button>
+          <VStack>
+            {cartItems.map(item => (
+              <Box key={item.mt20id} display="flex" flexDirection="row" marginBottom={{ base: '2', md: '4' }}>
+                <Text>{item.pcseguidance}</Text>
+              </Box>
+            ))}
+          </VStack>
         </Box>
       </Box>
     </>

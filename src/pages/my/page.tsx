@@ -7,7 +7,6 @@ import {
   Heading,
   Text,
   Button,
-  Divider,
   Tab,
   TabList,
   Tabs,
@@ -53,9 +52,12 @@ const MyPage: FC = () => {
   const fetchCart = async (mt20id: string) => {
     try {
       const response = await PerformanceService.getDetail({ mt20id });
-      if (!cartItems.some(item => item.mt20id === response.mt20id)) {
-        setCartItems(prevItems => [...prevItems, response]);
-      }
+      setCartItems(prevItems => {
+        if (prevItems.some(item => item.mt20id === response.mt20id)) {
+          return prevItems;
+        }
+        return [...prevItems, response];
+      });
     } catch (e) {
       toast.error(e);
     }
@@ -135,10 +137,12 @@ const MyPage: FC = () => {
   };
 
   useEffect(() => {
-    getID();
-    getProfile();
-    mt20ids.forEach(id => fetchCart(id));
-  }, [userID]);
+    if (cartItems.length !== mt20ids.length) {
+      mt20ids.forEach(id => fetchCart(id));
+      getID();
+      getProfile();
+    }
+  }, [cartItems]);
 
   if (!userID) {
     navigate('/login');
@@ -188,7 +192,7 @@ const MyPage: FC = () => {
 
             <TabPanels>
               <TabPanel>
-                <VStack spacing="4" mt="8" align="left">
+                <VStack spacing="4" mt="8" align="left" h="inherit">
                   <Box>
                     <Text fontWeight="bold">이름:</Text>
                     <Text>{name ? name : '이름 정보가 없습니다'}</Text>
@@ -205,6 +209,7 @@ const MyPage: FC = () => {
                     <Text fontWeight="bold">주소:</Text>
                     <Text>{address ? address : '주소 정보가 없습니다'}</Text>
                   </Box>
+
                   <Button colorScheme="accent" onClick={onOpen}>
                     정보 변경
                   </Button>
@@ -301,7 +306,7 @@ const MyPage: FC = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
-          <Divider mt={{ base: '4', md: '8' }} mb={{ base: '4', md: '6' }} />
+          {/* <Divider mt={{ base: '4', md: '8' }} mb={{ base: '4', md: '6' }} /> */}
         </Flex>
       </Box>
     </Box>

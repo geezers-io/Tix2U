@@ -25,6 +25,7 @@ import {
   Avatar,
   Input,
 } from '@chakra-ui/react';
+import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import KakaoMap from '@/components/KakaoMap';
@@ -41,20 +42,51 @@ const DetailPage: FC = () => {
   const toast = useCustomToast();
   const [content, setContent] = useState<string>('');
   const [commentList, setCommentList] = useState<commentList>([{ user: 'love_penguin', content: 'wow' }]);
+  const [name, setName] = useState<string | null>(null);
+  const [userImage, setUserImage] = useState<string | null>(null);
+  const [userID, setUserID] = useState<string | null>(null);
 
   const saveComment = e => {
     setContent(e.target.value);
   };
 
-  const handleCommentSubmit = (content: string) => {
+  const getID = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      if (user.data.user) {
+        setUserID(user.data.user?.id);
+      }
+    } catch {
+      toast.error('유저 아이디를 들고 오지 못했습니다.');
+    }
+  };
+
+  const getProfile = async (userID: string) => {
+    try {
+      const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
+
+      if (data) {
+        setName(data.name);
+        setUserImage(data.imageUrl);
+        console.log(userImage);
+      }
+    } catch {
+      toast.error('유저 정보를 들고 오지 못했습니다.');
+    }
+  };
+
+  const handleCommentSubmit = (content: string, name: string, userID: string) => {
     if (!content) return;
-    setCommentList([
-      ...commentList,
-      {
-        user: 'heeee',
-        content: content,
-      },
-    ]);
+    if (userID) {
+      setCommentList([
+        ...commentList,
+        {
+          user: name,
+          content: content,
+        },
+      ]);
+    }
   };
 
   const fetchDetail = async (mt20id: string) => {
@@ -69,102 +101,106 @@ const DetailPage: FC = () => {
   useEffect(() => {
     if (!mt20id) return;
     fetchDetail(String(mt20id));
-  }, []);
+    getID();
+    getProfile(String(userID));
+  }, [userID]);
 
   if (!detail) return;
 
   return (
     <Box p="10px 10%" bg="purple.50">
       <Box bgColor="white" fontSize="xl">
-        <Flex p="10px" flexDirection={{ base: 'column', md: 'row' }}>
-          <Flex flex={1} m="0 auto" p="50px">
-            <Image className="MainPoster" src={detail.poster} objectFit="contain" />
-          </Flex>
-
-          <Flex flex={2} flexDirection="column" w="100%" minH="700px">
-            <Flex gap={3} m="20px">
-              <Heading>
-                <Badge borderRadius="10px" fontSize="lg" p="8px" m="10px 5px" colorScheme="brand" variant="solid">
-                  {detail.genrenm}
-                </Badge>
-                {detail.prfnm}
-              </Heading>
+        <Card variant="outline" m="20px">
+          <Flex p="10px" flexDirection={{ base: 'column', md: 'row' }}>
+            <Flex flex={1} m="0 auto" p="50px">
+              <Image className="MainPoster" src={detail.poster} objectFit="contain" />
             </Flex>
-            <Box>
-              <Tabs isFitted colorScheme="brand">
-                <TabList>
-                  <Tab>콘서트 정보</Tab>
-                  <Tab>티켓 할인 정보</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <Flex flexDirection="column" gap={10}>
-                      <Flex>
-                        <Flex w="100px">
-                          <Text>장소</Text>
-                        </Flex>
-                        <Text as="b">{detail.fcltynm}</Text>
-                      </Flex>
-                      <Flex>
-                        <Flex w="100px">
-                          <Text>기간</Text>
-                        </Flex>
-                        <Text as="b">
-                          {detail.prfpdfrom} - {detail.prfpdto}
-                        </Text>
-                      </Flex>
-                      <Flex>
-                        <Flex w="100px">
-                          <Text>관람 시간</Text>
-                        </Flex>
-                        <Text as="b">{detail.prfruntime}</Text>
-                      </Flex>
-                      <Flex>
-                        <Flex w="100px">
-                          <Text>관람 등급</Text>
-                        </Flex>
-                        <Text as="b">{detail.prfage}</Text>
-                      </Flex>
-                      <Flex>
-                        <Flex w="100px">
-                          <Text>예매 가격</Text>
-                        </Flex>
-                        <Text as="b">{detail.pcseguidance}</Text>
-                      </Flex>
-                    </Flex>
-                  </TabPanel>
-                  <TabPanel>
-                    <Flex flexDirection="column" gap={10}>
-                      {ticketSale &&
-                        ticketSale.map(value => (
-                          <Flex>
-                            <Flex textAlign="center">
-                              <Badge ml="1" fontSize="0.8em" colorScheme="brand">
-                                {value.title}
-                              </Badge>
-                            </Flex>
-                            <Flex w="250px">
-                              <Text> {value.content.subtitle}</Text>
-                            </Flex>
-                            <Text as="b">{value.content.subcontent}</Text>
+
+            <Flex flex={2} flexDirection="column" w="100%" minH="700px">
+              <Flex gap={3} m="20px">
+                <Heading>
+                  <Badge borderRadius="10px" fontSize="lg" p="8px" m="10px 5px" colorScheme="brand" variant="solid">
+                    {detail.genrenm}
+                  </Badge>
+                  {detail.prfnm}
+                </Heading>
+              </Flex>
+              <Box>
+                <Tabs isFitted colorScheme="brand">
+                  <TabList>
+                    <Tab>콘서트 정보</Tab>
+                    <Tab>티켓 할인 정보</Tab>
+                  </TabList>
+                  <TabPanels>
+                    <TabPanel>
+                      <Flex flexDirection="column" gap={10}>
+                        <Flex>
+                          <Flex w="100px">
+                            <Text>장소</Text>
                           </Flex>
-                        ))}
-                    </Flex>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </Box>
-            <Flex flexDirection="row-reverse" gap="10px" m="40px" h="100%" alignItems="flex-end">
-              <TicketingButton id={mt20id} />
+                          <Text as="b">{detail.fcltynm}</Text>
+                        </Flex>
+                        <Flex>
+                          <Flex w="100px">
+                            <Text>기간</Text>
+                          </Flex>
+                          <Text as="b">
+                            {detail.prfpdfrom} - {detail.prfpdto}
+                          </Text>
+                        </Flex>
+                        <Flex>
+                          <Flex w="100px">
+                            <Text>관람 시간</Text>
+                          </Flex>
+                          <Text as="b">{detail.prfruntime}</Text>
+                        </Flex>
+                        <Flex>
+                          <Flex w="100px">
+                            <Text>관람 등급</Text>
+                          </Flex>
+                          <Text as="b">{detail.prfage}</Text>
+                        </Flex>
+                        <Flex>
+                          <Flex w="100px">
+                            <Text>예매 가격</Text>
+                          </Flex>
+                          <Text as="b">{detail.pcseguidance}</Text>
+                        </Flex>
+                      </Flex>
+                    </TabPanel>
+                    <TabPanel>
+                      <Flex flexDirection="column" gap={10}>
+                        {ticketSale &&
+                          ticketSale.map(value => (
+                            <Flex>
+                              <Flex textAlign="center">
+                                <Badge ml="1" fontSize="0.8em" colorScheme="brand">
+                                  {value.title}
+                                </Badge>
+                              </Flex>
+                              <Flex w="250px">
+                                <Text> {value.content.subtitle}</Text>
+                              </Flex>
+                              <Text as="b">{value.content.subcontent}</Text>
+                            </Flex>
+                          ))}
+                      </Flex>
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              </Box>
+              <Flex flexDirection="row-reverse" gap="10px" m="40px" h="100%" alignItems="flex-end">
+                <TicketingButton id={mt20id} />
 
-              <Link to={`/detail/${mt20id}/carts`}>
-                <Button colorScheme="gray" size="lg" variant="outline">
-                  장바구니
-                </Button>
-              </Link>
+                <Link to={`/detail/${mt20id}/carts`}>
+                  <Button colorScheme="gray" size="lg" variant="outline">
+                    장바구니
+                  </Button>
+                </Link>
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
+        </Card>
 
         <Box minH="1000px">
           <Tabs isFitted colorScheme="brand">
@@ -191,14 +227,19 @@ const DetailPage: FC = () => {
 
                   <Flex p="20px 0px">
                     <Box>
-                      <Avatar name="heeee" src={ProfileImage} m="10px" size="lg" />
+                      <Avatar name={name ?? null} src={ProfileImage} m="10px" size="lg" />
                       <Text textAlign="center" color="gray">
-                        heeee
+                        {name}
                       </Text>
                     </Box>
 
                     <Input placeholder="댓글을 입력하세요" value={content} onChange={saveComment} m="auto 0" />
-                    <Button colorScheme="brand" m="0 10px" onClick={() => handleCommentSubmit(content)} my="auto">
+                    <Button
+                      colorScheme="brand"
+                      m="0 10px"
+                      onClick={() => handleCommentSubmit(content, name<string | null>, userID)}
+                      my="auto"
+                    >
                       등록
                     </Button>
                   </Flex>
@@ -206,9 +247,13 @@ const DetailPage: FC = () => {
                     <Box>
                       {commentList &&
                         commentList.map(value => (
-                          <Flex m="20px" flexDirection={{ base: 'column', md: 'row' }}>
+                          <Flex
+                            m="20px"
+                            flexDirection={{ base: 'column', md: 'row' }}
+                            key={`${value.user} - ${value.content}`}
+                          >
                             <Box>
-                              <Avatar name={value.user} src="https://bit.ly/broken-link" m="10px" size="lg" />
+                              <Avatar name={value.user} src={userImage ?? ProfileImage} m="10px" size="lg" />
                               <Text textAlign="center" color="gray">
                                 {value.user}
                               </Text>
