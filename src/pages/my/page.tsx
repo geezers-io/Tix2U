@@ -271,23 +271,23 @@ const MyPage: FC = () => {
               <TabPanel>
                 <VStack align="start" spacing={{ base: '2', md: '4' }}>
                   {cartItems.map(item => (
-                    <Link to={`../detail/${item.mt20id}`}>
-                      <Box
-                        key={item.mt20id}
-                        border="1px"
-                        borderRadius="md"
-                        p="4"
-                        width="100%"
-                        shadow="lg"
-                        transition="all 0.3s"
-                        _hover={{
-                          cursor: 'pointer',
-                          transform: 'scale(1.05)',
-                        }}
-                      >
-                        <HStack alignItems="start" spacing="4">
-                          <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
-                          <VStack align="start" flex="1">
+                    <Box
+                      key={item.mt20id}
+                      border="1px"
+                      borderRadius="md"
+                      p="4"
+                      width="100%"
+                      shadow="lg"
+                      transition="all 0.3s"
+                      _hover={{
+                        cursor: 'pointer',
+                        transform: 'scale(1.05)',
+                      }}
+                    >
+                      <HStack alignItems="start" spacing="4">
+                        <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                        <VStack align="start" flex="1">
+                          <Link to={`detail/${item.mt20id}`}>
                             <HStack>
                               <VStack align="start" flex="1">
                                 <Text ml="5">{item.prfnm}</Text>
@@ -296,11 +296,11 @@ const MyPage: FC = () => {
                                 </Text>
                               </VStack>
                             </HStack>
-                          </VStack>
-                          <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
-                        </HStack>
-                      </Box>
-                    </Link>
+                          </Link>
+                        </VStack>
+                        <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
+                      </HStack>
+                    </Box>
                   ))}
                 </VStack>
               </TabPanel>

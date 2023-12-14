@@ -76,9 +76,13 @@ const DetailPage: FC = () => {
     }
   };
 
-  const handleCommentSubmit = (content: string, name: string, userID: string) => {
+  const handleCommentSubmit = async (content: string, name: string | null) => {
     if (!content) return;
-    if (userID) {
+    if (!name) {
+      toast.error('사용자의 이름 정보가 없습니다.');
+      return;
+    }
+    if (name && content) {
       setCommentList([
         ...commentList,
         {
@@ -227,19 +231,14 @@ const DetailPage: FC = () => {
 
                   <Flex p="20px 0px">
                     <Box>
-                      <Avatar name={name ?? null} src={ProfileImage} m="10px" size="lg" />
+                      <Avatar name={name ?? undefined} src={ProfileImage} m="10px" size="lg" />
                       <Text textAlign="center" color="gray">
                         {name}
                       </Text>
                     </Box>
 
                     <Input placeholder="댓글을 입력하세요" value={content} onChange={saveComment} m="auto 0" />
-                    <Button
-                      colorScheme="brand"
-                      m="0 10px"
-                      onClick={() => handleCommentSubmit(content, name<string | null>, userID)}
-                      my="auto"
-                    >
+                    <Button colorScheme="brand" m="0 10px" onClick={() => handleCommentSubmit(content, name)} my="auto">
                       등록
                     </Button>
                   </Flex>
