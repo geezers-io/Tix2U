@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Switch } from '@chakra-ui/react';
+import { SunFill, MoonFill } from 'react-bootstrap-icons';
+import { Button } from '@chakra-ui/react';
 
 interface ThemeSwitcherProps {
   onToggle: () => void;
@@ -8,14 +9,9 @@ interface ThemeSwitcherProps {
 
 const ThemeSwitcher: FC<ThemeSwitcherProps> = ({ onToggle, isDarkMode }) => {
   return (
-    <Switch
-      colorScheme={isDarkMode ? 'white' : 'black'}
-      onChange={onToggle}
-      isChecked={isDarkMode}
-      color={isDarkMode ? 'white' : 'black'}
-    >
-      {isDarkMode ? 'Dark Mode' : 'Light Mode'}
-    </Switch>
+    <Button onClick={onToggle} colorScheme={isDarkMode ? 'white' : 'black'}>
+      {isDarkMode ? <MoonFill color="white" /> : <SunFill color="black" />}
+    </Button>
   );
 };
 

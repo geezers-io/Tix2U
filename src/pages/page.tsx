@@ -13,6 +13,14 @@ import { colors } from '@/styles/theme/@colors';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+interface ResponsiveSettings {
+  breakpoint: number;
+  settings: {
+    slidesToShow: number;
+    slidesToScroll: number;
+  };
+}
+
 interface SliderSettings {
   infinite: boolean;
   speed: number;
@@ -20,6 +28,7 @@ interface SliderSettings {
   autoplaySpeed: number;
   slidesToShow: number;
   slidesToScroll: number;
+  responsive: ResponsiveSettings[];
 }
 
 const IndexPage: FC = () => {
@@ -64,6 +73,22 @@ const IndexPage: FC = () => {
     autoplaySpeed: 7000,
     slidesToShow: 6,
     slidesToScroll: 3,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -104,6 +129,7 @@ const IndexPage: FC = () => {
                 overflow="hidden"
                 shadow="xl"
                 bg={colors.gray[50]}
+                mb="10"
               >
                 <Skeleton height="180px" />
                 <Box p="4">
