@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Phone } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -41,6 +42,7 @@ const SignUpPage = () => {
   const toast = useCustomToast();
   const now = new Date();
   const [show, setShow] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleClick = () => setShow(!show);
 
@@ -58,8 +60,9 @@ const SignUpPage = () => {
           },
         },
       });
+      navigate('/');
       if (error) {
-        toast.error('회원가입에 성공하지 못했습니다. 입력값을 다시 확인해주세요');
+        toast.error(error);
       } else {
         toast.success('회원가입에 성공했어요');
       }

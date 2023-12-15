@@ -24,7 +24,7 @@ const CartsPage: FC = () => {
       if (user.data.user) {
         setUserID(user.data.user?.id);
       } else {
-        toast.error('로그인 정보가 없습니다.');
+        toast.error('사용자 정보가 없습니다.');
         navigate('/login');
       }
     } catch {

@@ -29,6 +29,7 @@ import { Tables } from '@/api/lib/database.types';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
+import DeleteIDButton from '@/components/DeleteIDButton';
 import ImageUpload from '@/components/ImageUploader';
 import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
@@ -72,6 +73,9 @@ const MyPage: FC = () => {
       if (user.data.user) {
         setUserID(user.data.user?.id);
         setEmailID(user.data.user?.email);
+      } else {
+        toast.error('사용자의 정보가 없습니다.');
+        navigate('/login');
       }
     } catch {
       toast.error('유저 아이디를 들고 오지 못했습니다.');
@@ -129,14 +133,6 @@ const MyPage: FC = () => {
     }
   };
 
-  const deleteUserSubmit = async (userID: string) => {
-    try {
-      await supabase.auth.admin.deleteUser(userID);
-    } catch {
-      navigate('/');
-    }
-  };
-
   useEffect(() => {
     if (cartItems.length !== mt20ids.length) {
       mt20ids.forEach(id => fetchCart(id));
@@ -145,9 +141,7 @@ const MyPage: FC = () => {
     }
   }, [cartItems]);
 
-  if (!userID) {
-    return;
-  }
+  if (!userID) return;
 
   return (
     <Box bgColor="purple.50" minHeight="80vh" p="10px 5%" display="flex" justifyContent="center">
@@ -156,9 +150,7 @@ const MyPage: FC = () => {
           <Button colorScheme="red" onClick={logoutSubmit}>
             로그아웃
           </Button>
-          <Button colorScheme="red" variant="outline" onClick={() => deleteUserSubmit(userID)}>
-            회원탈퇴
-          </Button>
+          <DeleteIDButton userID={userID} />
         </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
