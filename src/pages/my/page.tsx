@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { HeartFill } from 'react-bootstrap-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -35,8 +36,6 @@ import { processer } from '@/utils/process';
 
 const MyPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
-  const mt20ids = ['PF215946', 'PF228209'];
-  const toast = useCustomToast();
   const [name, setName] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [emailID, setEmailID] = useState<string | undefined>('');
@@ -47,6 +46,8 @@ const MyPage: FC = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
+  const toast = useCustomToast();
   const now = new Date();
 
   const fetchCart = async (mt20id: string) => {
@@ -85,8 +86,8 @@ const MyPage: FC = () => {
       if (data) {
         setName(data.name);
         setPhone(data.phone);
-        setEmail(data.email);
         setBirth(data.birth);
+        setEmail(data.email);
         setImageUrl(data.imageUrl);
         setAddress(data.address);
       }
@@ -145,7 +146,7 @@ const MyPage: FC = () => {
   }, [cartItems]);
 
   if (!userID) {
-    navigate('/login');
+    return;
   }
 
   return (
@@ -187,7 +188,7 @@ const MyPage: FC = () => {
           >
             <TabList>
               <Tab>회원정보</Tab>
-              <Tab>장바구니 목록</Tab>
+              <Tab>위시리스트 목록</Tab>
             </TabList>
 
             <TabPanels>
@@ -269,6 +270,11 @@ const MyPage: FC = () => {
                 </VStack>
               </TabPanel>
               <TabPanel>
+                <Link to="/cart">
+                  <Button colorScheme="brand" m="10px">
+                    위시리스트로 이동하기
+                  </Button>
+                </Link>
                 <VStack align="start" spacing={{ base: '2', md: '4' }}>
                   {cartItems.map(item => (
                     <Box
@@ -285,6 +291,7 @@ const MyPage: FC = () => {
                       }}
                     >
                       <HStack alignItems="start" spacing="4">
+                        <HeartFill color="pink" />
                         <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
                         <VStack align="start" flex="1">
                           <Link to={`detail/${item.mt20id}`}>

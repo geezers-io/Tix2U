@@ -196,7 +196,7 @@ const DetailPage: FC = () => {
               <Flex flexDirection="row-reverse" gap="10px" m="40px" h="100%" alignItems="flex-end">
                 <TicketingButton id={mt20id} />
 
-                <Link to={`/detail/${mt20id}/carts`}>
+                <Link to={`/cart`}>
                   <Button colorScheme="gray" size="lg" variant="outline">
                     장바구니
                   </Button>

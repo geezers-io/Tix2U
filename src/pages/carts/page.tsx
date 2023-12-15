@@ -10,13 +10,12 @@ import { colors } from '@/styles/theme/@colors';
 
 const CartsPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
-  //const [quantity, setQuantity] = useState(1);
-  const toast = useCustomToast();
-  const gradient = `linear(to-r, ${colors.brand[300]}, pink)`;
-  const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [userID, setUserID] = useState<string | null>(null);
   const navigate = useNavigate();
+  const toast = useCustomToast();
+  const gradient = `linear(to-r, ${colors.brand[300]}, pink)`;
+  const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
 
   const getID = async () => {
     try {
@@ -48,14 +47,6 @@ const CartsPage: FC = () => {
     }
   };
 
-  {
-    /*const handleCheckboxToggle = (mt20id: string) => {
-    setSelectedItems(prevSelected =>
-      prevSelected.includes(mt20id) ? prevSelected.filter(id => id !== mt20id) : [...prevSelected, mt20id],
-    );
-  }; */
-  }
-
   const handleDelete = async mt20id => {
     const updateData = cartItems.filter(item => item.mt20id !== mt20id);
     setCartItems(updateData);
@@ -75,7 +66,9 @@ const CartsPage: FC = () => {
     }
   }, []);
 
-  if (!userID) return;
+  if (!userID) {
+    return;
+  }
 
   return (
     <>
