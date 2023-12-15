@@ -40,7 +40,7 @@ const SignInPage = () => {
         password: value.password,
       });
       if (error) {
-        toast.error(error);
+        toast.error('로그인 정보가 올바르지 않습니다.');
       } else {
         toast.success('로그인에 성공했어요!');
         navigate('/');

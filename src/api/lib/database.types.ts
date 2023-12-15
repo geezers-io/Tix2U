@@ -111,41 +111,6 @@ export interface Database {
           },
         ];
       };
-      todos: {
-        Row: {
-          age: string | null;
-          id: number;
-          image: string | null;
-          location: string;
-          title: string | null;
-          user_id: string;
-        };
-        Insert: {
-          age?: string | null;
-          id?: number;
-          image?: string | null;
-          location: string;
-          title?: string | null;
-          user_id: string;
-        };
-        Update: {
-          age?: string | null;
-          id?: number;
-          image?: string | null;
-          location?: string;
-          title?: string | null;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'todos_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
     };
     Views: {
       [_ in never]: never;

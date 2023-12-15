@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { HeartFill } from 'react-bootstrap-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -28,6 +29,7 @@ import { Tables } from '@/api/lib/database.types';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
+import DeleteIDButton from '@/components/DeleteIDButton';
 import ImageUpload from '@/components/ImageUploader';
 import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
@@ -35,8 +37,6 @@ import { processer } from '@/utils/process';
 
 const MyPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
-  const mt20ids = ['PF215946', 'PF228209'];
-  const toast = useCustomToast();
   const [name, setName] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [emailID, setEmailID] = useState<string | undefined>('');
@@ -47,6 +47,8 @@ const MyPage: FC = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
+  const toast = useCustomToast();
   const now = new Date();
 
   const fetchCart = async (mt20id: string) => {
@@ -71,6 +73,9 @@ const MyPage: FC = () => {
       if (user.data.user) {
         setUserID(user.data.user?.id);
         setEmailID(user.data.user?.email);
+      } else {
+        toast.error('사용자의 정보가 없습니다.');
+        navigate('/login');
       }
     } catch {
       toast.error('유저 아이디를 들고 오지 못했습니다.');
@@ -85,8 +90,8 @@ const MyPage: FC = () => {
       if (data) {
         setName(data.name);
         setPhone(data.phone);
-        setEmail(data.email);
         setBirth(data.birth);
+        setEmail(data.email);
         setImageUrl(data.imageUrl);
         setAddress(data.address);
       }
@@ -128,14 +133,6 @@ const MyPage: FC = () => {
     }
   };
 
-  const deleteUserSubmit = async (userID: string) => {
-    try {
-      await supabase.auth.admin.deleteUser(userID);
-    } catch {
-      navigate('/');
-    }
-  };
-
   useEffect(() => {
     if (cartItems.length !== mt20ids.length) {
       mt20ids.forEach(id => fetchCart(id));
@@ -144,9 +141,7 @@ const MyPage: FC = () => {
     }
   }, [cartItems]);
 
-  if (!userID) {
-    navigate('/login');
-  }
+  if (!userID) return;
 
   return (
     <Box bgColor="purple.50" minHeight="80vh" p="10px 5%" display="flex" justifyContent="center">
@@ -155,9 +150,7 @@ const MyPage: FC = () => {
           <Button colorScheme="red" onClick={logoutSubmit}>
             로그아웃
           </Button>
-          <Button colorScheme="red" variant="outline" onClick={() => deleteUserSubmit(userID)}>
-            회원탈퇴
-          </Button>
+          <DeleteIDButton userID={userID} />
         </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
@@ -187,7 +180,7 @@ const MyPage: FC = () => {
           >
             <TabList>
               <Tab>회원정보</Tab>
-              <Tab>장바구니 목록</Tab>
+              <Tab>위시리스트 목록</Tab>
             </TabList>
 
             <TabPanels>
@@ -269,25 +262,31 @@ const MyPage: FC = () => {
                 </VStack>
               </TabPanel>
               <TabPanel>
+                <Link to="/cart">
+                  <Button colorScheme="brand" m="10px">
+                    위시리스트로 이동하기
+                  </Button>
+                </Link>
                 <VStack align="start" spacing={{ base: '2', md: '4' }}>
                   {cartItems.map(item => (
-                    <Link to={`../detail/${item.mt20id}`}>
-                      <Box
-                        key={item.mt20id}
-                        border="1px"
-                        borderRadius="md"
-                        p="4"
-                        width="100%"
-                        shadow="lg"
-                        transition="all 0.3s"
-                        _hover={{
-                          cursor: 'pointer',
-                          transform: 'scale(1.05)',
-                        }}
-                      >
-                        <HStack alignItems="start" spacing="4">
-                          <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
-                          <VStack align="start" flex="1">
+                    <Box
+                      key={item.mt20id}
+                      border="1px"
+                      borderRadius="md"
+                      p="4"
+                      width="100%"
+                      shadow="lg"
+                      transition="all 0.3s"
+                      _hover={{
+                        cursor: 'pointer',
+                        transform: 'scale(1.05)',
+                      }}
+                    >
+                      <HStack alignItems="start" spacing="4">
+                        <HeartFill color="pink" />
+                        <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                        <VStack align="start" flex="1">
+                          <Link to={`detail/${item.mt20id}`}>
                             <HStack>
                               <VStack align="start" flex="1">
                                 <Text ml="5">{item.prfnm}</Text>
@@ -296,11 +295,11 @@ const MyPage: FC = () => {
                                 </Text>
                               </VStack>
                             </HStack>
-                          </VStack>
-                          <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
-                        </HStack>
-                      </Box>
-                    </Link>
+                          </Link>
+                        </VStack>
+                        <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
+                      </HStack>
+                    </Box>
                   ))}
                 </VStack>
               </TabPanel>
