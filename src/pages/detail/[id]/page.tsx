@@ -27,9 +27,9 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalCloseButton,
   ModalFooter,
+  ModalBody,
 } from '@chakra-ui/react';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
@@ -128,14 +128,16 @@ const DetailPage: FC = () => {
 
   return (
     <Box p="10px 10%" bg="purple.50">
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Added to Wish List!</ModalHeader>
+          <ModalBody m="20px">
+            <Text as="b">위시리스트 목록에 추가되었어요!</Text>
+          </ModalBody>
           <ModalCloseButton />
           <ModalFooter>
             <Button colorScheme="brand" onClick={closeModal}>
-              Close
+              닫기
             </Button>
           </ModalFooter>
         </ModalContent>
