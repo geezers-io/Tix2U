@@ -80,7 +80,7 @@ const CartsPage: FC = () => {
   return (
     <>
       <Box p={{ base: '10px 5%', md: '10px 10%' }} bg="purple.50">
-        <Box p={{ base: '10px', md: '15px' }} px={{ base: 2, md: 4 }} maxW="1200px" bg="white">
+        <Box pt={{ base: '10px', md: '15px' }} px={{ base: 2, md: 4 }} mx="auto" maxW="1200px" bg="white">
           <Box marginY={{ base: '20px', md: '40px' }}>
             <Heading size="lg" textAlign="center">
               <Box
