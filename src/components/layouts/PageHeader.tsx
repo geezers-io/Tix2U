@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { PersonCircle, BoxArrowInRight, Cart, Search, BoxArrowInLeft, List } from 'react-bootstrap-icons';
+import { PersonCircle, BoxArrowInRight, Search, BoxArrowInLeft, List, BagHeart } from 'react-bootstrap-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -8,7 +8,6 @@ import {
   Spacer,
   HStack,
   Text,
-  Center,
   useMediaQuery,
   IconButton,
   Drawer,
@@ -111,57 +110,80 @@ const PageHeader: FC = () => {
 
           <HStack spacing={10} align="center">
             <Link to="/search">
-              <Text fontWeight="bold" letterSpacing="0.1em" cursor="pointer" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-                <Center>
-                  <Search /> SEARCH
-                </Center>
-              </Text>
+              <Flex flexDirection="column" alignItems="center">
+                <Text
+                  fontWeight="bold"
+                  letterSpacing="0.1em"
+                  cursor="pointer"
+                  fontSize={isLargerThanMd ? 'md' : 'sm'}
+                  align="center"
+                >
+                  <Flex flexDirection="column" alignItems="center">
+                    <Search />
+                    <Text>SEARCH</Text>
+                  </Flex>
+                </Text>
+              </Flex>
             </Link>
 
             {!!session && (
               <>
-                <Text
-                  fontWeight="bold"
-                  letterSpacing="0.1em"
-                  _hover={{ textDecoration: 'underline' }}
-                  fontSize={isLargerThanMd ? 'md' : 'sm'}
-                  onClick={signOut}
-                  cursor="pointer"
-                >
-                  <Center>
-                    <BoxArrowInLeft /> LOGOUT
-                  </Center>
-                </Text>
-
-                <Link to="/my">
-                  <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-                    <Center>
-                      <PersonCircle /> MYPAGE
-                    </Center>
+                <Flex flexDirection="column" alignItems="center">
+                  <BoxArrowInLeft />
+                  <Text
+                    fontWeight="bold"
+                    letterSpacing="0.1em"
+                    _hover={{ textDecoration: 'underline' }}
+                    fontSize={isLargerThanMd ? 'md' : 'sm'}
+                    onClick={signOut}
+                    cursor="pointer"
+                    align="center"
+                  >
+                    LOGOUT
                   </Text>
+                </Flex>
+                <Link to="/my">
+                  <Flex flexDirection="column" alignItems="center">
+                    <PersonCircle />
+                    <Text
+                      fontWeight="bold"
+                      letterSpacing="0.1em"
+                      fontSize={isLargerThanMd ? 'md' : 'sm'}
+                      align="center"
+                    >
+                      MYPAGE
+                    </Text>
+                  </Flex>
                 </Link>
                 <Link to="/cart">
-                  <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-                    <Center>
-                      <Cart /> CART
-                    </Center>
-                  </Text>
+                  <Flex flexDirection="column" alignItems="center">
+                    <BagHeart />
+                    <Text
+                      fontWeight="bold"
+                      letterSpacing="0.1em"
+                      fontSize={isLargerThanMd ? 'md' : 'sm'}
+                      align="center"
+                    >
+                      LIST
+                    </Text>
+                  </Flex>
                 </Link>
               </>
             )}
 
             {!session && (
               <Link to="/login">
-                <Text
-                  fontWeight="bold"
-                  letterSpacing="0.1em"
-                  _hover={{ textDecoration: 'underline' }}
-                  fontSize={isLargerThanMd ? 'md' : 'sm'}
-                >
-                  <Center>
-                    <BoxArrowInRight /> LOGIN
-                  </Center>
-                </Text>
+                <Flex flexDirection="column" alignItems="center">
+                  <BoxArrowInRight />
+                  <Text
+                    fontWeight="bold"
+                    letterSpacing="0.1em"
+                    _hover={{ textDecoration: 'underline' }}
+                    fontSize={isLargerThanMd ? 'md' : 'sm'}
+                  >
+                    LOGIN
+                  </Text>
+                </Flex>
               </Link>
             )}
           </HStack>
