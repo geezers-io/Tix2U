@@ -24,6 +24,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Tooltip,
 } from '@chakra-ui/react';
 import { Tables } from '@/api/lib/database.types';
 import supabase from '@/api/lib/supabase';
@@ -283,13 +284,25 @@ const MyPage: FC = () => {
                       }}
                     >
                       <HStack alignItems="start" spacing="4">
-                        <HeartFill color="pink" />
+                        <Box>
+                          <HeartFill style={{ color: 'pink', width: '1em', height: '1em' }} />
+                        </Box>
                         <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+
                         <VStack align="start" flex="1">
                           <Link to={`detail/${item.mt20id}`}>
                             <HStack>
                               <VStack align="start" flex="1">
-                                <Text ml="5">{item.prfnm}</Text>
+                                <Text
+                                  ml="3"
+                                  noOfLines={1}
+                                  overflow="hidden"
+                                  textOverflow="ellipsis"
+                                  whiteSpace="nowrap"
+                                  width="100%"
+                                >
+                                  {item.prfnm}
+                                </Text>
                                 <Text fontWeight="bold" marginBottom="1" ml="5">
                                   {`제한 연령: ${item.prfage}`}
                                 </Text>
@@ -297,7 +310,20 @@ const MyPage: FC = () => {
                             </HStack>
                           </Link>
                         </VStack>
-                        <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
+
+                        <Text
+                          ml="2"
+                          noOfLines={1}
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                          width={{ base: '100%', md: '70%' }}
+                          pl={{ base: '0', md: '4' }}
+                        >
+                          <Tooltip label={item.fcltynm} placement="top">
+                            <span>{`장소: ${item.fcltynm}`}</span>
+                          </Tooltip>
+                        </Text>
                       </HStack>
                     </Box>
                   ))}
