@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -32,6 +32,19 @@ const SignInPage = () => {
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
   const navigate = useNavigate();
+  const [userID, setUserID] = useState<string | null>(null);
+
+  const getID = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      if (user.data.user) {
+        setUserID(user.data.user?.id);
+      }
+    } catch {
+      toast.error('유저 아이디를 들고 오지 못했습니다.');
+    }
+  };
 
   const handleSubmit = async (value: FormValues) => {
     try {
@@ -60,15 +73,14 @@ const SignInPage = () => {
     }
   };
 
-  const signOut = async () => {
-    try {
-      await supabase.auth.signOut();
-      toast.info('로그아웃 하였어요');
-      navigate('/');
-    } catch {
-      toast.error('로그아웃에 실패했어요.');
-    }
-  };
+  useEffect(() => {
+    getID();
+  }, []);
+
+  if (userID) {
+    toast.error('로그인이 되어있는 상태입니다.');
+    navigate('/');
+  }
 
   return (
     <Formik<FormValues>
@@ -134,9 +146,6 @@ const SignInPage = () => {
 
                       <Box m="0 auto">
                         <Image src="public/kakaoLogin.png" role="button" onClick={signInWithKakao} />
-                        <Button colorScheme="red" w="100%" p="20px" onClick={signOut}>
-                          로그아웃
-                        </Button>
                       </Box>
                       <Flex m="0 auto" justifyContent="space-between">
                         <Link to="/login/find">
