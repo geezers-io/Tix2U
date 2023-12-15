@@ -105,7 +105,11 @@ const DetailPage: FC = () => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleCartButtonClick = () => {
-    openModal();
+    if (userID) {
+      openModal();
+    } else {
+      toast.error('로그인되지 않았습니다.');
+    }
   };
 
   const fetchDetail = async (mt20id: string) => {
