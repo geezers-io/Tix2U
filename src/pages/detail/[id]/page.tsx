@@ -24,12 +24,19 @@ import {
   Card,
   Avatar,
   Input,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
 } from '@chakra-ui/react';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import KakaoMap from '@/components/KakaoMap';
 import TicketingButton from '@/components/TicketingButton';
+import ZoomImage from '@/components/shared/ZoomImage';
 import { ticketSale } from '@/constants/detail';
 import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
@@ -45,6 +52,7 @@ const DetailPage: FC = () => {
   const [name, setName] = useState<string | null>(null);
   const [userImage, setUserImage] = useState<string | null>(null);
   const [userID, setUserID] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const saveComment = e => {
     setContent(e.target.value);
@@ -76,9 +84,13 @@ const DetailPage: FC = () => {
     }
   };
 
-  const handleCommentSubmit = (content: string, name: string, userID: string) => {
+  const handleCommentSubmit = async (content: string, name: string | null) => {
     if (!content) return;
-    if (userID) {
+    if (!name) {
+      toast.error('사용자의 이름 정보가 없습니다.');
+      return;
+    }
+    if (name && content) {
       setCommentList([
         ...commentList,
         {
@@ -87,6 +99,13 @@ const DetailPage: FC = () => {
         },
       ]);
     }
+  };
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleCartButtonClick = () => {
+    openModal();
   };
 
   const fetchDetail = async (mt20id: string) => {
@@ -109,11 +128,24 @@ const DetailPage: FC = () => {
 
   return (
     <Box p="10px 10%" bg="purple.50">
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Added to Wish List!</ModalHeader>
+          <ModalCloseButton />
+          <ModalFooter>
+            <Button colorScheme="brand" onClick={closeModal}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       <Box bgColor="white" fontSize="xl">
         <Card variant="outline" m="20px">
           <Flex p="10px" flexDirection={{ base: 'column', md: 'row' }}>
             <Flex flex={1} m="0 auto" p="50px">
-              <Image className="MainPoster" src={detail.poster} objectFit="contain" />
+              <ZoomImage src={detail.poster} />
             </Flex>
 
             <Flex flex={2} flexDirection="column" w="100%" minH="700px">
@@ -192,11 +224,9 @@ const DetailPage: FC = () => {
               <Flex flexDirection="row-reverse" gap="10px" m="40px" h="100%" alignItems="flex-end">
                 <TicketingButton id={mt20id} />
 
-                <Link to={`/detail/${mt20id}/carts`}>
-                  <Button colorScheme="gray" size="lg" variant="outline">
-                    장바구니
-                  </Button>
-                </Link>
+                <Button colorScheme="accent" size="lg" onClick={handleCartButtonClick}>
+                  찜하기
+                </Button>
               </Flex>
             </Flex>
           </Flex>
@@ -227,19 +257,14 @@ const DetailPage: FC = () => {
 
                   <Flex p="20px 0px">
                     <Box>
-                      <Avatar name={name ?? null} src={ProfileImage} m="10px" size="lg" />
+                      <Avatar name={name ?? undefined} src={ProfileImage} m="10px" size="lg" />
                       <Text textAlign="center" color="gray">
                         {name}
                       </Text>
                     </Box>
 
                     <Input placeholder="댓글을 입력하세요" value={content} onChange={saveComment} m="auto 0" />
-                    <Button
-                      colorScheme="brand"
-                      m="0 10px"
-                      onClick={() => handleCommentSubmit(content, name<string | null>, userID)}
-                      my="auto"
-                    >
+                    <Button colorScheme="brand" m="0 10px" onClick={() => handleCommentSubmit(content, name)} my="auto">
                       등록
                     </Button>
                   </Flex>
