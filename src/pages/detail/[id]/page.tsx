@@ -239,7 +239,7 @@ const DetailPage: FC = () => {
         </Card>
 
         <Box minH="1000px">
-          <Tabs isFitted colorScheme="brand">
+          <Tabs isFitted colorScheme="brand" isLazy>
             <TabList mb="1em">
               <Tab>상세 정보</Tab>
               <Tab>관람 후기</Tab>
