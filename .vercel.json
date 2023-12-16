@@ -6,7 +6,7 @@
       "has": [
         {
           "type": "path",
-          "value": "/public/(.*)"
+          "value": "public/(.*)"
         },
         {
           "type": "not"

@@ -35,7 +35,7 @@ const SearchPage = () => {
   return (
     <Box p="10px 10%" bg="purple.50">
       <Flex>
-        <Image src="/public/name_logo.png" justifyItems="center" m="0 auto" />
+        <Image src="/name_logo.png" justifyItems="center" m="0 auto" />
       </Flex>
       <Box fontSize="xl">
         <Flex bgColor="white" borderWidth="1px" w="85%" m="0 auto">
@@ -119,7 +119,7 @@ const SearchPage = () => {
         )}
         {searchList.length === 0 && (
           <Flex p="20% 0">
-            <Image src="public/logo.png" m="auto auto" />
+            <Image src="/logo.png" m="auto auto" />
           </Flex>
         )}
       </Box>

@@ -33,7 +33,7 @@ const FindIDPage = () => {
       <Box bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px" m="0 auto">
         <Box>
           <Flex m="0 auto" justifyContent="center">
-            <Image src="/public/name_logo.png" w="500px" />
+            <Image src="/name_logo.png" w="500px" />
           </Flex>
           <Tabs isFitted variant="soft-rounded" colorScheme="brand">
             <TabList mb="1em">

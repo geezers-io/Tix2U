@@ -89,7 +89,7 @@ const SignUpPage = () => {
             <Box p="10px 5%" bg="purple.50">
               <Box m="0 auto" bgColor="white" p={5} w="90%" maxW="700px">
                 <Box m="0 auto">
-                  <Image src="/public/name_logo.png" w="200px" justifyItems="center" alignItems="center" />
+                  <Image src="/name_logo.png" w="200px" justifyItems="center" alignItems="center" />
                 </Box>
 
                 <Box m="30px 0">

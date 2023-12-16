@@ -99,7 +99,7 @@ const SignInPage = () => {
                 <Box p="50px">
                   <Flex m="auto 0" flexDirection="column" justifyContent="center">
                     <Flex m="0 auto">
-                      <Image src="/public/name_logo.png" w="500px" />
+                      <Image src="/name_logo.png" w="500px" />
                     </Flex>
 
                     <Flex m="0 auto" w="80%" flexDirection="column" gap="30px">
@@ -145,7 +145,7 @@ const SignInPage = () => {
                       </Box>
 
                       <Box m="0 auto">
-                        <Image src="public/kakaoLogin.png" role="button" onClick={signInWithKakao} />
+                        <Image src="/kakaoLogin.png" role="button" onClick={signInWithKakao} />
                       </Box>
                       <Flex m="0 auto" justifyContent="space-between">
                         <Link to="/login/find">
