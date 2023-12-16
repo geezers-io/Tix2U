@@ -19,7 +19,7 @@ const PageAside: FC = () => {
       paddingX="4"
     >
       <HStack spacing="4" marginY="4">
-        <Image src="/logo.png" alt="Logo" w="100px" h="50px" />
+        <Image src="/logo.svg" alt="Logo" w="100px" h="50px" />
         <Text fontSize="sm" opacity={0.5}>
           개인정보처리방침
         </Text>
