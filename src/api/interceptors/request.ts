@@ -10,7 +10,7 @@ export function injectServiceKey(config: InternalAxiosRequestConfig) {
 export function logRequest(config: InternalAxiosRequestConfig) {
   printRequestLog({
     method: config.method,
-    endPoint: config.url,
+    endPoint: config.baseURL,
     requestParams: config.params,
     requestData: config.data,
     config,
