@@ -9,7 +9,7 @@ export function injectServiceKey(config: InternalAxiosRequestConfig) {
 
 export function logRequest(config: InternalAxiosRequestConfig) {
   printRequestLog({
-    method: config.method,
+    method: 'http://kopis.or.kr',
     endPoint: config.baseURL,
     requestParams: config.params,
     requestData: config.data,
