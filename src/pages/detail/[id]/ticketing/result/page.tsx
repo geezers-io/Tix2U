@@ -39,7 +39,7 @@ const TicketingResultPage = () => {
             <Heading size="md" textAlign="center" m="50px 20px">
               예매가 성공적으로 진행되었습니다!
             </Heading>
-            <Image src="/public/ticket/top_ticket.png" />
+            <Image src="/ticket/top_ticket.png" />
             <Card p="20px">
               <Box>
                 <Badge colorScheme="brand" m="10px">
@@ -69,10 +69,10 @@ const TicketingResultPage = () => {
                 </Box>
               </Box>
 
-              <Image src="/public/ticket/QRcode.png" w="200px" m="20px auto" />
-              <Image src="/public/name_logo.png" w="150px" m="5px auto" />
+              <Image src="/ticket/QRcode.png" w="200px" m="20px auto" />
+              <Image src="/name_logo.png" w="150px" m="5px auto" />
             </Card>
-            <Image src="/public/ticket/bottom_ticket.png" />
+            <Image src="/ticket/bottom_ticket.png" />
             <Text textColor="gray" m="20px 10px" textAlign="center">
               QR 티켓 분실 시 공연 입장에 불리할 수 있습니다.
             </Text>

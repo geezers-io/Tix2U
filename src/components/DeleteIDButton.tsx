@@ -45,7 +45,7 @@ const DeleteIDButton: FC<Props> = ({ userID }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalBody py={6} m="20px">
-            <Image src="/public/name_logo.png" alt="no Image" />
+            <Image src="/name_logo.png" alt="no Image" />
             <Text>
               저희 Tix2U는 사용자의 원하는 정보에 접근할 수 있도록 최선을 다하고 있습니다. <br />
               서비스에 불만족스러운 부분이 있다면 의견 남겨주시면 감사하겠습니다.

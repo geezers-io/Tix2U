@@ -23,19 +23,19 @@ export const ticketSale: saleList = [
 
 export const simplePayMethod: simplePayMethod = [
   {
-    image: '/public/pay/tosspay.png',
+    image: '/pay/tosspay.png',
     name: '토스페이',
     value: 'toss',
   },
 
   {
-    image: '/public/pay/kakaopay.png',
+    image: '/pay/kakaopay.png',
     name: '카카오페이',
     value: 'kakao',
   },
 
   {
-    image: '/public/pay/naverpay.png',
+    image: '/pay/naverpay.png',
     name: '네이버페이',
     value: 'naver',
   },

@@ -1,18 +1,3 @@
 {
-  "rewrites": [
-    {
-      "source": "/:path*",
-      "destination": "/",
-      "has": [
-        {
-          "type": "path",
-          "value": "public/(.*)"
-        },
-        {
-          "type": "not"
-        }
-      ]
-    }
-  ],
   "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
 }

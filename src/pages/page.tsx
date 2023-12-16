@@ -34,8 +34,8 @@ interface SliderSettings {
 const IndexPage: FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const bannerImages = [
-    'public/banner1.png',
-    'public/banner2.png',
+    '/banner1.png',
+    '/banner2.png',
     'https://a.cdn-hotels.com/gdcs/production121/d1688/b022527b-c68d-4a3f-96b4-322f557dea34.jpg?impolicy=fcrop&w=800&h=533&q=medium',
     'https://majormap.s3.ap-northeast-2.amazonaws.com/contents/career/%E1%84%80%E1%85%A9%E1%86%BC%E1%84%8B%E1%85%A7%E1%86%AB%E1%84%80%E1%85%B5%E1%84%92%E1%85%AC%E1%86%A8%E1%84%8C%E1%85%A1.jpg',
   ];
