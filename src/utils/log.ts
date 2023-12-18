@@ -6,7 +6,7 @@ const enum Colors {
   // Warn = '#DE793B',
   Error = '#C73333',
 }
-const isDev = import.meta.env.MODE === 'development';
+const isDev = process.env.NODE_ENV === 'development';
 
 type PrintRequestLogParams = {
   method?: string;

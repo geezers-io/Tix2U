@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { FC, useState } from 'react';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Box, Heading, Spacer, Text, Image, AspectRatio, Skeleton } from '@chakra-ui/react';
 import { css } from '@emotion/react';
@@ -154,7 +154,7 @@ const IndexPage: FC = () => {
               >
                 {({ isHovered }: { isHovered: boolean }) => (
                   <>
-                    <Link to={`/detail/${performance.mt20id}`}>
+                    <Link href={`/detail/${performance.mt20id}`}>
                       <AspectRatio ratio={3 / 4}>
                         <Image
                           src={performance.poster}
@@ -172,7 +172,7 @@ const IndexPage: FC = () => {
                         {performance.prfpdfrom} ~ {performance.prfpdto}
                       </Text>
 
-                      <Link to={`/detail/${performance.mt20id}`}>
+                      <Link href={`/detail/${performance.mt20id}`}>
                         <Heading
                           size="md"
                           mb="1"
@@ -256,7 +256,7 @@ const IndexPage: FC = () => {
               >
                 {({ isHovered }: { isHovered: boolean }) => (
                   <>
-                    <Link to={`/detail/${performance.mt20id}`}>
+                    <Link href={`/detail/${performance.mt20id}`}>
                       <AspectRatio ratio={3 / 4}>
                         <Image
                           src={performance.poster}
@@ -274,7 +274,7 @@ const IndexPage: FC = () => {
                         {performance.prfpdfrom} ~ {performance.prfpdto}
                       </Text>
 
-                      <Link to={`/detail/${performance.mt20id}`}>
+                      <Link href={`/detail/${performance.mt20id}`}>
                         <Heading
                           size="md"
                           mb="1"

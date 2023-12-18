@@ -1,5 +1,5 @@
+import Link from 'next/link';
 import { useDeferredValue, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Flex, Input, Image, AspectRatio, Heading, Text, SimpleGrid } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
@@ -73,7 +73,7 @@ const SearchPage = () => {
                 >
                   {({ isHovered }: { isHovered: boolean }) => (
                     <>
-                      <Link to={`/detail/${performance.mt20id}`}>
+                      <Link href={`/detail/${performance.mt20id}`}>
                         <AspectRatio ratio={3 / 4}>
                           <Image
                             src={performance.poster}
@@ -92,7 +92,7 @@ const SearchPage = () => {
                           {performance.prfpdfrom} ~ {performance.prfpdto}
                         </Text>
 
-                        <Link to={`/detail/${performance.mt20id}`}>
+                        <Link href={`/detail/${performance.mt20id}`}>
                           <Heading size="md" mb="1" fontSize="xl">
                             {performance.prfnm}
                           </Heading>

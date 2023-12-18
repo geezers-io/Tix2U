@@ -1,5 +1,5 @@
+import { useRouter } from 'next/router';
 import { useState, useEffect, FC } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -41,12 +41,12 @@ import { payMethod, simplePayMethod } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const TicketingPage: FC = () => {
+  const router = useRouter();
+  const mt20id = router.query.mt20id as string;
   const [detail, setDetail] = useState<PerformanceDetail>();
-  const { mt20id } = useParams();
   const toast = useCustomToast();
   const [payValue, setPayValue] = useState<string>('toss');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
   const [userID, setUserID] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
   const [email, setEmail] = useState<string | undefined>(undefined);
@@ -61,11 +61,11 @@ const TicketingPage: FC = () => {
         setEmail(user.data.user?.email);
       } else {
         toast.error('로그인 정보가 없습니다.');
-        navigate('/login');
+        router.push('/login');
       }
     } catch {
       toast.error('유저 아이디를 들고 오지 못했습니다.');
-      navigate('/');
+      router.push('/');
     }
   };
 
@@ -269,7 +269,7 @@ const TicketingPage: FC = () => {
             <ModalFooter gap={2}>
               <Button
                 role="link"
-                onClick={() => navigate(`/detail/${mt20id}/ticketing/result`)}
+                onClick={() => router.push(`/detail/${mt20id}/ticketing/result`)}
                 colorScheme="brand"
                 flex={1}
               >

@@ -1,5 +1,5 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Box, CircularProgress, Flex, Heading, Image, Card, Text, Badge, Divider } from '@chakra-ui/react';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
@@ -8,7 +8,8 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 const TicketingResultPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [detail, setDetail] = useState<PerformanceDetail>();
-  const { mt20id } = useParams();
+  const router = useRouter();
+  const mt20id = router.query.mt20id as string;
   const toast = useCustomToast();
 
   const fetchDetail = async (mt20id: string) => {

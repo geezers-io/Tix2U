@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { FC } from 'react';
 import { ChevronCompactLeft, ChevronCompactRight } from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 import { colors } from '@/styles/theme/@colors';
 
@@ -20,7 +20,7 @@ const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (p
   return (
     <Box display="flex" alignItems="center">
       {currentPage > 1 && (
-        <Link to="#" onClick={() => onPageChange(currentPage - 1)} style={{ marginRight: '8px' }}>
+        <Link href="#" onClick={() => onPageChange(currentPage - 1)} style={{ marginRight: '8px' }}>
           <ChevronCompactLeft />
         </Link>
       )}
@@ -28,7 +28,7 @@ const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (p
       {renderPageNumbers().map(page => (
         <Link
           key={page}
-          to="#"
+          href="#"
           onClick={() => onPageChange(page)}
           style={{
             margin: '0 4px',
@@ -42,7 +42,7 @@ const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (p
       ))}
 
       {currentPage < totalPages && (
-        <Link to="#" onClick={() => onPageChange(currentPage + 1)} style={{ marginLeft: '8px' }}>
+        <Link href="#" onClick={() => onPageChange(currentPage + 1)} style={{ marginLeft: '8px' }}>
           <ChevronCompactRight />
         </Link>
       )}

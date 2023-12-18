@@ -1,6 +1,7 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { PersonCircle, BoxArrowInRight, Search, BoxArrowInLeft, List, BagHeart } from 'react-bootstrap-icons';
-import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   Image,
@@ -28,7 +29,7 @@ const PageHeader: FC = () => {
   const [session, setSession] = useState<string | undefined>(undefined);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const toast = useCustomToast();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const fetchLogin = async () => {
     try {
@@ -45,7 +46,7 @@ const PageHeader: FC = () => {
     try {
       await supabase.auth.signOut();
       toast.info('로그아웃 하였어요');
-      navigate('/');
+      router.push('/');
     } catch {
       toast.error('로그아웃에 실패했어요.');
     }
@@ -85,14 +86,14 @@ const PageHeader: FC = () => {
           pl={{ base: 2, md: 10 }}
           pr={{ base: 2, md: 10 }}
         >
-          <Link to="/">
-            <Image src="/name_logo.png" h={{ base: '40px', md: '60px' }} />
+          <Link href="/">
+            <Image src="/name_logo.png" alt="" h={{ base: '40px', md: '60px' }} />
           </Link>
           {isLargerThanMd ? (
             <HStack pl="10" spacing={{ base: 2, md: 10 }}>
               {category &&
                 category.map(value => (
-                  <Link key={`${value.english} - ${value.korean}`} to={`/${value.english}`}>
+                  <Link key={`${value.english} - ${value.korean}`} href={`/${value.english}`}>
                     <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
                       {value.korean}
                     </Text>
@@ -111,7 +112,7 @@ const PageHeader: FC = () => {
             {!!session && (
               <>
                 <Flex flexDirection="column" alignItems="center">
-                  <Link to="/search">
+                  <Link href="/search">
                     <Text
                       fontWeight="bold"
                       letterSpacing="0.1em"
@@ -145,7 +146,7 @@ const PageHeader: FC = () => {
                     LOGOUT
                   </Text>
                 </Flex>
-                <Link to="/my">
+                <Link href="/my">
                   <Flex flexDirection="column" alignItems="center">
                     <PersonCircle />
                     <Text
@@ -158,7 +159,7 @@ const PageHeader: FC = () => {
                     </Text>
                   </Flex>
                 </Link>
-                <Link to="/cart">
+                <Link href="/cart">
                   <Flex flexDirection="column" alignItems="center">
                     <BagHeart />
                     <Text
@@ -175,7 +176,7 @@ const PageHeader: FC = () => {
             )}
 
             {!session && (
-              <Link to="/login">
+              <Link href="/login">
                 <Flex flexDirection="column" alignItems="center">
                   <BoxArrowInRight />
                   <Text
@@ -201,7 +202,7 @@ const PageHeader: FC = () => {
                   <VStack align="start">
                     {category &&
                       category.map(value => (
-                        <Link key={`${value.english} - ${value.korean}`} to={`/${value.english}`}>
+                        <Link key={`${value.english} - ${value.korean}`} href={`/${value.english}`}>
                           <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
                             {value.korean}
                           </Text>

@@ -1,20 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "es6",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable", "WebWorker"],
-    "module": "ESNext",
+    "lib": ["esnext", "DOM", "DOM.Iterable", "WebWorker"],
+    "module": "esnext",
     "skipLibCheck": true,
     "noImplicitAny": false,
-
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-
+    "jsx": "preserve",
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -24,7 +22,12 @@
     "types": ["vite/client", "@emotion/react/types/css-prop", "./@types/emotion.d.ts", "kakao.maps.d.ts"],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "esModuleInterop": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "@types"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "@types"],
+  "exclude": ["node_modules"]
 }

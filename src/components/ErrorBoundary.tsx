@@ -14,7 +14,7 @@ class ErrorBoundary extends Component<PropsWithChildren, State> {
   }
 
   public componentDidCatch(error: Error, info: ErrorInfo) {
-    if (import.meta.env.MODE === 'development') {
+    if (process.env.NODE_ENV === 'development') {
       console.warn('ErrorBoundary / componentDidCatch', error, info);
     }
   }

@@ -1,6 +1,7 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { GeoAlt } from 'react-bootstrap-icons';
-import { Link, useParams } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -45,7 +46,8 @@ type commentList = { user: string; content: string }[];
 
 const DetailPage: FC = () => {
   const [detail, setDetail] = useState<PerformanceDetail>();
-  const { mt20id } = useParams();
+  const router = useRouter();
+  const mt20id = router.query.mt20id as string;
   const toast = useCustomToast();
   const [content, setContent] = useState<string>('');
   const [commentList, setCommentList] = useState<commentList>([{ user: 'love_penguin', content: 'wow' }]);
@@ -309,7 +311,7 @@ const DetailPage: FC = () => {
                     <Heading size="lg" m="auto 0">
                       장소
                     </Heading>
-                    <Link to={`https://map.kakao.com/link/search/${detail.fcltynm}`}>
+                    <Link href={`https://map.kakao.com/link/search/${detail.fcltynm}`}>
                       <Button colorScheme="brand" m="20px">
                         장소 검색하러 가기
                       </Button>

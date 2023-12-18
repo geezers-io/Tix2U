@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 
-import { useNavigate } from 'react-router-dom';
 import {
   Button,
   useDisclosure,
@@ -21,17 +21,17 @@ interface Props {
 }
 
 const DeleteIDButton: FC<Props> = ({ userID }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useCustomToast();
 
   const deleteUserSubmit = async (userID: string) => {
     try {
       await supabase.auth.admin.deleteUser(userID);
-      navigate('/');
+      router.push('/');
       toast.success('회원 탈퇴되었습니다.');
     } catch {
-      navigate('/');
+      router.push('/');
       toast.error('탈퇴 처리가 정상적으로 처리되지 않았습니다.');
     }
   };

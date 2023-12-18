@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { FC } from 'react';
 import { Github, Slack } from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
 import { Box, Image, Text, HStack, Divider } from '@chakra-ui/react';
 
 const PageAside: FC = () => {
@@ -34,10 +34,10 @@ const PageAside: FC = () => {
       <Divider orientation="horizontal" borderColor="gray.500" height="20px" marginY="4" maxW="40%" />
 
       <HStack spacing="4">
-        <Link to="https://github.com/geezers-io/Tix2U">
+        <Link href="https://github.com/geezers-io/Tix2U">
           <Github size="20px" />
         </Link>
-        <Link to="https://app.slack.com/client/T05QT05KFE0/C05QHT2RUS2">
+        <Link href="https://app.slack.com/client/T05QT05KFE0/C05QHT2RUS2">
           <Slack size="20px" />
         </Link>
       </HStack>

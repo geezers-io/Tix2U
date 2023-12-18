@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Phone } from 'react-bootstrap-icons';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -42,7 +42,7 @@ const SignUpPage = () => {
   const toast = useCustomToast();
   const now = new Date();
   const [show, setShow] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleClick = () => setShow(!show);
 
@@ -60,7 +60,7 @@ const SignUpPage = () => {
           },
         },
       });
-      navigate('/');
+      router.push('/');
       if (error) {
         toast.error(error);
       } else {

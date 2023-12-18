@@ -1,5 +1,5 @@
+import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Box,
   Heading,
@@ -17,17 +17,17 @@ import MotionPoster from '@/components/shared/MotionPoster';
 import Pagination from '@/components/shared/Pagination';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { colors } from '@/styles/theme/@colors';
-const gradient = `linear(to-r, ${colors.brand[300]}, ${colors.accent[300]})`;
 
-const MusicalPage: FC = () => {
+const TheaterPage: FC = () => {
   const toast = useCustomToast();
   const [enTirePerformance, setEnTirePerformance] = useState<PerformanceSummary[]>([]);
   const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 99;
+  const gradient = `linear(to-r, ${colors.brand[300]}, ${colors.accent[300]})`;
 
-  const fetchMusicalData = async (page: number) => {
+  const fetchTheaterData = async (page: number) => {
     try {
       setLoading(true);
       const response = await PerformanceService.getList({
@@ -41,7 +41,7 @@ const MusicalPage: FC = () => {
         return;
       }
 
-      const targetGenres = ['뮤지컬', '복합'];
+      const targetGenres = ['연극', '복합'];
 
       const filteredPerformance = response.filter(performance => targetGenres.includes(performance.genrenm));
 
@@ -72,12 +72,12 @@ const MusicalPage: FC = () => {
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      fetchMusicalData(page);
+      fetchTheaterData(page);
     }
   };
 
   useEffect(() => {
-    fetchMusicalData(currentPage);
+    fetchTheaterData(currentPage);
   }, []);
 
   return (
@@ -98,7 +98,7 @@ const MusicalPage: FC = () => {
                 alignItems="center"
                 marginBottom="1"
               >
-                Musical
+                Theater
               </Box>
             </Heading>
           </Box>
@@ -155,7 +155,7 @@ const MusicalPage: FC = () => {
                         bg={colors.gray[50]}
                         h="100%"
                       >
-                        <Link to={`/detail/${performance.mt20id}`}>
+                        <Link href={`/detail/${performance.mt20id}`}>
                           <AspectRatio ratio={3 / 4}>
                             <Image
                               src={performance.poster}
@@ -174,7 +174,7 @@ const MusicalPage: FC = () => {
                             {performance.prfpdfrom} ~ {performance.prfpdto}
                           </Text>
 
-                          <Link to={`/detail/${performance.mt20id}`}>
+                          <Link href={`/detail/${performance.mt20id}`}>
                             <Heading size="md" mb="1" fontSize="xl">
                               {performance.prfnm}
                             </Heading>
@@ -206,4 +206,4 @@ const MusicalPage: FC = () => {
   );
 };
 
-export default MusicalPage;
+export default TheaterPage;

@@ -1,6 +1,7 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { HeartFill } from 'react-bootstrap-icons';
-import { Link, useNavigate } from 'react-router-dom';
 import { Box, Heading, Text, Image, HStack, VStack } from '@chakra-ui/react';
 import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
@@ -12,7 +13,7 @@ const CartsPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [userID, setUserID] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
   const toast = useCustomToast();
   const gradient = `linear(to-r, ${colors.brand[300]}, pink)`;
   const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
@@ -25,11 +26,11 @@ const CartsPage: FC = () => {
         setUserID(user.data.user?.id);
       } else {
         toast.error('사용자 정보가 없습니다.');
-        navigate('/login');
+        router.push('/login');
       }
     } catch {
       toast.error('유저 아이디를 들고 오지 못했습니다.');
-      navigate('/');
+      router.push('/');
     }
   };
 
@@ -121,7 +122,7 @@ const CartsPage: FC = () => {
                   <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
                   <VStack align="start" flex="1">
                     <HStack>
-                      <Link to={`/detail/${item.mt20id}`}>
+                      <Link href={`/detail/${item.mt20id}`}>
                         <VStack align="start" flex="1">
                           <Text ml="5">{item.prfnm}</Text>
                           <Text fontWeight="bold" marginBottom="1" ml="5">

@@ -1,5 +1,6 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   Image,
@@ -31,7 +32,7 @@ const SignInPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [userID, setUserID] = useState<string | null>(null);
 
   const getID = async () => {
@@ -56,7 +57,7 @@ const SignInPage = () => {
         toast.error('로그인 정보가 올바르지 않습니다.');
       } else {
         toast.success('로그인에 성공했어요!');
-        navigate('/');
+        router.push('/');
       }
     } catch {
       toast.error('로그인 접속에 성공하지 못했어요');
@@ -79,7 +80,7 @@ const SignInPage = () => {
 
   if (userID) {
     toast.error('로그인이 되어있는 상태입니다.');
-    navigate('/');
+    router.push('/');
   }
 
   return (
@@ -148,13 +149,13 @@ const SignInPage = () => {
                         <Image src="/kakaoLogin.png" role="button" onClick={signInWithKakao} />
                       </Box>
                       <Flex m="0 auto" justifyContent="space-between">
-                        <Link to="/login/find">
+                        <Link href="/login/find">
                           <Button colorScheme="brand" size="sm" m="10px" variant="outline">
                             아이디/비밀번호 찾기
                           </Button>
                         </Link>
 
-                        <Link to="/signUp">
+                        <Link href="/signUp">
                           <Button colorScheme="brand" size="sm" m="10px" variant="outline">
                             회원가입
                           </Button>

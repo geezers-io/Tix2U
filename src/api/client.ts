@@ -4,7 +4,7 @@ import { logError, logResponse, parseXMLResponse, unwrapResponse } from '@/api/i
 import { flow } from '@/utils/flow';
 
 export const axiosInstance = axios.create({
-  baseURL: `/api`,
+  baseURL: '/api/kopis-proxy',
   timeout: 100000,
   validateStatus: status => status >= 200 && status < 400,
 });

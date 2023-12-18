@@ -1,5 +1,5 @@
+import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Box,
   Heading,
@@ -155,7 +155,7 @@ const ConcertPage: FC = () => {
                         bg={colors.gray[50]}
                         h="100%"
                       >
-                        <Link to={`/detail/${performance.mt20id}`}>
+                        <Link href={`/detail/${performance.mt20id}`}>
                           <AspectRatio ratio={3 / 4}>
                             <Image
                               src={performance.poster}
@@ -174,7 +174,7 @@ const ConcertPage: FC = () => {
                             {performance.prfpdfrom} ~ {performance.prfpdto}
                           </Text>
 
-                          <Link to={`/detail/${performance.mt20id}`}>
+                          <Link href={`/detail/${performance.mt20id}`}>
                             <Heading size="md" mb="1" fontSize="xl">
                               {performance.prfnm}
                             </Heading>

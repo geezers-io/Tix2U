@@ -1,6 +1,7 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { HeartFill } from 'react-bootstrap-icons';
-import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   VStack,
@@ -47,7 +48,7 @@ const MyPage: FC = () => {
   const [userID, setUserID] = useState<string>('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
+  const router = useRouter();
   const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
   const toast = useCustomToast();
   const now = new Date();
@@ -76,7 +77,7 @@ const MyPage: FC = () => {
         setEmailID(user.data.user?.email);
       } else {
         toast.error('사용자의 정보가 없습니다.');
-        navigate('/login');
+        router.push('/login');
       }
     } catch {
       toast.error('유저 아이디를 들고 오지 못했습니다.');
@@ -127,7 +128,7 @@ const MyPage: FC = () => {
   const logoutSubmit = async () => {
     try {
       await supabase.auth.signOut();
-      navigate('/');
+      router.push('/');
       toast.success('로그아웃 되었습니다.');
     } catch {
       toast.error('로그아웃에 실패했습니다.');
@@ -263,7 +264,7 @@ const MyPage: FC = () => {
                 </VStack>
               </TabPanel>
               <TabPanel>
-                <Link to="/cart">
+                <Link href="/cart">
                   <Button colorScheme="brand" m="10px">
                     위시리스트로 이동하기
                   </Button>
@@ -290,7 +291,7 @@ const MyPage: FC = () => {
                         <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
 
                         <VStack align="start" flex="1">
-                          <Link to={`detail/${item.mt20id}`}>
+                          <Link href={`detail/${item.mt20id}`}>
                             <HStack>
                               <VStack align="start" flex="1">
                                 <Text

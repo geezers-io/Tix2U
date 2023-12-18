@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import {
   Button,
   useDisclosure,
@@ -14,7 +14,7 @@ import {
 
 const TicketingButton = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <>
@@ -33,7 +33,7 @@ const TicketingButton = ({ id }) => {
           </ModalBody>
 
           <ModalFooter gap={2}>
-            <Button role="link" onClick={() => navigate(`/detail/${id}/ticketing`)} colorScheme="brand" flex={1}>
+            <Button role="link" onClick={() => router.push(`/detail/${id}/ticketing`)} colorScheme="brand" flex={1}>
               예매하러 갈래요!
             </Button>
 
