@@ -87,7 +87,9 @@ const PageHeader: FC = () => {
           pr={{ base: 2, md: 10 }}
         >
           <Link href="/">
-            <Image src="/name_logo.png" alt="" h={{ base: '40px', md: '60px' }} />
+            <a>
+              <Image src="/name_logo.png" alt="" h={{ base: '40px', md: '60px' }} />
+            </a>
           </Link>
           {isLargerThanMd ? (
             <HStack pl="10" spacing={{ base: 2, md: 10 }}>
