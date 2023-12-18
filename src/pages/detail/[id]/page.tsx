@@ -323,32 +323,36 @@ const DetailPage: FC = () => {
               <TabPanel>
                 <Flex m="0 auto" fontSize="lg">
                   <Box>
-                    <Heading size="xl" m="20px 0">
+                    <Heading size="xl" m="20px 0" pb="2" borderBottom="2px" borderColor="brand.100">
                       예매/취소 안내
                     </Heading>
-                    <Heading size="lg">티켓 수령 안내</Heading>
+                    <Heading size="lg" mb="10px">
+                      일반 배송 안내
+                    </Heading>
                     <Text as="b">
                       <br />
                       1. 일반배송
                     </Text>
                     <Text>
-                      예매 완료(결제 완료)확인 후, 인편배송으로 영업일 기준 10일 이내 티켓을 수령하실 수 있습니다.
-                      <br />
-                      티켓을 배송하기 위한 배송료는 고객이 부담합니다. <br />
-                      행사 또는 관람일에 따라 일반배송 선택이 제한될 수 있습니다. <br />
-                      <br />​
+                      - 일반배송 예매 완료(결제 완료)확인 후, 인편배송으로 영업일 기준 10일 이내 티켓을 수령하실 수
+                      있습니다. <br />- 티켓을 배송하기 위한 배송료는 고객이 부담합니다. 행사 또는 관람일에 따라
+                      일반배송 선택이 제한될 수 있습니다.
                     </Text>
                     <Text as="b">2. 현장수령</Text>
                     <Text>
-                      행사 당일 공연 시작 시간 1시간 전 ~ 30분 전까지 행사장 매표소에서 티켓을 수령하실 수 있습니다.
-                      <br />
-                      현장 매표소에서 예매 완료 SMS 또는 예매번호 및 예매자 정보 확인 후 티켓을 수령할 수 있습니다.
-                      <br />
-                      기획사 정책 또는 행사일에 따라 현장 수령 방법의 선택이 제한될 수 있습니다.​ <br />
+                      - 행사 당일 공연 시작 시간 1시간 전 ~ 30분 전까지 행사장 매표소에서 티켓을 수령하실 수 있습니다.{' '}
+                      <br />- 현장 매표소에서 예매 완료 SMS 또는 예매번호 및 예매자 정보 확인 후 티켓을 수령할 수
+                      있습니다. <br />
+                      - 기획사 정책 또는 행사일에 따라 현장 수령 방법의 선택이 제한될 수 있습니다.​ <br />
                       <br /> <br /> <br />​
                     </Text>
 
-                    <Heading size="lg">예매 취소 안내</Heading>
+                    <Heading size="xl" m="20px 0" pb="2" borderBottom="2px" borderColor="brand.100">
+                      예매/취소 안내
+                    </Heading>
+                    <Heading size="lg" mb="10px">
+                      티켓 수령 안내
+                    </Heading>
                     <Text>
                       예매 당일 취소하는 경우 이외에는 예매수수료는 환불되지 않습니다. <br />
                       <br />
@@ -363,9 +367,11 @@ const DetailPage: FC = () => {
                       <br />
                       <br />
                     </Text>
-
+                    <Heading size="lg" mt="20px" mb="10px">
+                      취소 가능 시간
+                    </Heading>
                     <TableContainer>
-                      <Table>
+                      <Table variant="striped" colorScheme="brand">
                         <Thead>
                           <Tr>
                             <Th>관람일 구분</Th>
@@ -388,14 +394,12 @@ const DetailPage: FC = () => {
                         </Tbody>
                       </Table>
                     </TableContainer>
+                    <Text opacity={0.3}>일부 공연의 경우 취소 가능 시간이 상이할 수 있습니다.​​​</Text>
+                    <Heading size="lg" mt="20px" mb="10px">
+                      티켓 환불 안내
+                    </Heading>
                     <Text>
-                      일부 공연의 경우 취소 가능 시간이 상이할 수 있습니다.​​​ <br />
-                      <br />
-                    </Text>
-                    <Heading size="lg">티켓 환불 안내</Heading>
-                    <Text>
-                      예매취소 시 취소수수료와 배송료를 제외한 나머지 금액이 환불 됩니다.
-                      <br />
+                      예매취소 시 취소수수료와 배송료를 제외한 나머지 금액이 환불 됩니다. <br />
                       <br />
                       취소수수료는 상품별로 상이할 수 있으며 상품 상세정보 하단에서 확인할 수 있습니다. <br />
                       <br />
@@ -406,9 +410,8 @@ const DetailPage: FC = () => {
                       신용카드로 결제한 경우 취소일로부터 3~6일(영업일기준)이내 카드사에서 승인취소를 확인할 수
                       있습니다. <br />
                       <br />
-                      계좌이체, 실시간 계좌출금으로 결제한 경우 취소 시 1~2일(영업일 기준)이내 환불 됩니다.
-                      <br />
-                      휴대폰결제로 결제한 경우 당월 취소 시 즉시 환불되나 익월 취소 시에는 최대 60일까지 소요됩니다.
+                      계좌이체, 실시간 계좌출금으로 결제한 경우 취소 시 1~2일(영업일 기준)이내 환불 됩니다. <br />
+                      휴대폰결제로 결제한 경우 당월 취소 시 즉시 환불되나 익월 취소 시에는 최대 60일까지 소요됩니다.{' '}
                       <br />
                       PAYCO포인트, 예매권, 상품권으로 결제한 경우 취소 시 즉시 계정으로 환불 됩니다.
                       <br />

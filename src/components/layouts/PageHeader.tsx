@@ -88,7 +88,6 @@ const PageHeader: FC = () => {
           <Link to="/">
             <Image src="/name_logo.png" h={{ base: '40px', md: '60px' }} />
           </Link>
-
           {isLargerThanMd ? (
             <HStack pl="10" spacing={{ base: 2, md: 10 }}>
               {category &&
@@ -109,22 +108,26 @@ const PageHeader: FC = () => {
           <Spacer display={{ base: 'none', md: 'block' }} />
 
           <HStack spacing={10} align="center">
-            <Link to="/search">
-              <Flex flexDirection="column" alignItems="center">
-                <Text
-                  fontWeight="bold"
-                  letterSpacing="0.1em"
-                  cursor="pointer"
-                  fontSize={isLargerThanMd ? 'md' : 'sm'}
-                  align="center"
-                >
-                  <Flex flexDirection="column" alignItems="center">
-                    <Search />
-                    <Text>SEARCH</Text>
-                  </Flex>
-                </Text>
-              </Flex>
-            </Link>
+            {!!session && (
+              <>
+                <Flex flexDirection="column" alignItems="center">
+                  <Link to="/search">
+                    <Text
+                      fontWeight="bold"
+                      letterSpacing="0.1em"
+                      cursor="pointer"
+                      fontSize={isLargerThanMd ? 'md' : 'sm'}
+                      align="center"
+                    >
+                      <Flex flexDirection="column" alignItems="center">
+                        <Search />
+                        <Text>SEARCH</Text>
+                      </Flex>
+                    </Text>
+                  </Link>
+                </Flex>
+              </>
+            )}
 
             {!!session && (
               <>
