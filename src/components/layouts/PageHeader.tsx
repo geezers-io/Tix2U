@@ -111,26 +111,22 @@ const PageHeader: FC = () => {
           <Spacer display={{ base: 'none', md: 'block' }} />
 
           <HStack spacing={10} align="center">
-            {!!session && (
-              <>
-                <Flex flexDirection="column" alignItems="center">
-                  <Link href="/search">
-                    <Text
-                      fontWeight="bold"
-                      letterSpacing="0.1em"
-                      cursor="pointer"
-                      fontSize={isLargerThanMd ? 'md' : 'sm'}
-                      align="center"
-                    >
-                      <Flex flexDirection="column" alignItems="center">
-                        <Search />
-                        <Text>SEARCH</Text>
-                      </Flex>
-                    </Text>
-                  </Link>
-                </Flex>
-              </>
-            )}
+            <Link href="/search">
+              <Flex flexDirection="column" alignItems="center">
+                <Text
+                  fontWeight="bold"
+                  letterSpacing="0.1em"
+                  cursor="pointer"
+                  fontSize={isLargerThanMd ? 'md' : 'sm'}
+                  align="center"
+                >
+                  <Flex flexDirection="column" alignItems="center">
+                    <Search />
+                    <Text>SEARCH</Text>
+                  </Flex>
+                </Text>
+              </Flex>
+            </Link>
 
             {!!session && (
               <>
