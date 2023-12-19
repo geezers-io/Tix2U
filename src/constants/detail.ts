@@ -1,10 +1,10 @@
-type saleList = { title: string; content: { subtitle: string; subcontent: string } }[];
-type payMethod = { title: string }[];
-type simplePayMethod = { image: string; name: string; value: string }[];
-type userInformation = { korean: string; english: string }[];
+type SaleList = { title: string; content: { subtitle: string; subcontent: string } }[];
+type PayMethod = { title: string }[];
+type SimplePayMethod = { image: string; name: string; value: string }[];
+type UserInformation = { korean: string; english: string }[];
 type Category = { english: string; korean: string }[];
 
-export const ticketSale: saleList = [
+export const ticketSale: SaleList = [
   {
     title: '일반 할인',
     content: {
@@ -21,7 +21,7 @@ export const ticketSale: saleList = [
   },
 ];
 
-export const simplePayMethod: simplePayMethod = [
+export const simplePayMethod: SimplePayMethod = [
   {
     image: '/pay/tosspay.png',
     name: '토스페이',
@@ -41,7 +41,7 @@ export const simplePayMethod: simplePayMethod = [
   },
 ];
 
-export const userInformation: userInformation = [
+export const userInformation: UserInformation = [
   {
     korean: '이메일',
     english: 'email',
@@ -83,4 +83,4 @@ export const category: Category = [
   },
 ];
 
-export const payMethod: payMethod = [{ title: '카드결제' }, { title: '무통장 입금' }, { title: '휴대폰 결제' }];
+export const payMethod: PayMethod = [{ title: '카드결제' }, { title: '무통장 입금' }, { title: '휴대폰 결제' }];

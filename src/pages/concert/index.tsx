@@ -156,17 +156,19 @@ const ConcertPage: FC = () => {
                         h="100%"
                       >
                         <Link href={`/detail/${performance.mt20id}`}>
-                          <AspectRatio ratio={3 / 4}>
-                            <Image
-                              src={performance.poster}
-                              alt={performance.prfnm}
-                              objectFit="cover"
-                              css={{
-                                transition: 'transform 0.3s ease-in-out',
-                                transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-                              }}
-                            />
-                          </AspectRatio>
+                          <a>
+                            <AspectRatio ratio={3 / 4}>
+                              <Image
+                                src={performance.poster}
+                                alt={performance.prfnm}
+                                objectFit="cover"
+                                css={{
+                                  transition: 'transform 0.3s ease-in-out',
+                                  transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                                }}
+                              />
+                            </AspectRatio>
+                          </a>
                         </Link>
 
                         <Box p="4">
@@ -175,9 +177,11 @@ const ConcertPage: FC = () => {
                           </Text>
 
                           <Link href={`/detail/${performance.mt20id}`}>
-                            <Heading size="md" mb="1" fontSize="xl">
-                              {performance.prfnm}
-                            </Heading>
+                            <a>
+                              <Heading size="md" mb="1" fontSize="xl">
+                                {performance.prfnm}
+                              </Heading>
+                            </a>
                           </Link>
 
                           <Text

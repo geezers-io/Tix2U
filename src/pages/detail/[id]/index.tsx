@@ -251,7 +251,7 @@ const DetailPage: FC = () => {
             <TabPanels>
               <TabPanel>
                 <Flex>
-                  <Image src={detail?.styurls} m="0 auto" />
+                  <Image src={detail?.styurls} alt="" m="0 auto" />
                 </Flex>
               </TabPanel>
               <TabPanel>

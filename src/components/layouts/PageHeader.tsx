@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { PersonCircle, BoxArrowInRight, Search, BoxArrowInLeft, List, BagHeart } from 'react-bootstrap-icons';
 import {
@@ -29,7 +28,6 @@ const PageHeader: FC = () => {
   const [session, setSession] = useState<string | undefined>(undefined);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const toast = useCustomToast();
-  const router = useRouter();
 
   const fetchLogin = async () => {
     try {
@@ -46,9 +44,10 @@ const PageHeader: FC = () => {
     try {
       await supabase.auth.signOut();
       toast.info('로그아웃 하였어요');
-      router.push('/');
     } catch {
       toast.error('로그아웃에 실패했어요.');
+    } finally {
+      window.location.href = '/';
     }
   };
 
@@ -86,9 +85,9 @@ const PageHeader: FC = () => {
           pl={{ base: 2, md: 10 }}
           pr={{ base: 2, md: 10 }}
         >
-          <Link href="/">
+          <Link href="/" passHref>
             <a>
-              <Image src="/name_logo.png" alt="" h={{ base: '40px', md: '60px' }} />
+              <Image src="/name_logo.png" alt="" width={200} height={60} objectFit="contain" />
             </a>
           </Link>
           {isLargerThanMd ? (
@@ -96,9 +95,11 @@ const PageHeader: FC = () => {
               {category &&
                 category.map(value => (
                   <Link key={`${value.english} - ${value.korean}`} href={`/${value.english}`}>
-                    <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-                      {value.korean}
-                    </Text>
+                    <a>
+                      <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
+                        {value.korean}
+                      </Text>
+                    </a>
                   </Link>
                 ))}
             </HStack>
@@ -111,21 +112,31 @@ const PageHeader: FC = () => {
           <Spacer display={{ base: 'none', md: 'block' }} />
 
           <HStack spacing={10} align="center">
-            <Link href="/search">
-              <Flex flexDirection="column" alignItems="center">
-                <Text
-                  fontWeight="bold"
-                  letterSpacing="0.1em"
-                  cursor="pointer"
-                  fontSize={isLargerThanMd ? 'md' : 'sm'}
-                  align="center"
-                >
-                  <Flex flexDirection="column" alignItems="center">
-                    <Search />
-                    <Text>SEARCH</Text>
-                  </Flex>
-                </Text>
-              </Flex>
+            <Link href="/search" passHref>
+              <a>
+                <Flex flexDirection="column" alignItems="center">
+                  <Text
+                    fontWeight="bold"
+                    letterSpacing="0.1em"
+                    cursor="pointer"
+                    fontSize={isLargerThanMd ? 'md' : 'sm'}
+                    align="center"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Search />
+                      <Text
+                        fontWeight="bold"
+                        letterSpacing="0.1em"
+                        fontSize={isLargerThanMd ? 'md' : 'sm'}
+                        _hover={{ textDecoration: 'none' }}
+                        _focus={{ boxShadow: 'none' }}
+                      >
+                        SEARCH
+                      </Text>
+                    </Flex>
+                  </Text>
+                </Flex>
+              </a>
             </Link>
 
             {!!session && (
@@ -144,48 +155,55 @@ const PageHeader: FC = () => {
                     LOGOUT
                   </Text>
                 </Flex>
-                <Link href="/my">
-                  <Flex flexDirection="column" alignItems="center">
-                    <PersonCircle />
-                    <Text
-                      fontWeight="bold"
-                      letterSpacing="0.1em"
-                      fontSize={isLargerThanMd ? 'md' : 'sm'}
-                      align="center"
-                    >
-                      MYPAGE
-                    </Text>
-                  </Flex>
+                <Link href="/my" passHref>
+                  <a>
+                    <Flex flexDirection="column" alignItems="center">
+                      <PersonCircle />
+                      <Text
+                        fontWeight="bold"
+                        letterSpacing="0.1em"
+                        fontSize={isLargerThanMd ? 'md' : 'sm'}
+                        align="center"
+                      >
+                        MYPAGE
+                      </Text>
+                    </Flex>
+                  </a>
                 </Link>
-                <Link href="/cart">
-                  <Flex flexDirection="column" alignItems="center">
-                    <BagHeart />
-                    <Text
-                      fontWeight="bold"
-                      letterSpacing="0.1em"
-                      fontSize={isLargerThanMd ? 'md' : 'sm'}
-                      align="center"
-                    >
-                      LIST
-                    </Text>
-                  </Flex>
+                <Link href="/cart" passHref>
+                  <a>
+                    <Flex flexDirection="column" alignItems="center">
+                      <BagHeart />
+                      <Text
+                        fontWeight="bold"
+                        letterSpacing="0.1em"
+                        fontSize={isLargerThanMd ? 'md' : 'sm'}
+                        align="center"
+                      >
+                        LIST
+                      </Text>
+                    </Flex>
+                  </a>
                 </Link>
               </>
             )}
 
             {!session && (
-              <Link href="/login">
-                <Flex flexDirection="column" alignItems="center">
-                  <BoxArrowInRight />
-                  <Text
-                    fontWeight="bold"
-                    letterSpacing="0.1em"
-                    _hover={{ textDecoration: 'underline' }}
-                    fontSize={isLargerThanMd ? 'md' : 'sm'}
-                  >
-                    LOGIN
-                  </Text>
-                </Flex>
+              <Link href="/login" passHref>
+                <a>
+                  <Flex flexDirection="column" alignItems="center">
+                    <BoxArrowInRight />
+                    <Text
+                      fontWeight="bold"
+                      letterSpacing="0.1em"
+                      fontSize={isLargerThanMd ? 'md' : 'sm'}
+                      _hover={{ textDecoration: 'none' }}
+                      _focus={{ boxShadow: 'none' }}
+                    >
+                      LOGIN
+                    </Text>
+                  </Flex>
+                </a>
               </Link>
             )}
           </HStack>
@@ -200,10 +218,12 @@ const PageHeader: FC = () => {
                   <VStack align="start">
                     {category &&
                       category.map(value => (
-                        <Link key={`${value.english} - ${value.korean}`} href={`/${value.english}`}>
-                          <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-                            {value.korean}
-                          </Text>
+                        <Link key={`${value.english}-${value.korean}`} href={`/${value.english}`} passHref>
+                          <a>
+                            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
+                              {value.korean}
+                            </Text>
+                          </a>
                         </Link>
                       ))}
                   </VStack>

@@ -155,17 +155,19 @@ const IndexPage: FC = () => {
                 {({ isHovered }: { isHovered: boolean }) => (
                   <>
                     <Link href={`/detail/${performance.mt20id}`}>
-                      <AspectRatio ratio={3 / 4}>
-                        <Image
-                          src={performance.poster}
-                          alt={performance.prfnm}
-                          objectFit="cover"
-                          css={css`
-                            transition: transform 0.3s ease-in-out;
-                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
-                          `}
-                        />
-                      </AspectRatio>
+                      <a>
+                        <AspectRatio ratio={3 / 4}>
+                          <Image
+                            src={performance.poster}
+                            alt={performance.prfnm}
+                            objectFit="cover"
+                            css={css`
+                              transition: transform 0.3s ease-in-out;
+                              transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                            `}
+                          />
+                        </AspectRatio>
+                      </a>
                     </Link>
                     <Box p="4">
                       <Text fontSize="sm" color="gray.500" mb="1">
@@ -173,17 +175,19 @@ const IndexPage: FC = () => {
                       </Text>
 
                       <Link href={`/detail/${performance.mt20id}`}>
-                        <Heading
-                          size="md"
-                          mb="1"
-                          fontSize="xl"
-                          overflow="hidden"
-                          textOverflow="ellipsis"
-                          whiteSpace="nowrap"
-                          title={performance.prfnm}
-                        >
-                          {performance.prfnm}
-                        </Heading>
+                        <a>
+                          <Heading
+                            size="md"
+                            mb="1"
+                            fontSize="xl"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            whiteSpace="nowrap"
+                            title={performance.prfnm}
+                          >
+                            {performance.prfnm}
+                          </Heading>
+                        </a>
                       </Link>
 
                       <Text
@@ -257,17 +261,19 @@ const IndexPage: FC = () => {
                 {({ isHovered }: { isHovered: boolean }) => (
                   <>
                     <Link href={`/detail/${performance.mt20id}`}>
-                      <AspectRatio ratio={3 / 4}>
-                        <Image
-                          src={performance.poster}
-                          alt={performance.prfnm}
-                          objectFit="cover"
-                          css={css`
-                            transition: transform 0.3s ease-in-out;
-                            transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
-                          `}
-                        />
-                      </AspectRatio>
+                      <a>
+                        <AspectRatio ratio={3 / 4}>
+                          <Image
+                            src={performance.poster}
+                            alt={performance.prfnm}
+                            objectFit="cover"
+                            css={css`
+                              transition: transform 0.3s ease-in-out;
+                              transform: ${isHovered ? 'scale(1.1)' : 'scale(1)'};
+                            `}
+                          />
+                        </AspectRatio>
+                      </a>
                     </Link>
                     <Box p="4">
                       <Text fontSize="sm" color="gray.500" mb="1">
@@ -275,17 +281,19 @@ const IndexPage: FC = () => {
                       </Text>
 
                       <Link href={`/detail/${performance.mt20id}`}>
-                        <Heading
-                          size="md"
-                          mb="1"
-                          fontSize="xl"
-                          overflow="hidden"
-                          textOverflow="ellipsis"
-                          whiteSpace="nowrap"
-                          title={performance.prfnm}
-                        >
-                          {performance.prfnm}
-                        </Heading>
+                        <a>
+                          <Heading
+                            size="md"
+                            mb="1"
+                            fontSize="xl"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            whiteSpace="nowrap"
+                            title={performance.prfnm}
+                          >
+                            {performance.prfnm}
+                          </Heading>
+                        </a>
                       </Link>
 
                       <Text
