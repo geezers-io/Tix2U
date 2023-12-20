@@ -13,8 +13,8 @@ import {
   Textarea,
   Image,
 } from '@chakra-ui/react';
-import supabase from '@/api/lib/supabase';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 
 interface Props {
   userID: string;
@@ -24,6 +24,7 @@ const DeleteIDButton: FC<Props> = ({ userID }) => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useCustomToast();
+  const { supabase } = useSupabase();
 
   const deleteUserSubmit = async (userID: string) => {
     try {

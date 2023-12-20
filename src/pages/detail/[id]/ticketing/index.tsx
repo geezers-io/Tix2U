@@ -34,54 +34,23 @@ import {
   Input,
   FormControl,
 } from '@chakra-ui/react';
-import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import { payMethod, simplePayMethod } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 
 const TicketingPage: FC = () => {
   const router = useRouter();
-  const mt20id = router.query.mt20id as string;
+  const mt20id = router.query.id as string;
   const [detail, setDetail] = useState<PerformanceDetail>();
   const toast = useCustomToast();
+  const { user } = useSupabase();
   const [payValue, setPayValue] = useState<string>('toss');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [userID, setUserID] = useState<string | null>(null);
-  const [name, setName] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | undefined>(undefined);
-  const [phone, setPhone] = useState<string | null>(null);
-
-  const getID = async () => {
-    try {
-      const user = await supabase.auth.getUser();
-
-      if (user.data.user) {
-        setUserID(user.data.user?.id);
-        setEmail(user.data.user?.email);
-      } else {
-        toast.error('로그인 정보가 없습니다.');
-        router.push('/login');
-      }
-    } catch {
-      toast.error('유저 아이디를 들고 오지 못했습니다.');
-      router.push('/');
-    }
-  };
-
-  //프로필 정보 들고오기
-  const getProfile = async (userID: string) => {
-    try {
-      const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
-
-      if (data) {
-        setName(data.name);
-        setPhone(data.phone);
-      }
-    } catch {
-      toast.error('유저 정보를 들고 오지 못했습니다.');
-    }
-  };
+  const [name, setName] = useState(user?.name);
+  const [phone, setPhone] = useState(user?.phone);
+  const [email, setEmail] = useState(user?.email);
 
   const fetchDetail = async (mt20id: string) => {
     try {
@@ -91,15 +60,13 @@ const TicketingPage: FC = () => {
       toast.error(e);
     }
   };
+
   useEffect(() => {
     if (!mt20id) return;
     fetchDetail(String(mt20id));
-    getID();
-    getProfile(String(userID));
-  }, []);
+  }, [mt20id]);
 
   if (!detail) return;
-  if (!userID) return;
 
   return (
     <Box p="10px 5%" bg="purple.50">
@@ -162,8 +129,9 @@ const TicketingPage: FC = () => {
                       <Card variant="outline">
                         <Input
                           type="text"
-                          placeholder={name ? name : '이름 정보가 없습니다'}
-                          color={name ?? 'inherit'}
+                          placeholder={user?.name ?? '이름 정보가 없습니다'}
+                          color={user?.name ?? 'inherit'}
+                          value={name}
                           onChange={e => setName(e.target.value)}
                         />
                       </Card>
@@ -175,8 +143,9 @@ const TicketingPage: FC = () => {
                       <Card variant="outline">
                         <Input
                           type="text"
-                          placeholder={phone ? phone : '전화번호 정보가 없습니다'}
-                          color={phone ?? 'inherit'}
+                          placeholder={user?.phone ? user?.phone : '전화번호 정보가 없습니다'}
+                          color={user?.phone ?? 'inherit'}
+                          value={phone}
                           onChange={e => setPhone(e.target.value)}
                         />
                       </Card>
@@ -188,8 +157,9 @@ const TicketingPage: FC = () => {
                       <Card variant="outline">
                         <Input
                           type="email"
-                          placeholder={email ? email : '이메일 정보가 없습니다'}
-                          color={email ?? 'inherit'}
+                          placeholder={user?.email ? user?.email : '이메일 정보가 없습니다'}
+                          color={user?.email ?? 'inherit'}
+                          value={email}
                           onChange={e => setEmail(e.target.value)}
                         />
                       </Card>
@@ -252,7 +222,7 @@ const TicketingPage: FC = () => {
           </Card>
         </Box>
         <Grid>
-          <Button colorScheme="brand" onClick={onOpen} isDisabled={!name || !phone || !email}>
+          <Button colorScheme="brand" onClick={onOpen} isDisabled={!user?.name || !user?.phone || !user?.email}>
             결제하기
           </Button>
         </Grid>

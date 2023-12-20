@@ -9,7 +9,7 @@ const TicketingResultPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [detail, setDetail] = useState<PerformanceDetail>();
   const router = useRouter();
-  const mt20id = router.query.mt20id as string;
+  const mt20id = router.query.id as string;
   const toast = useCustomToast();
 
   const fetchDetail = async (mt20id: string) => {
@@ -25,7 +25,7 @@ const TicketingResultPage = () => {
   useEffect(() => {
     if (!mt20id) return;
     fetchDetail(String(mt20id));
-  }, []);
+  }, [mt20id]);
 
   if (!detail) return;
   return (

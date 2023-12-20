@@ -15,10 +15,11 @@ import {
   Image,
   Divider,
 } from '@chakra-ui/react';
+import { User } from '@supabase/gotrue-js/src/lib/types.ts';
 import { Form, Formik, Field, FieldProps } from 'formik';
-import { supabase } from '@/api/lib/supabase';
 import TermsOfUse from '@/components/TermsOfUse';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 import { generateValidators } from '@/utils/formik';
 import { processer } from '@/utils/process';
 
@@ -43,12 +44,16 @@ const SignUpPage = () => {
   const now = new Date();
   const [show, setShow] = useState<boolean>(false);
   const router = useRouter();
+  const { supabase, setUser } = useSupabase();
 
   const handleClick = () => setShow(!show);
 
   const handleSubmit = async (values: FormValues) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
@@ -60,17 +65,18 @@ const SignUpPage = () => {
           },
         },
       });
-      router.push('/');
       if (error) {
         toast.error(error);
       } else {
         toast.success('회원가입에 성공했어요');
+        setUser(user as User);
+        router.push('/');
       }
-      console.log(data);
     } catch (error) {
       toast.error(error);
     }
   };
+
   return (
     <Formik<FormValues>
       initialValues={{

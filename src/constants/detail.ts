@@ -60,7 +60,7 @@ export const userInformation: UserInformation = [
   },
 ];
 
-export const category: Category = [
+export const categories: Category = [
   {
     english: 'entire',
     korean: '전체',

@@ -20,30 +20,33 @@ const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (p
   return (
     <Box display="flex" alignItems="center">
       {currentPage > 1 && (
-        <Link href="#" onClick={() => onPageChange(currentPage - 1)} style={{ marginRight: '8px' }}>
-          <ChevronCompactLeft />
+        <Link href="#" passHref onClick={() => onPageChange(currentPage - 1)}>
+          <a style={{ marginRight: '8px' }}>
+            <ChevronCompactLeft />
+          </a>
         </Link>
       )}
 
       {renderPageNumbers().map(page => (
-        <Link
-          key={page}
-          href="#"
-          onClick={() => onPageChange(page)}
-          style={{
-            margin: '0 4px',
-            fontWeight: currentPage === page ? 'bold' : 'normal',
-            color: currentPage === page ? colors.brand[300] : 'inherit',
-            opacity: currentPage === page ? 1 : 0.5,
-          }}
-        >
-          {page}
+        <Link key={page} href="#" passHref onClick={() => onPageChange(page)}>
+          <a
+            style={{
+              margin: '0 4px',
+              fontWeight: currentPage === page ? 'bold' : 'normal',
+              color: currentPage === page ? colors.brand[300] : 'inherit',
+              opacity: currentPage === page ? 1 : 0.5,
+            }}
+          >
+            {page}
+          </a>
         </Link>
       ))}
 
       {currentPage < totalPages && (
-        <Link href="#" onClick={() => onPageChange(currentPage + 1)} style={{ marginLeft: '8px' }}>
-          <ChevronCompactRight />
+        <Link href="#" passHref onClick={() => onPageChange(currentPage + 1)}>
+          <a style={{ marginLeft: '8px' }}>
+            <ChevronCompactRight />
+          </a>
         </Link>
       )}
     </Box>

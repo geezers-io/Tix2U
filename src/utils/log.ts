@@ -17,6 +17,7 @@ type PrintRequestLogParams = {
 };
 export function printRequestLog({ method, endPoint, requestData, requestParams, config }: PrintRequestLogParams) {
   if (!isDev) return;
+  console.log(config);
   if (Object.keys(requestParams ?? {}).length) {
     console.log(
       `%c${method?.toUpperCase()} ${endPoint} [REQ PARAMS]`,

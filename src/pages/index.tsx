@@ -154,7 +154,7 @@ const IndexPage: FC = () => {
               >
                 {({ isHovered }: { isHovered: boolean }) => (
                   <>
-                    <Link href={`/detail/${performance.mt20id}`}>
+                    <Link href={`/detail/${performance.mt20id}`} passHref>
                       <a>
                         <AspectRatio ratio={3 / 4}>
                           <Image
@@ -174,7 +174,7 @@ const IndexPage: FC = () => {
                         {performance.prfpdfrom} ~ {performance.prfpdto}
                       </Text>
 
-                      <Link href={`/detail/${performance.mt20id}`}>
+                      <Link href={`/detail/${performance.mt20id}`} passHref>
                         <a>
                           <Heading
                             size="md"
@@ -260,7 +260,7 @@ const IndexPage: FC = () => {
               >
                 {({ isHovered }: { isHovered: boolean }) => (
                   <>
-                    <Link href={`/detail/${performance.mt20id}`}>
+                    <Link href={`/detail/${performance.mt20id}`} passHref>
                       <a>
                         <AspectRatio ratio={3 / 4}>
                           <Image
@@ -280,7 +280,7 @@ const IndexPage: FC = () => {
                         {performance.prfpdfrom} ~ {performance.prfpdto}
                       </Text>
 
-                      <Link href={`/detail/${performance.mt20id}`}>
+                      <Link href={`/detail/${performance.mt20id}`} passHref>
                         <a>
                           <Heading
                             size="md"

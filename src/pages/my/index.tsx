@@ -27,26 +27,24 @@ import {
   useDisclosure,
   Tooltip,
 } from '@chakra-ui/react';
-import { Tables } from '@/api/lib/database.types';
-import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import DeleteIDButton from '@/components/DeleteIDButton';
 import ImageUpload from '@/components/ImageUploader';
 import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 import { processer } from '@/utils/process';
+import { partialToTableRow } from '@/utils/supabase.ts';
 
 const MyPage: FC = () => {
+  const { supabase, user, setUser } = useSupabase();
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
-  const [name, setName] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const [emailID, setEmailID] = useState<string | undefined>('');
-  const [phone, setPhone] = useState<string | null>(null);
-  const [birth, setBirth] = useState<string | null>(null);
-  const [address, setAddress] = useState<string | null>(null);
-  const [userID, setUserID] = useState<string>('');
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [name, setName] = useState(user?.name);
+  const [phone, setPhone] = useState(user?.phone);
+  const [birth, setBirth] = useState(user?.birth);
+  const [address, setAddress] = useState(user?.address);
+  const [imageUrl, setImageUrl] = useState(user?.imageUrl);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
@@ -67,58 +65,27 @@ const MyPage: FC = () => {
     }
   };
 
-  // database user_id 들고오기
-  const getID = async () => {
-    try {
-      const user = await supabase.auth.getUser();
-
-      if (user.data.user) {
-        setUserID(user.data.user?.id);
-        setEmailID(user.data.user?.email);
-      } else {
-        toast.error('사용자의 정보가 없습니다.');
-        router.push('/login');
-      }
-    } catch {
-      toast.error('유저 아이디를 들고 오지 못했습니다.');
-    }
-  };
-
-  //프로필 정보 들고오기
-  const getProfile = async () => {
-    try {
-      const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
-
-      if (data) {
-        setName(data.name);
-        setPhone(data.phone);
-        setBirth(data.birth);
-        setEmail(data.email);
-        setImageUrl(data.imageUrl);
-        setAddress(data.address);
-      }
-    } catch {
-      toast.error('유저 정보를 들고 오지 못했습니다.');
-    }
-  };
-
   //프로필 정보 업데이트
-  const updateProfile = async event => {
-    event.preventDefault();
+  const updateProfile = async () => {
+    if (!user || !user.email) return;
 
     try {
-      const updates: Tables<'profiles'> = {
-        id: userID,
+      const updates = partialToTableRow({
+        id: user.id,
         name,
         birth,
         phone,
-        email,
+        email: user.email,
         updated_at: processer.date(now),
-        imageUrl,
         address,
-      };
+        imageUrl,
+      });
 
       await supabase.from('profiles').upsert(updates).select();
+      setUser(prev => {
+        if (!prev) return;
+        return { ...prev }; // NOTE: SupabaseProvider 내 effect 발생시켜서 profile 업데이트
+      });
       onClose();
     } catch {
       toast.error('업데이트에 실패했습니다.');
@@ -128,6 +95,7 @@ const MyPage: FC = () => {
   const logoutSubmit = async () => {
     try {
       await supabase.auth.signOut();
+      setUser(undefined);
       router.push('/');
       toast.success('로그아웃 되었습니다.');
     } catch {
@@ -138,13 +106,10 @@ const MyPage: FC = () => {
   useEffect(() => {
     if (cartItems.length !== mt20ids.length) {
       mt20ids.forEach(id => fetchCart(id));
-      getID();
-      getProfile();
     }
   }, [cartItems]);
 
-  if (!userID) return;
-
+  if (!user) return;
   return (
     <Box bgColor="purple.50" minHeight="80vh" p="10px 5%" display="flex" justifyContent="center">
       <Box bgColor="white" p={5} w={{ base: '80%', md: '800px' }} minHeight="80vh">
@@ -152,7 +117,7 @@ const MyPage: FC = () => {
           <Button colorScheme="red" onClick={logoutSubmit}>
             로그아웃
           </Button>
-          <DeleteIDButton userID={userID} />
+          <DeleteIDButton userID={user.id} />
         </Flex>
         <HStack spacing={{ base: '4', md: '8' }} align="center" direction={{ base: 'column', md: 'row' }}>
           <VStack spacing="4" m="20px auto">
@@ -167,7 +132,7 @@ const MyPage: FC = () => {
               {name}
             </Heading>
             <Text color="gray.500" textAlign="left">
-              {emailID}
+              {user.email}
             </Text>
           </VStack>
         </HStack>
@@ -190,19 +155,19 @@ const MyPage: FC = () => {
                 <VStack spacing="4" mt="8" align="left" h="inherit">
                   <Box>
                     <Text fontWeight="bold">이름:</Text>
-                    <Text>{name ? name : '이름 정보가 없습니다'}</Text>
+                    <Text>{user?.name ?? '이름 정보가 없습니다'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">전화번호:</Text>
-                    <Text>{phone ? phone : '전화번호 정보가 없습니다'}</Text>
+                    <Text>{user?.phone ?? '전화번호 정보가 없습니다'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">생년월일:</Text>
-                    <Text>{birth ? birth : '생년월일 정보가 없습니다'}</Text>
+                    <Text>{user?.birth ?? '생년월일 정보가 없습니다'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">주소:</Text>
-                    <Text>{address ? address : '주소 정보가 없습니다'}</Text>
+                    <Text>{user?.address ?? '주소 정보가 없습니다'}</Text>
                   </Box>
 
                   <Button colorScheme="accent" onClick={onOpen}>
@@ -219,7 +184,8 @@ const MyPage: FC = () => {
                             <Text fontWeight="bold">이름:</Text>
                             <Input
                               type="text"
-                              placeholder={name ? name : '이름 정보가 없습니다'}
+                              placeholder={name ?? '이름 정보가 없습니다'}
+                              value={name}
                               onChange={e => setName(e.target.value)}
                             />
                           </Box>
@@ -227,14 +193,16 @@ const MyPage: FC = () => {
                             <Text fontWeight="bold">전화번호:</Text>
                             <Input
                               type="text"
-                              placeholder={phone ? phone : '전화번호 정보가 없습니다'}
+                              placeholder={phone ?? '전화번호 정보가 없습니다'}
+                              value={phone}
                               onChange={e => setPhone(e.target.value)}
                             />
                           </Box>
                           <Box>
                             <Text fontWeight="bold">생년월일 :</Text>
                             <Input
-                              placeholder={birth ? birth : '생년월일 정보가 없습니다'}
+                              placeholder={birth ?? '생년월일 정보가 없습니다'}
+                              value={birth}
                               onChange={e => setBirth(e.target.value)}
                               type="date"
                               max={processer.date(now)}
@@ -243,7 +211,8 @@ const MyPage: FC = () => {
                           <Box>
                             <Text fontWeight="bold">주소:</Text>
                             <Input
-                              placeholder={address ? address : '주소 정보가 없습니다'}
+                              placeholder={address ?? '주소 정보가 없습니다'}
+                              value={address}
                               onChange={e => setAddress(e.target.value)}
                               type="text"
                             />
@@ -264,7 +233,7 @@ const MyPage: FC = () => {
                 </VStack>
               </TabPanel>
               <TabPanel>
-                <Link href="/cart">
+                <Link href="/carts">
                   <Button colorScheme="brand" m="10px">
                     위시리스트로 이동하기
                   </Button>

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { GeoAlt } from 'react-bootstrap-icons';
@@ -32,7 +31,6 @@ import {
   ModalFooter,
   ModalBody,
 } from '@chakra-ui/react';
-import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import KakaoMap from '@/components/KakaoMap';
@@ -41,52 +39,25 @@ import ZoomImage from '@/components/shared/ZoomImage';
 import { ticketSale } from '@/constants/detail';
 import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 
 type commentList = { user: string; content: string }[];
 
 const DetailPage: FC = () => {
   const [detail, setDetail] = useState<PerformanceDetail>();
   const router = useRouter();
-  const mt20id = router.query.mt20id as string;
+  const mt20id = router.query.id as string;
   const toast = useCustomToast();
+  const { user } = useSupabase();
   const [content, setContent] = useState<string>('');
   const [commentList, setCommentList] = useState<commentList>([{ user: 'love_penguin', content: 'wow' }]);
-  const [name, setName] = useState<string | null>(null);
-  const [userImage, setUserImage] = useState<string | null>(null);
-  const [userID, setUserID] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const saveComment = e => {
     setContent(e.target.value);
   };
 
-  const getID = async () => {
-    try {
-      const user = await supabase.auth.getUser();
-
-      if (user.data.user) {
-        setUserID(user.data.user?.id);
-      }
-    } catch {
-      toast.error('유저 아이디를 들고 오지 못했습니다.');
-    }
-  };
-
-  const getProfile = async (userID: string) => {
-    try {
-      const { data } = await supabase.from('profiles').select('*').eq('id', userID).single();
-
-      if (data) {
-        setName(data.name);
-        setUserImage(data.imageUrl);
-        console.log(userImage);
-      }
-    } catch {
-      toast.error('유저 정보를 들고 오지 못했습니다.');
-    }
-  };
-
-  const handleCommentSubmit = async (content: string, name: string | null) => {
+  const handleCommentSubmit = async (content: string, name?: string) => {
     if (!content) return;
     if (!name) {
       toast.error('사용자의 이름 정보가 없습니다.');
@@ -107,7 +78,7 @@ const DetailPage: FC = () => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleCartButtonClick = () => {
-    if (userID) {
+    if (user) {
       openModal();
     } else {
       toast.error('로그인되지 않았습니다.');
@@ -126,9 +97,7 @@ const DetailPage: FC = () => {
   useEffect(() => {
     if (!mt20id) return;
     fetchDetail(String(mt20id));
-    getID();
-    getProfile(String(userID));
-  }, [userID]);
+  }, [mt20id]);
 
   if (!detail) return;
 
@@ -250,9 +219,9 @@ const DetailPage: FC = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Flex>
-                  <Image src={detail?.styurls} alt="" m="0 auto" />
-                </Flex>
+                {detail?.styurls &&
+                  [detail.styurls].flat().map(url => <Image key={url + 'detail image'} src={url} alt="" m="0 auto" />)}
+                <Flex></Flex>
               </TabPanel>
               <TabPanel>
                 <Box>
@@ -265,14 +234,19 @@ const DetailPage: FC = () => {
 
                   <Flex p="20px 0px">
                     <Box>
-                      <Avatar name={name ?? undefined} src={ProfileImage} m="10px" size="lg" />
+                      <Avatar name={user?.name} src={ProfileImage} m="10px" size="lg" />
                       <Text textAlign="center" color="gray">
-                        {name}
+                        {user?.name}
                       </Text>
                     </Box>
 
                     <Input placeholder="댓글을 입력하세요" value={content} onChange={saveComment} m="auto 0" />
-                    <Button colorScheme="brand" m="0 10px" onClick={() => handleCommentSubmit(content, name)} my="auto">
+                    <Button
+                      colorScheme="brand"
+                      m="0 10px"
+                      onClick={() => handleCommentSubmit(content, user?.name)}
+                      my="auto"
+                    >
                       등록
                     </Button>
                   </Flex>
@@ -286,7 +260,7 @@ const DetailPage: FC = () => {
                             key={`${value.user} - ${value.content}`}
                           >
                             <Box>
-                              <Avatar name={value.user} src={userImage ?? ProfileImage} m="10px" size="lg" />
+                              <Avatar name={value.user} src={user?.imageUrl ?? ProfileImage} m="10px" size="lg" />
                               <Text textAlign="center" color="gray">
                                 {value.user}
                               </Text>
@@ -311,11 +285,16 @@ const DetailPage: FC = () => {
                     <Heading size="lg" m="auto 0">
                       장소
                     </Heading>
-                    <Link href={`https://map.kakao.com/link/search/${detail.fcltynm}`}>
-                      <Button colorScheme="brand" m="20px">
-                        장소 검색하러 가기
-                      </Button>
-                    </Link>
+                    <Button
+                      as="a"
+                      href={`https://map.kakao.com/link/search/${detail.fcltynm}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      colorScheme="brand"
+                      m="20px"
+                    >
+                      장소 검색하러 가기
+                    </Button>
                   </Flex>
                   <Box h="800px">
                     <KakaoMap detail={detail} />

@@ -1,14 +1,12 @@
 import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { PersonCircle, BoxArrowInRight, Search, BoxArrowInLeft, List, BagHeart } from 'react-bootstrap-icons';
 import {
   Box,
   Image,
   Flex,
-  Spacer,
   HStack,
   Text,
-  useMediaQuery,
   IconButton,
   Drawer,
   DrawerOverlay,
@@ -17,28 +15,15 @@ import {
   DrawerHeader,
   DrawerBody,
   VStack,
-  ColorModeScript,
 } from '@chakra-ui/react';
-import supabase from '@/api/lib/supabase';
-import { category } from '@/constants/detail';
+import { categories } from '@/constants/detail';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 
 const PageHeader: FC = () => {
-  const [isLargerThanMd] = useMediaQuery('(min-width: 90em)');
-  const [session, setSession] = useState<string | undefined>(undefined);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const toast = useCustomToast();
-
-  const fetchLogin = async () => {
-    try {
-      const { data } = await supabase.auth.getUser();
-      if (data) {
-        setSession(data.user?.id);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { supabase, user } = useSupabase();
 
   const signOut = async () => {
     try {
@@ -52,21 +37,15 @@ const PageHeader: FC = () => {
   };
 
   const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+    setIsDrawerOpen(prev => !prev);
   };
-
-  useEffect(() => {
-    fetchLogin();
-  }, [session]);
 
   return (
     <>
-      <ColorModeScript />
-
       <Box
         as="header"
         w="100%"
-        h="100px"
+        h={{ base: 'auto', md: '100px' }}
         position="sticky"
         top={0}
         paddingTop={{ base: 0, md: '8px' }}
@@ -78,68 +57,61 @@ const PageHeader: FC = () => {
         paddingX="4"
       >
         <Flex
-          direction={{ base: 'column', md: 'row' }}
-          align="center"
-          justify="space-between"
           h="100%"
+          direction={{ base: 'column', md: 'row' }}
+          justify="space-between"
+          align="center"
           pl={{ base: 2, md: 10 }}
           pr={{ base: 2, md: 10 }}
         >
           <Link href="/" passHref>
             <a>
-              <Image src="/name_logo.png" alt="" width={200} height={60} objectFit="contain" />
+              <Image src="/name_logo.png" alt="" width="200px" height="60px" objectFit="contain" />
             </a>
           </Link>
-          {isLargerThanMd ? (
-            <HStack pl="10" spacing={{ base: 2, md: 10 }}>
-              {category &&
-                category.map(value => (
-                  <Link key={`${value.english} - ${value.korean}`} href={`/${value.english}`}>
-                    <a>
-                      <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-                        {value.korean}
-                      </Text>
-                    </a>
-                  </Link>
-                ))}
-            </HStack>
-          ) : (
-            <HStack spacing={10} align="center">
-              <IconButton icon={<List />} aria-label="Open Navigation Drawer" onClick={toggleDrawer} />
-            </HStack>
-          )}
 
-          <Spacer display={{ base: 'none', md: 'block' }} />
+          <Box flex={1}>
+            <HStack display={{ base: 'none', xl: 'flex' }} pl="10" spacing={{ base: 2, md: 10 }}>
+              {categories.map(category => (
+                <Link key={`${category.english} - ${category.korean}`} href={`/${category.english}`} passHref>
+                  <a>
+                    <Text fontWeight="bold" letterSpacing="0.1em" fontSize="md">
+                      {category.korean}
+                    </Text>
+                  </a>
+                </Link>
+              ))}
+            </HStack>
 
-          <HStack spacing={10} align="center">
+            <IconButton
+              display={{ base: 'flex', xl: 'none' }}
+              icon={<List />}
+              aria-label="Open Navigation Drawer"
+              onClick={toggleDrawer}
+            />
+          </Box>
+
+          <HStack spacing={10} align="center" mt={{ base: 2, md: 0 }}>
             <Link href="/search" passHref>
               <a>
                 <Flex flexDirection="column" alignItems="center">
+                  <Search />
                   <Text
                     fontWeight="bold"
                     letterSpacing="0.1em"
                     cursor="pointer"
-                    fontSize={isLargerThanMd ? 'md' : 'sm'}
                     align="center"
+                    fontSize={{ base: 'sm', xl: 'md' }}
+                    _hover={{ textDecoration: 'none' }}
+                    _focus={{ boxShadow: 'none' }}
                   >
-                    <Flex flexDirection="column" alignItems="center">
-                      <Search />
-                      <Text
-                        fontWeight="bold"
-                        letterSpacing="0.1em"
-                        fontSize={isLargerThanMd ? 'md' : 'sm'}
-                        _hover={{ textDecoration: 'none' }}
-                        _focus={{ boxShadow: 'none' }}
-                      >
-                        SEARCH
-                      </Text>
-                    </Flex>
+                    SEARCH
                   </Text>
                 </Flex>
               </a>
             </Link>
 
-            {!!session && (
+            {!!user && (
               <>
                 <Flex flexDirection="column" alignItems="center">
                   <BoxArrowInLeft />
@@ -147,7 +119,7 @@ const PageHeader: FC = () => {
                     fontWeight="bold"
                     letterSpacing="0.1em"
                     _hover={{ textDecoration: 'underline' }}
-                    fontSize={isLargerThanMd ? 'md' : 'sm'}
+                    fontSize={{ base: 'sm', xl: 'md' }}
                     onClick={signOut}
                     cursor="pointer"
                     align="center"
@@ -159,27 +131,17 @@ const PageHeader: FC = () => {
                   <a>
                     <Flex flexDirection="column" alignItems="center">
                       <PersonCircle />
-                      <Text
-                        fontWeight="bold"
-                        letterSpacing="0.1em"
-                        fontSize={isLargerThanMd ? 'md' : 'sm'}
-                        align="center"
-                      >
+                      <Text fontWeight="bold" letterSpacing="0.1em" fontSize={{ base: 'sm', xl: 'md' }} align="center">
                         MYPAGE
                       </Text>
                     </Flex>
                   </a>
                 </Link>
-                <Link href="/cart" passHref>
+                <Link href="/carts" passHref>
                   <a>
                     <Flex flexDirection="column" alignItems="center">
                       <BagHeart />
-                      <Text
-                        fontWeight="bold"
-                        letterSpacing="0.1em"
-                        fontSize={isLargerThanMd ? 'md' : 'sm'}
-                        align="center"
-                      >
+                      <Text fontWeight="bold" letterSpacing="0.1em" fontSize={{ base: 'sm', xl: 'md' }} align="center">
                         LIST
                       </Text>
                     </Flex>
@@ -188,7 +150,7 @@ const PageHeader: FC = () => {
               </>
             )}
 
-            {!session && (
+            {!user && (
               <Link href="/login" passHref>
                 <a>
                   <Flex flexDirection="column" alignItems="center">
@@ -196,7 +158,7 @@ const PageHeader: FC = () => {
                     <Text
                       fontWeight="bold"
                       letterSpacing="0.1em"
-                      fontSize={isLargerThanMd ? 'md' : 'sm'}
+                      fontSize={{ base: 'sm', xl: 'md' }}
                       _hover={{ textDecoration: 'none' }}
                       _focus={{ boxShadow: 'none' }}
                     >
@@ -208,29 +170,26 @@ const PageHeader: FC = () => {
             )}
           </HStack>
 
-          {!isLargerThanMd && (
-            <Drawer placement="right" onClose={toggleDrawer} isOpen={isDrawerOpen}>
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>Category</DrawerHeader>
-                <DrawerBody>
-                  <VStack align="start">
-                    {category &&
-                      category.map(value => (
-                        <Link key={`${value.english}-${value.korean}`} href={`/${value.english}`} passHref>
-                          <a>
-                            <Text fontWeight="bold" letterSpacing="0.1em" fontSize={isLargerThanMd ? 'md' : 'sm'}>
-                              {value.korean}
-                            </Text>
-                          </a>
-                        </Link>
-                      ))}
-                  </VStack>
-                </DrawerBody>
-              </DrawerContent>
-            </Drawer>
-          )}
+          <Drawer placement="right" onClose={toggleDrawer} isOpen={isDrawerOpen}>
+            <DrawerOverlay display={{ base: 'block', xl: 'none' }} />
+            <DrawerContent display={{ base: 'block', xl: 'none' }}>
+              <DrawerCloseButton />
+              <DrawerHeader>Category</DrawerHeader>
+              <DrawerBody>
+                <VStack align="start">
+                  {categories.map(value => (
+                    <Link key={`${value.english}-${value.korean}`} href={`/${value.english}`} passHref>
+                      <a>
+                        <Text fontWeight="bold" letterSpacing="0.1em" fontSize={{ base: 'sm', xl: 'md' }}>
+                          {value.korean}
+                        </Text>
+                      </a>
+                    </Link>
+                  ))}
+                </VStack>
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
         </Flex>
       </Box>
     </>

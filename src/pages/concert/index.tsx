@@ -155,7 +155,7 @@ const ConcertPage: FC = () => {
                         bg={colors.gray[50]}
                         h="100%"
                       >
-                        <Link href={`/detail/${performance.mt20id}`}>
+                        <Link href={`/detail/${performance.mt20id}`} passHref>
                           <a>
                             <AspectRatio ratio={3 / 4}>
                               <Image
@@ -176,7 +176,7 @@ const ConcertPage: FC = () => {
                             {performance.prfpdfrom} ~ {performance.prfpdto}
                           </Text>
 
-                          <Link href={`/detail/${performance.mt20id}`}>
+                          <Link href={`/detail/${performance.mt20id}`} passHref>
                             <a>
                               <Heading size="md" mb="1" fontSize="xl">
                                 {performance.prfnm}

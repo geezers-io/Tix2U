@@ -1,19 +1,16 @@
 import { Html, Head, NextScript, Main } from 'next/document';
-import PageAside from '@/components/layouts/PageAside.tsx';
-import PageHeader from '@/components/layouts/PageHeader.tsx';
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head />
       <body>
-        <PageHeader />
-
         <Main />
-
-        <PageAside />
-
         <NextScript />
+        <script
+          type="text/javascript"
+          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ae9227eb31d38084c5fb2021b9ebbcd6&libraries=services,clusterer"
+        ></script>
       </body>
     </Html>
   );

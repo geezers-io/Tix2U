@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Image,
@@ -14,9 +14,11 @@ import {
   FormControl,
   FormErrorMessage,
 } from '@chakra-ui/react';
+import { User } from '@supabase/gotrue-js/src/lib/types.ts';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import supabase from '@/api/lib/supabase';
+
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 import { generateValidators } from '@/utils/formik';
 
 type FormValues = {
@@ -33,23 +35,14 @@ const SignInPage = () => {
   const handleClick = () => setShowPassword(!showPassword);
   const toast = useCustomToast();
   const router = useRouter();
-  const [userID, setUserID] = useState<string | null>(null);
-
-  const getID = async () => {
-    try {
-      const user = await supabase.auth.getUser();
-
-      if (user.data.user) {
-        setUserID(user.data.user?.id);
-      }
-    } catch {
-      toast.error('유저 아이디를 들고 오지 못했습니다.');
-    }
-  };
+  const { supabase, user, setUser } = useSupabase();
 
   const handleSubmit = async (value: FormValues) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signInWithPassword({
         email: value.email,
         password: value.password,
       });
@@ -57,6 +50,7 @@ const SignInPage = () => {
         toast.error('로그인 정보가 올바르지 않습니다.');
       } else {
         toast.success('로그인에 성공했어요!');
+        setUser(user as User);
         router.push('/');
       }
     } catch {
@@ -66,23 +60,19 @@ const SignInPage = () => {
 
   const signInWithKakao = async () => {
     try {
-      await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
       });
+      if (error) throw error;
     } catch {
       toast.error('카카오 로그인에 실패했어요.');
     }
   };
 
-  useEffect(() => {
-    getID();
-  }, []);
-
-  if (userID) {
+  if (user) {
     toast.error('로그인이 되어있는 상태입니다.');
-    router.push('/');
+    return router.push('/');
   }
-
   return (
     <Formik<FormValues>
       initialValues={{
@@ -155,7 +145,7 @@ const SignInPage = () => {
                           </Button>
                         </Link>
 
-                        <Link href="/signUp">
+                        <Link href="/login/signUp">
                           <Button colorScheme="brand" size="sm" m="10px" variant="outline">
                             회원가입
                           </Button>

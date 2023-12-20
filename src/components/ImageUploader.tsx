@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Button, Avatar } from '@chakra-ui/react';
-import supabase from '@/api/lib/supabase';
 import { ProfileImage } from '@/constants/link';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 
 interface Props {
   url: string | null;
@@ -10,8 +10,9 @@ interface Props {
 }
 
 const ImageUpload: FC<Props> = ({ url, onUpload }) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(url);
   const toast = useCustomToast();
+  const { supabase } = useSupabase();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleUploadButtonClick = () => {

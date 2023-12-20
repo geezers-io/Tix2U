@@ -377,3 +377,12 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof Database['public']['Enums']
     ? Database['public']['Enums'][PublicEnumNameOrOptions]
     : never;
+
+export type NullableToOptional<T> = T extends null ? Exclude<T, null> | undefined : T;
+export type TableRowToPartial<T> = {
+  [K in keyof T]?: NullableToOptional<T[K]>;
+};
+export type OptionalToNullable<T> = T extends undefined ? Exclude<T, undefined> | null : T;
+export type PartialToTableRow<T> = {
+  [K in keyof T]: OptionalToNullable<T[K]>;
+};

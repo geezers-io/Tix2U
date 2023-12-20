@@ -1,38 +1,20 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import { HeartFill } from 'react-bootstrap-icons';
 import { Box, Heading, Text, Image, HStack, VStack } from '@chakra-ui/react';
-import supabase from '@/api/lib/supabase';
 import { PerformanceService } from '@/api/services/PerformanceService';
 import { PerformanceDetail } from '@/api/services/PerformanceService.types';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useSupabase } from '@/providers/SupabaseProvider.tsx';
 import { colors } from '@/styles/theme/@colors';
 
 const CartsPage: FC = () => {
   const [cartItems, setCartItems] = useState<PerformanceDetail[]>([]);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [userID, setUserID] = useState<string | null>(null);
-  const router = useRouter();
   const toast = useCustomToast();
+  const { user } = useSupabase();
   const gradient = `linear(to-r, ${colors.brand[300]}, pink)`;
   const mt20ids = ['PF215946', 'PF228209', 'PF232498', 'PF232506'];
-
-  const getID = async () => {
-    try {
-      const user = await supabase.auth.getUser();
-
-      if (user.data.user) {
-        setUserID(user.data.user?.id);
-      } else {
-        toast.error('사용자 정보가 없습니다.');
-        router.push('/login');
-      }
-    } catch {
-      toast.error('유저 아이디를 들고 오지 못했습니다.');
-      router.push('/');
-    }
-  };
 
   const fetchCart = async (mt20id: string) => {
     try {
@@ -48,7 +30,7 @@ const CartsPage: FC = () => {
     }
   };
 
-  const handleDelete = async mt20id => {
+  const handleDelete = (mt20id: string) => {
     const updateData = cartItems.filter(item => item.mt20id !== mt20id);
     setCartItems(updateData);
   };
@@ -60,17 +42,14 @@ const CartsPage: FC = () => {
       isExpanded(mt20id) ? prevExpanded.filter(id => id !== mt20id) : [...prevExpanded, mt20id],
     );
   };
+
   useEffect(() => {
     if (cartItems.length !== mt20ids.length) {
       mt20ids.forEach(id => fetchCart(id));
-      getID();
     }
   }, []);
 
-  if (!userID) {
-    return;
-  }
-
+  if (!user) return;
   return (
     <>
       <Box p={{ base: '10px 5%', md: '10px 10%' }} bg="purple.50">
@@ -99,42 +78,39 @@ const CartsPage: FC = () => {
           <VStack align="start" spacing={{ base: '2', md: '4' }}>
             <Text size="md">하트를 누르면 상품이 위시리스트에서 제거됩니다.</Text>
             {cartItems.map(item => (
-              <Box
-                key={item.mt20id}
-                border="1px"
-                borderRadius="md"
-                p="4"
-                width="100%"
-                shadow="lg"
-                transition="all 0.3s"
-                _hover={{
-                  cursor: 'pointer',
-                  transform: 'scale(1.05)',
-                }}
-                onClick={() => toggleExpansion(item.mt20id)}
-              >
-                <HStack alignItems="start" spacing="4">
-                  <HeartFill
-                    color="pink"
-                    //isChecked={selectedItems.includes(item.mt20id)}
-                    onClick={() => handleDelete(item.mt20id)}
-                  />
-                  <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
-                  <VStack align="start" flex="1">
-                    <HStack>
-                      <Link href={`/detail/${item.mt20id}`}>
-                        <VStack align="start" flex="1">
-                          <Text ml="5">{item.prfnm}</Text>
-                          <Text fontWeight="bold" marginBottom="1" ml="5">
-                            {`제한 연령: ${item.prfage}`}
-                          </Text>
-                        </VStack>
-                      </Link>
-                    </HStack>
-                  </VStack>
-                  <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
-                </HStack>
-              </Box>
+              <Link key={item.mt20id} href={`/detail/${item.mt20id}`}>
+                <Box
+                  border="1px"
+                  borderRadius="md"
+                  p="4"
+                  width="100%"
+                  shadow="lg"
+                  transition="all 0.3s"
+                  _hover={{
+                    cursor: 'pointer',
+                    transform: 'scale(1.05)',
+                  }}
+                  onClick={() => toggleExpansion(item.mt20id)}
+                >
+                  <HStack alignItems="start" spacing="4">
+                    <HeartFill
+                      color="pink"
+                      onClick={e => {
+                        e.stopPropagation();
+                        handleDelete(item.mt20id);
+                      }}
+                    />
+                    <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                    <VStack align="start" flex="1">
+                      <Text ml="5">{item.prfnm}</Text>
+                      <Text fontWeight="bold" marginBottom="1" ml="5">
+                        {`제한 연령: ${item.prfage}`}
+                      </Text>
+                    </VStack>
+                    <Text ml="2" pl={{ base: '0', md: '4' }}>{`장소: ${item.fcltynm}`}</Text>
+                  </HStack>
+                </Box>
+              </Link>
             ))}
           </VStack>
           {cartItems.length === 0 && (
