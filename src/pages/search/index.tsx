@@ -16,8 +16,6 @@ const SearchPage = () => {
     try {
       setSearchTerm(e.target.value.toLowerCase());
 
-      console.log(deferredTerm);
-
       const res = await PerformanceService.getList({
         stdate: '20230101',
         eddate: '2030630',
