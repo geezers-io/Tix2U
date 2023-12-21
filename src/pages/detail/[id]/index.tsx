@@ -181,11 +181,11 @@ const DetailPage: FC = () => {
                       <Flex flexDirection="column" gap={10}>
                         {ticketSale &&
                           ticketSale.map(value => (
-                            <Flex>
+                            <Flex flexDirection={{ base: 'column', md: 'row' }}>
                               <Flex textAlign="center">
-                                <Badge ml="1" fontSize="0.8em" colorScheme="brand">
+                                <Text ml="1" fontSize="0.8em" colorScheme="brand">
                                   {value.title}
-                                </Badge>
+                                </Text>
                               </Flex>
                               <Flex w="250px">
                                 <Text> {value.content.subtitle}</Text>
