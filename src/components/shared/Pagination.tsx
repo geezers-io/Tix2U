@@ -20,15 +20,15 @@ const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (p
   return (
     <Box display="flex" alignItems="center">
       {currentPage > 1 && (
-        <Link href="#" passHref onClick={() => onPageChange(currentPage - 1)}>
-          <a style={{ marginRight: '8px' }}>
+        <Link href="#" passHref>
+          <a style={{ marginRight: '8px' }} onClick={() => onPageChange(currentPage - 1)}>
             <ChevronCompactLeft />
           </a>
         </Link>
       )}
 
       {renderPageNumbers().map(page => (
-        <Link key={page} href="#" passHref onClick={() => onPageChange(page)}>
+        <Link key={page} href="#" passHref>
           <a
             style={{
               margin: '0 4px',
@@ -36,6 +36,7 @@ const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (p
               color: currentPage === page ? colors.brand[300] : 'inherit',
               opacity: currentPage === page ? 1 : 0.5,
             }}
+            onClick={() => onPageChange(page)}
           >
             {page}
           </a>
@@ -43,8 +44,8 @@ const Pagination: FC<{ currentPage: number; totalPages: number; onPageChange: (p
       ))}
 
       {currentPage < totalPages && (
-        <Link href="#" passHref onClick={() => onPageChange(currentPage + 1)}>
-          <a style={{ marginLeft: '8px' }}>
+        <Link href="#" passHref>
+          <a style={{ marginLeft: '8px' }} onClick={() => onPageChange(currentPage + 1)}>
             <ChevronCompactRight />
           </a>
         </Link>
