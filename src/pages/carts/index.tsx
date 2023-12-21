@@ -100,7 +100,7 @@ const CartsPage: FC = () => {
                         handleDelete(item.mt20id);
                       }}
                     />
-                    <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                    <Image src={item.poster} objectFit="contain" w="100px" m="0 auto" />
 
                     <VStack align="start" flex="1">
                       <Text ml="5">{item.prfnm}</Text>

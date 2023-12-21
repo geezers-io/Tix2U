@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import {
   Button,
-  useDisclosure,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,10 +11,22 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
-const TicketingButton = ({ id }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const TicketingButton = ({ id, user }) => {
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toast = useCustomToast();
+
+  const onOpen = () => {
+    if (user) {
+      openModal();
+    } else {
+      toast.error('로그인되지 않았습니다.');
+    }
+  };
 
   return (
     <>
@@ -22,7 +34,7 @@ const TicketingButton = ({ id }) => {
         예매하기
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isModalOpen} onClose={closeModal} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
@@ -37,7 +49,7 @@ const TicketingButton = ({ id }) => {
               예매하러 갈래요!
             </Button>
 
-            <Button variant="ghost" onClick={onClose} flex={1}>
+            <Button variant="ghost" onClick={closeModal} flex={1}>
               좀 더 고민해볼게요
             </Button>
           </ModalFooter>

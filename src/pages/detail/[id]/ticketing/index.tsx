@@ -50,7 +50,6 @@ const TicketingPage: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState(user?.name);
   const [phone, setPhone] = useState(user?.phone);
-  const [email, setEmail] = useState(user?.email);
 
   const fetchDetail = async (mt20id: string) => {
     try {
@@ -150,20 +149,6 @@ const TicketingPage: FC = () => {
                         />
                       </Card>
                     </Box>
-                    <Box>
-                      <Heading size="xs" m="10px">
-                        주문자 이메일
-                      </Heading>
-                      <Card variant="outline">
-                        <Input
-                          type="email"
-                          placeholder={user?.email ? user?.email : '이메일 정보가 없습니다'}
-                          color={user?.email ?? 'inherit'}
-                          value={email}
-                          onChange={e => setEmail(e.target.value)}
-                        />
-                      </Card>
-                    </Box>
                   </FormControl>
                 </Stack>
               </CardBody>
@@ -222,7 +207,7 @@ const TicketingPage: FC = () => {
           </Card>
         </Box>
         <Grid>
-          <Button colorScheme="brand" onClick={onOpen} isDisabled={!user?.name || !user?.phone || !user?.email}>
+          <Button colorScheme="brand" onClick={onOpen} isDisabled={!user?.name || !user?.phone}>
             결제하기
           </Button>
         </Grid>
