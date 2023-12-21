@@ -92,7 +92,7 @@ const CartsPage: FC = () => {
                   }}
                   onClick={() => toggleExpansion(item.mt20id)}
                 >
-                  <HStack alignItems="start" spacing="4">
+                  <HStack alignItems="start" spacing="4" flexDirection={{ base: 'column', md: 'row' }}>
                     <HeartFill
                       color="pink"
                       onClick={e => {
@@ -101,6 +101,7 @@ const CartsPage: FC = () => {
                       }}
                     />
                     <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+
                     <VStack align="start" flex="1">
                       <Text ml="5">{item.prfnm}</Text>
                       <Text fontWeight="bold" marginBottom="1" ml="5">

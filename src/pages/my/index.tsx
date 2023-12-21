@@ -253,34 +253,31 @@ const MyPage: FC = () => {
                         transform: 'scale(1.05)',
                       }}
                     >
-                      <HStack alignItems="start" spacing="4">
+                      <HStack alignItems="start" spacing="4" flexDirection={{ base: 'column', md: 'row' }}>
                         <Box>
                           <HeartFill style={{ color: 'pink', width: '1em', height: '1em' }} />
                         </Box>
                         <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
-
                         <VStack align="start" flex="1">
                           <Link href={`detail/${item.mt20id}`}>
-                            <HStack>
-                              <VStack align="start" flex="1">
-                                <Text
-                                  ml="3"
-                                  noOfLines={1}
-                                  overflow="hidden"
-                                  textOverflow="ellipsis"
-                                  whiteSpace="nowrap"
-                                  width="100%"
-                                >
-                                  {item.prfnm}
-                                </Text>
-                                <Text fontWeight="bold" marginBottom="1" ml="5">
-                                  {`제한 연령: ${item.prfage}`}
-                                </Text>
-                              </VStack>
-                            </HStack>
+                            <VStack align="start" flex="1" overflow="hidden" w="100%">
+                              <Text
+                                ml="3"
+                                noOfLines={1}
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                whiteSpace={{ base: 'wrap', md: 'nowrap' }}
+                                width="100%"
+                                pl={{ base: '0', md: '4' }}
+                              >
+                                {item.prfnm}
+                              </Text>
+                              <Text fontWeight="bold" marginBottom="1" ml="5">
+                                {`제한 연령: ${item.prfage}`}
+                              </Text>
+                            </VStack>
                           </Link>
                         </VStack>
-
                         <Text
                           ml="2"
                           noOfLines={1}

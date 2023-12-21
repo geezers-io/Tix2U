@@ -87,7 +87,7 @@ const SignInPage = () => {
           <Form>
             <Box p="10px 5%" bg="purple.50">
               <Box m="0 auto" bgColor="white" p={5} minHeight="1000px" w="90%" maxW="700px">
-                <Box p="50px">
+                <Box p={{ base: '0px', md: '50px' }}>
                   <Flex m="auto 0" flexDirection="column" justifyContent="center">
                     <Flex m="0 auto">
                       <Image src="/name_logo.png" w="500px" />
@@ -138,15 +138,15 @@ const SignInPage = () => {
                       <Box m="0 auto">
                         <Image src="/kakaoLogin.png" role="button" onClick={signInWithKakao} />
                       </Box>
-                      <Flex m="0 auto" justifyContent="space-between">
+                      <Flex m="0 auto" justifyContent="space-between" flexDirection={{ base: 'column', md: 'row' }}>
                         <Link href="/login/find">
-                          <Button colorScheme="brand" size="sm" m="10px" variant="outline">
+                          <Button colorScheme="brand" size={{ base: 'xs', md: 'sm' }} m="10px" variant="outline">
                             아이디/비밀번호 찾기
                           </Button>
                         </Link>
 
                         <Link href="/login/signUp">
-                          <Button colorScheme="brand" size="sm" m="10px" variant="outline">
+                          <Button colorScheme="brand" size={{ base: 'xs', md: 'sm' }} m="10px" variant="outline">
                             회원가입
                           </Button>
                         </Link>
