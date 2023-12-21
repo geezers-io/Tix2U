@@ -257,7 +257,7 @@ const MyPage: FC = () => {
                         <Box>
                           <HeartFill style={{ color: 'pink', width: '1em', height: '1em' }} />
                         </Box>
-                        <Image src={item.poster} objectFit="contain" boxSize={{ base: '80px', md: '100px' }} />
+                        <Image src={item.poster} objectFit="contain" w="100px" m="0 auto" />
                         <VStack align="start" flex="1">
                           <Link href={`detail/${item.mt20id}`}>
                             <VStack align="start" flex="1" overflow="hidden" w="100%">

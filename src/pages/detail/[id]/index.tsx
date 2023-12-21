@@ -199,7 +199,7 @@ const DetailPage: FC = () => {
                 </Tabs>
               </Box>
               <Flex flexDirection="row-reverse" gap="10px" m="40px" h="100%" alignItems="flex-end">
-                <TicketingButton id={mt20id} />
+                <TicketingButton id={mt20id} user={user} />
 
                 <Button colorScheme="accent" size="lg" onClick={handleCartButtonClick}>
                   찜하기
@@ -303,7 +303,7 @@ const DetailPage: FC = () => {
               </TabPanel>
               <TabPanel>
                 <Flex m="0 auto" fontSize="lg">
-                  <Box>
+                  <Box w="100%">
                     <Heading size="xl" m="20px 0" pb="2" borderBottom="2px" borderColor="brand.100">
                       예매/취소 안내
                     </Heading>
