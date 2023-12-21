@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/kopis-proxy/pblpfrf": {
-      "timeout": 70
-    }
-  }
-}
