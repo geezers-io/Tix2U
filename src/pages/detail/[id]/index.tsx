@@ -278,7 +278,7 @@ const DetailPage: FC = () => {
               </TabPanel>
               <TabPanel>
                 <Card m="10%" p="50px" variant="outline">
-                  <Flex>
+                  <Flex flexDirection={{ base: 'md', md: 'row' }}>
                     <Flex m="auto 10px">
                       <GeoAlt size="50px" />
                     </Flex>
