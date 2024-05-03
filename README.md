@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- logo -->
-
+   
 ![name_logo](./public/name_logo.png)
 
 ### Tix2U (Tix To You!)
