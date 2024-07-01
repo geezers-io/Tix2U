@@ -11,7 +11,7 @@
 [💻 사이트 바로가기](https://tix2u.vercel.app/) <br>
 [📣 최종 발표 자료](https://drive.google.com/file/d/11Lnr75HFAsSP_Gw5yOD769uYybLfxhI2/view?usp=sharing)
 
-<b>DB나 서버 관리는 하지 않았습니다. 프론트엔드에서의 최대한의 기능을 구현하는 것을 목표로 프로젝트를 진행하였습니다 🙇🏻‍♀️ </b>
+<b>프론트엔드에서의 최대한의 기능을 구현하는 것을 목표로 프로젝트를 진행하였습니다 🙇🏻‍♀️ </b>
 
 </div>
 
